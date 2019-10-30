@@ -1,11 +1,16 @@
-const getComponent = async () => {
+const getComponent = () => {
     const element = document.createElement('div');
-    const {default: _} = await import(/* webpackChunkName: "lodash" */'lodash');
+    element.innerHTML = `<h1>'hello', 'Bitches'</h1>`;
 
-    element.innerHTML = `<h1>${_.join(['hello', 'bitches'], ' ')}</h1>`;
+    element.onclick = () => {
+        import('./print').then((module) => {
+            const print = module.default;
+
+            print();
+        });
+    };
+
     return element;
 };
 
-getComponent().then(component => {
-    document.body.appendChild(component);
-});
+document.body.appendChild(getComponent());

@@ -1,47 +1,52 @@
 const path = require('path');
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
+module.exports = env => {
+    // const mode = env.production ? 'production' : 'development';
 
-module.exports = {
-    mode: 'development',
-    entry: {
-        app: './src/index.ts',
-    },
-    optimization: {
-        minimize: true,
-    },
-    devtool: 'inline-source-map',
-    plugins: [
-        new CleanWebpackPlugin(),
-        new HtmlWebpackPlugin({
-            title: "Output Management"
-        }),
-    ],
-    module: {
-        rules: [
-            {
-                test: /\.ts$/,
-                exclude: /(node_modules|bower_components)/,
-                use: {
-                    loader: 'babel-loader',
-                    options: {
-                        presets: ['@babel/preset-typescript', '@babel/preset-env']
-                    }
-                },
+    return ({
+        mode: 'development',
+        optimization: {
+            // minimize: true,
+            runtimeChunk: 'single',
+            splitChunks: {
+                chunks: 'all'
             }
-        ]
-    },
-    devServer: {
-        contentBase: "./dist",
-        hot: true,
-    },
-    resolve: {
-        extensions: ['.ts', '.js', '.tsx'],
-    },
-    output: {
-        filename: '[name].[contenthash].js',
-        chunkFilename: '[name].[contenthash].js',
-        path: path.resolve(__dirname, 'dist')
-    }
+        },
+        entry: {
+            app: './src/main.tsx',
+        },
+        devtool: 'inline-source-map',
+        plugins: [
+            new CleanWebpackPlugin(),
+            new HtmlWebpackPlugin({
+                title: 'caching',
+                template: './public/index.html'
+            }),
+        ],
+        module: {
+            rules: [
+                {
+                    test: /\.tsx?$/,
+                    exclude: /(node_modules|bower_components)/,
+                    loader: 'babel-loader',
+                }
+            ]
+        },
+        devServer: {
+            contentBase: './dist',
+            hot: true,
+            writeToDisk: true,
+            historyApiFallback: true,
+        },
+        resolve: {
+            extensions: ['.ts', '.js', '.tsx'],
+        },
+        output: {
+            filename: '[name].[contenthash].js',
+            publicPath: '/',
+            path: path.resolve(__dirname, 'dist'),
+        }
+    });
 };

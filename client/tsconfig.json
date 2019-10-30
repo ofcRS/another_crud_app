@@ -2,6 +2,11 @@
     "compilerOptions": {
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
-        "outDir": "./build"
-    }
+        "noImplicitAny": true,
+        "jsx": "react",
+        "noEmit": true
+    },
+    "files": [
+        "./src/main.tsx"
+    ]
 }
