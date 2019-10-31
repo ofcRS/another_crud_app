@@ -8,19 +8,16 @@ module.exports = {
         ecmaVersion: 10,
         sourceType: "module"
     },
-    rules: {
-        "semi": ["error", "always"],
-        "quotes": ["error", "single"],
-    },
     overrides: [
         {
-            "files": ["*.ts", "*.tsx"],
-            "rules": {
+            files: ["*.ts*"],
+            rules: {
                 "@typescript-eslint/explicit-function-return-type": ["warn", {
                     allowExpressions: true,
                     allowTypedFunctionExpressions: true,
                     allowHigherOrderFunctions: true,
-                }]
+                }],
+                quotes: ["warn", "single"],
             }
         }
     ],

@@ -7,6 +7,7 @@ module.exports = env => {
 
     return ({
         mode: 'development',
+        target: 'web',
         optimization: {
             // minimize: true,
             runtimeChunk: 'single',
