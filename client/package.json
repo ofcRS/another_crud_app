@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "webpack-dev-server --open",
-    "build": "yarn eslint **/*.ts **/*.tsx --fix && tsc && webpack --env.production",
+    "build": "yarn eslint src/**/*.ts* && tsc && webpack --env.production",
     "check-types": "tsc"
   },
   "author": "",

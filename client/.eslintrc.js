@@ -12,6 +12,18 @@ module.exports = {
         "semi": ["error", "always"],
         "quotes": ["error", "single"],
     },
+    overrides: [
+        {
+            "files": ["*.ts", "*.tsx"],
+            "rules": {
+                "@typescript-eslint/explicit-function-return-type": ["warn", {
+                    allowExpressions: true,
+                    allowTypedFunctionExpressions: true,
+                    allowHigherOrderFunctions: true,
+                }]
+            }
+        }
+    ],
     settings: {
         react: {
             version: 'detect',

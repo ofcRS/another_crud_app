@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import _ from 'lodash';
 
-const AnotherComponent = () => {
+const AnotherComponent = (): JSX.Element => {
     const [count, setCount] = useState(10);
 
     return <div>

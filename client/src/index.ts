@@ -1,4 +1,4 @@
-const getComponent = () => {
+const getComponent = (): HTMLDivElement => {
     const element = document.createElement('div');
     element.innerHTML = '<h1>hello, Bitches</h1>';
 
