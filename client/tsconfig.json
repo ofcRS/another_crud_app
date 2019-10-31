@@ -5,9 +5,13 @@
         "allowSyntheticDefaultImports": true,
         "noImplicitAny": true,
         "jsx": "react",
-        "noEmit": true
+        "noEmit": true,
+        "moduleResolution": "node"
     },
-    "files": [
-        "./src/main.tsx"
+    "include": [
+        "src/**/*.ts"
+    ],
+    "exclude": [
+        "node_modules"
     ]
 }

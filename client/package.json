@@ -5,9 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "webpack-dev-server --open",
-    "build": "tsc && webpack --env.production",
-    "check-types": "tsc",
-    "lint": "npx eslint"
+    "build": "yarn eslint **/*.ts **/*.tsx --fix && tsc && webpack --env.production",
+    "check-types": "tsc"
   },
   "author": "",
   "license": "ISC",

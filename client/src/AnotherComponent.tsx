@@ -7,7 +7,7 @@ const AnotherComponent = () => {
     return <div>
         Лол, ватафак?
         {count}
-        { _.join([5,6,7,8], " ")}
+        { _.join([5,6,7,8], ' ')}
         <button
             onClick={() => {
                 setCount(count + 1);
