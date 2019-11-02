@@ -1,8 +1,10 @@
-import React, { Suspense } from 'react';
+import React, { lazy, Suspense } from 'react';
 import { render } from 'react-dom';
 import { Route, Router, Switch, NavLink } from 'react-router-dom';
 import { createBrowserHistory, History } from 'history';
 import _ from 'lodash';
+
+const AnotherComponent = lazy(() => import('./AnotherComponent'));
 
 const history: History = createBrowserHistory();
 
@@ -13,7 +15,7 @@ const Component = (): JSX.Element => <Router history={history}>
         <NavLink to={'/another'}> зыр </NavLink>
         <Switch>
             <Route path={'/'} exact render={() => <div>main</div>}/>
-            <Route path={'/another'} render={() => <div>не мейн</div>}/>
+            <Route path={'/another'} component={AnotherComponent}/>
         </Switch>
     </Suspense>
 </Router>;
