@@ -1,28 +1,33 @@
 const path = require('path');
+const fs = require('fs');
+const nodeExternals = require('webpack-node-externals');
+
+const nodeModules = {};
+
+fs.readdirSync('node_modules')
+    .filter(module => !module.includes('.bin'))
+    .forEach(module => nodeModules[module] = 'commonjs ' + module);
+
 
 module.exports = env => {
+    const mode = env.production ? 'production' : 'development';
+
     return ({
+        mode,
         entry: './src/index.ts',
         target: 'node',
         optimization: {
-            minimize: true,
+            minimize: false,
         },
         module: {
             rules: [
                 {
-                    test: /\.m?ts$/,
-                    use: {
-                        loader: 'babel-loader',
-                        options: {
-                            presets: [
-                                '@babel/preset-typescript',
-                                '@babel/preset-env'
-                            ],
-                        }
-                    }
+                    test: /\.ts$/,
+                    loader: 'babel-loader',
                 },
             ]
         },
+        externals: [nodeExternals()],
         resolve: {
             extensions: ['.ts']
         },

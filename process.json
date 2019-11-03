@@ -1,0 +1,13 @@
+{
+    "apps": [
+        {
+            "exec_mode": "cluster",
+            "cwd": "app/back/build",
+            "script": "bundle.js",
+            "name": "server",
+            "node_args": [ "--abort-on-uncaught-exception" ],
+            "error_file": "/var/www/logs/app.err.log",
+            "out_file": "/var/www/logs/app.out.log"
+        }
+    ]
+}

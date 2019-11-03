@@ -3,13 +3,13 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = env => {
-    // const mode = env.production ? 'production' : 'development';
+    const mode = env.production ? 'production' : 'development';
 
     return ({
-        mode: 'development',
+        mode,
         target: 'web',
         optimization: {
-            // minimize: true,
+            minimize: true,
             runtimeChunk: 'single',
             splitChunks: {
                 chunks: 'all'
@@ -45,7 +45,7 @@ module.exports = env => {
             extensions: ['.ts', '.js', '.tsx'],
         },
         output: {
-            filename: '[name].[contenthash].js',
+            filename: mode === 'production' ? '[name].[contenthash].js' : '[name].[hash].js',
             publicPath: '/',
             path: path.resolve(__dirname, 'dist'),
         }
