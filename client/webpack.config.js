@@ -4,19 +4,20 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = env => {
     const mode = env.production ? 'production' : 'development';
+    const isProd = mode === 'production';
 
     return ({
         mode,
         target: 'web',
         optimization: {
-            minimize: true,
+            minimize: isProd,
             runtimeChunk: 'single',
             splitChunks: {
                 chunks: 'all'
             }
         },
         entry: {
-            app: './src/main.tsx',
+            app: './src/index.tsx',
         },
         devtool: 'inline-source-map',
         plugins: [
@@ -45,7 +46,7 @@ module.exports = env => {
             extensions: ['.ts', '.js', '.tsx'],
         },
         output: {
-            filename: mode === 'production' ? '[name].[contenthash].js' : '[name].[hash].js',
+            filename: isProd ? '[name].[contenthash].js' : '[name].[hash].js',
             publicPath: '/',
             path: path.resolve(__dirname, 'dist'),
         }
