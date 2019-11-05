@@ -34,7 +34,7 @@ module.exports = env => {
                     exclude: /(node_modules|bower_components)/,
                     loader: 'babel-loader',
                 }
-            ]
+            ],
         },
         devServer: {
             contentBase: './dist',
@@ -44,6 +44,10 @@ module.exports = env => {
         },
         resolve: {
             extensions: ['.ts', '.js', '.tsx'],
+            alias: {
+                root: __dirname,
+                src: path.resolve(__dirname, 'src/')
+            }
         },
         output: {
             filename: isProd ? '[name].[contenthash].js' : '[name].[hash].js',
