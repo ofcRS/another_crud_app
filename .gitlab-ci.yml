@@ -7,7 +7,7 @@ build site:
     - cd client
     - rm yarn.lock
     - yarn && yarn build
-    - cd ../back
+    - cd ../server
     - rm yarn.lock
     - yarn && yarn build
 
