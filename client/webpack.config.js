@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
 module.exports = env => {
     const mode = env.production ? 'production' : 'development';
@@ -17,7 +18,7 @@ module.exports = env => {
             }
         },
         entry: {
-            app: './src/index.tsx',
+            app: path.join(__dirname, 'src/index.tsx'),
         },
         devtool: 'inline-source-map',
         plugins: [
@@ -33,6 +34,11 @@ module.exports = env => {
                     test: /\.tsx?$/,
                     exclude: /(node_modules|bower_components)/,
                     loader: 'babel-loader',
+                    options: {
+                        cacheDirectory: true,
+                        cacheCompression: isProd,
+                        compact: isProd,
+                    }
                 }
             ],
         },
@@ -44,10 +50,7 @@ module.exports = env => {
         },
         resolve: {
             extensions: ['.ts', '.js', '.tsx'],
-            alias: {
-                root: __dirname,
-                src: path.resolve(__dirname, 'src/')
-            }
+            plugins: [new TsconfigPathsPlugin({})]
         },
         output: {
             filename: isProd ? '[name].[contenthash].js' : '[name].[hash].js',

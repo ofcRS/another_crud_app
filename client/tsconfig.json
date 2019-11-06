@@ -6,8 +6,9 @@
         "allowSyntheticDefaultImports": true,
         "noImplicitAny": true,
         "jsx": "react",
-        "noEmit": true,
-        "moduleResolution": "node"
+        "moduleResolution": "node",
+        "outDir": "build",
+        "noEmit": true
     },
     "include": [
         "src/**/*.ts*"

@@ -13,7 +13,7 @@ app.use('/', (req, res, next) => {
     });
 });
 
-const server = http.createServer(app);
+export const server = http.createServer(app);
 
 server.listen(3001, () => {
     console.log('server start on 3001');

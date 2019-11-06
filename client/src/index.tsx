@@ -1,23 +1,6 @@
-import React, { lazy, Suspense } from 'react';
+import React from 'react';
 import { render } from 'react-dom';
-import { Route, Router, Switch, NavLink } from 'react-router-dom';
-import { createBrowserHistory, History } from 'history';
-import _ from 'lodash';
 
-const AnotherComponent = lazy(() => import('./AnotherComponent'));
+import App from 'App';
 
-const history: History = createBrowserHistory();
-
-const Component = (): JSX.Element => <Router history={history}>
-    <Suspense fallback={<div>Loading...</div>}>
-        {_.join([1, 2, 3, 4], ' ')}
-        <NavLink to={'/'}> home </NavLink>
-        <NavLink to={'/another'}> зыр </NavLink>
-        <Switch>
-            <Route path={'/'} exact render={() => <div>main</div>}/>
-            <Route path={'/another'} component={AnotherComponent}/>
-        </Switch>
-    </Suspense>
-</Router>;
-
-render(Component(), document.getElementById('root'));
+render(<App/>, document.getElementById('root'));

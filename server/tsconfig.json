@@ -1,9 +1,10 @@
 {
-  "compilerOptions": {
-    "target": "es6",
-    "module": "es6",
-    "noImplicitAny": false,
-    "sourceMap": true,
-    "esModuleInterop": true
-  }
+    "compilerOptions": {
+        "baseUrl": "./src",
+        "target": "es6",
+        "module": "es6",
+        "noImplicitAny": false,
+        "sourceMap": true,
+        "esModuleInterop": true
+    }
 }
