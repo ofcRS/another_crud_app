@@ -1,19 +1,16 @@
-const http = require('http');
-const express = require('express');
-const bodyParser = require('body-parser');
+import http from 'http';
+import express from 'express';
+import bodyParser from 'body-parser';
+
+import { router as postRoutes } from './routes/post';
 
 const app = express();
 
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({extended: false}));
 
-app.use('/', (req, res, next) => {
-    res.send({
-        a: 23,
-        c: 35
-    });
-});
+app.use(postRoutes);
 
-export const server = http.createServer(app);
+const server = http.createServer(app);
 
 server.listen(3001, () => {
     console.log('server start on 3001');

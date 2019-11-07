@@ -1,13 +1,5 @@
 const path = require('path');
-const fs = require('fs');
 const nodeExternals = require('webpack-node-externals');
-
-const nodeModules = {};
-
-fs.readdirSync('node_modules')
-    .filter(module => !module.includes('.bin'))
-    .forEach(module => nodeModules[module] = 'commonjs ' + module);
-
 
 module.exports = env => {
     const mode = env.production ? 'production' : 'development';
