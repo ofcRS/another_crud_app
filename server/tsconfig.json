@@ -2,10 +2,11 @@
     "compilerOptions": {
         "baseUrl": "./src",
         "target": "es6",
-        "module": "es6",
+        "module": "commonjs",
         "noImplicitAny": false,
         "sourceMap": true,
         "esModuleInterop": true,
-        "noEmit": true
+        "noEmit": true,
+        "moduleResolution": "node"
     }
 }
