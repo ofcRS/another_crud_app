@@ -1,4 +1,5 @@
 const path = require('path');
+
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
@@ -25,7 +26,7 @@ module.exports = env => {
             new CleanWebpackPlugin(),
             new HtmlWebpackPlugin({
                 title: 'caching',
-                template: './public/index.html'
+                template: path.join(__dirname, 'public/index.html')
             }),
         ],
         module: {
@@ -47,6 +48,7 @@ module.exports = env => {
             hot: true,
             writeToDisk: true,
             historyApiFallback: true,
+            port: 3000
         },
         resolve: {
             extensions: ['.ts', '.js', '.tsx'],

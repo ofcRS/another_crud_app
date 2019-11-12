@@ -15,6 +15,14 @@ const PORT = process.env.PORT;
 
 const app = express();
 
+app.use((req, res, next) => {
+    res.set({
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept'
+    });
+    next();
+});
+
 app.use(bodyParser.urlencoded({extended: false}));
 
 app.use(postRoutes);

@@ -6,7 +6,7 @@
     "scripts": {
         "start": "node dist/bundle.js",
         "build": "webpack -p --env.production",
-        "dev": "ts-node-dev -r tsconfig-paths/register ./src/index.ts"
+        "dev": "ts-node-dev -r tsconfig-paths/register src/server.ts"
     },
     "author": "",
     "license": "ISC",
