@@ -3,6 +3,7 @@ import path from 'path';
 import express from 'express';
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
+
 import logger from 'services/logger';
 
 import { router as postRoutes } from 'routes/post';
@@ -15,6 +16,8 @@ const PORT = process.env.PORT;
 
 const app = express();
 
+app.use(bodyParser.urlencoded({extended: false}));
+
 app.use((req, res, next) => {
     res.set({
         'Access-Control-Allow-Origin': '*',
@@ -22,8 +25,6 @@ app.use((req, res, next) => {
     });
     next();
 });
-
-app.use(bodyParser.urlencoded({extended: false}));
 
 app.use(postRoutes);
 
