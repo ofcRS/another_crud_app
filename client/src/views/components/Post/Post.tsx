@@ -1,10 +1,12 @@
 import React from 'react';
 
-const Post = (): JSX.Element => {
+import { Props } from './Post.types';
+
+const Post = ({data}: Props): JSX.Element => {
     return (
         <div>
-            <h3>Title</h3>
-            <p>Body</p>
+            <h3>{data.title}</h3>
+            <p>{data.body}</p>
         </div>
     );
 };
