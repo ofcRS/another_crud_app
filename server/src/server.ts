@@ -3,10 +3,13 @@ import path from 'path';
 import express from 'express';
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
+import { RowDataPacket } from 'mysql2';
 
 import logger from 'services/logger';
 
 import { router as postRoutes } from 'routes/post';
+
+import db from 'utils/db';
 
 dotenv.config({
     path: path.join(__dirname, '../.env')
@@ -15,6 +18,11 @@ dotenv.config({
 const PORT = process.env.PORT;
 
 const app = express();
+
+db.execute<RowDataPacket[]>('SELECT * FROM posts')
+    .then(([rows, fields]) => {
+        console.log(rows);
+    });
 
 app.use(bodyParser.json());
 
