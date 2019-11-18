@@ -19,11 +19,6 @@ const PORT = process.env.PORT;
 
 const app = express();
 
-db.execute<RowDataPacket[]>('SELECT * FROM posts')
-    .then(([rows, fields]) => {
-        console.log(rows);
-    });
-
 app.use(bodyParser.json());
 
 app.use((req, res, next) => {

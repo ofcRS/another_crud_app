@@ -3,6 +3,8 @@ import express, { Request, Response } from 'express';
 
 import { PostRequest } from 'types/rewrited/express';
 import { Post } from 'shared/types/Post';
+
+import db from 'utils/db';
 import ErrnoException = NodeJS.ErrnoException;
 
 export const router = express.Router();
@@ -10,20 +12,17 @@ export const router = express.Router();
 const formatPost = ({title, body}: Post): string => `${title}\n${body}`;
 
 router.post('/post', (req: PostRequest<Post>, res: Response) => {
-    const post = req.body;
-
-    fs.writeFile(`storage/posts/post.txt`, formatPost(post), (err: ErrnoException | null) => {
-        if (err) {
-            res.status(400);
-            res.send({
-                isOk: false,
-                error: err
-            });
-        }
-        res.send({
-            isOk: true
+    const {title, body} = req.body;
+    db.execute(`INSERT INTO \`node-learning\`.\`posts\` (\`title\`, \`body\`) VALUES ('${title}', '${body}')`)
+        .then((result) => {
+            const [rows] = result;
+            if (!Array.isArray(rows)) {
+                res.send({
+                    isOk: true,
+                    id: rows.insertId
+                });
+            }
         });
-    });
 });
 
 router.get('/post/:id', (async (req: Request, res: Response) => {
