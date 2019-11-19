@@ -1,6 +1,6 @@
 import axios from 'utils/axios';
-import { Post } from 'shared/types/Post';
+import { BasePost } from 'shared/types/Post';
 
-export const submitPost = (post: Post) => axios.post('/post', post);
+export const submitPost = (post: BasePost) => axios.post('/post', post);
 
 export const getPost = (id: number) => axios.get(`post/${id}`);

@@ -13,3 +13,6 @@
 
 #storage
 server/storage/*
+
+#shared
+*/src/shared

@@ -6,7 +6,7 @@ import { CreatePost } from 'views/components/CreatePost';
 
 import { getPost } from 'api/post'
 
-import { Post as PostType } from 'shared/types/Post'
+import { BasePost as PostType } from 'shared/types/Post'
 
 const Main = (): JSX.Element => {
     const [post, setPost] = useState<PostType>({

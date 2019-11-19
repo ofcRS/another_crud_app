@@ -1,5 +1,5 @@
-import { Post } from 'shared/types/Post';
+import { BasePost } from 'shared/types/Post';
 
 export type Props = {
-    data: Post;
+    data: BasePost;
 }
