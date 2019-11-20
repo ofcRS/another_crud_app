@@ -1,34 +1,34 @@
 import React, { useEffect, useState } from 'react';
-import { AxiosError, AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 
 import { Post } from 'views/components/Post';
 import { CreatePost } from 'views/components/CreatePost';
 
-import { getPost } from 'api/post'
+import { getPosts } from 'api/post';
 
-import { BasePost as PostType } from 'shared/types/Post'
+import { RecordPost } from 'shared/types/Post';
 
 const Main = (): JSX.Element => {
-    const [post, setPost] = useState<PostType>({
-        title: '',
-        body: '',
-    });
+    const [posts, setPost] = useState<RecordPost[]>([]);
 
     useEffect(() => {
-        getPost(1)
+        getPosts()
             .then((response: AxiosResponse) => {
                 if (response.statusText === 'OK') {
-                    setPost(response.data)
+                    setPost(response.data.list);
                 }
-            })
+            });
     }, []);
 
     return (
         <div>
             <CreatePost/>
-            <Post
-                data={post}
-            />
+            {
+                posts.map(post => <Post
+                    key={post.id}
+                    data={post}
+                />)
+            }
         </div>
     );
 };
