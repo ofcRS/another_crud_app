@@ -4,6 +4,7 @@ build site:
   before_script:
     - npm install -g yarn
   script:
+    - chmod +x ./shared.sh
     - ./shared.sh
     - cd client
     - rm yarn.lock
