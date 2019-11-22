@@ -1,4 +1,4 @@
-import { RowDataPacket } from 'mysql2'
 import { RecordPost } from 'shared/types/Post';
+import { WithRowDataPacket } from './services/db';
 
-export type DBPost = RecordPost & RowDataPacket
+export type DBPost = WithRowDataPacket<RecordPost>
