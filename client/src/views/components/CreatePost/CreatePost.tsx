@@ -1,46 +1,45 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
+import { AxiosResponse } from 'axios'
 
-import { submitPost } from 'api/post';
-import { Props } from './CreatePost.types';
-import { AxiosResponse } from 'axios';
+import { submitPost } from 'api/post'
+import { Styled } from './CreatePost.styles'
+import { Props } from './CreatePost.types'
 
-export const CreatePost: React.FC<Props> = ({fetchPosts}: Props): JSX.Element => {
-    const [title, setTitle] = useState<string>('');
-    const [body, setBody] = useState<string>('');
+export const CreatePost: React.FC<Props> = ({
+    fetchPosts,
+}: Props): JSX.Element => {
+    const [title, setTitle] = useState<string>('')
+    const [body, setBody] = useState<string>('')
 
     const clearForm = (): void => {
-        setTitle('');
-        setBody('');
-    };
+        setTitle('')
+        setBody('')
+    }
 
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
-        event.preventDefault();
+    const handleSubmit = async (
+        event: React.FormEvent<HTMLFormElement>
+    ): Promise<void> => {
+        event.preventDefault()
 
         const response: AxiosResponse = await submitPost({
             body,
-            title
-        });
+            title,
+        })
         if (response.data.isOk) {
-            clearForm();
-            fetchPosts();
+            clearForm()
+            fetchPosts()
         }
-    };
+    }
 
     return (
-        <form
-            style={{
-            width: 300,
-            border: '1px solid black'
-        }}
-            onSubmit={handleSubmit}
-        >
+        <Styled.CreatePost onSubmit={handleSubmit}>
             <div
                 style={{
                     display: 'flex',
-                    justifyContent: 'space-between'
+                    justifyContent: 'space-between',
                 }}
             >
-                <input value={title} onChange={e => setTitle(e.target.value)}/>
+                <input value={title} onChange={e => setTitle(e.target.value)} />
                 <button type={'submit'}>submit</button>
             </div>
             <textarea
@@ -52,6 +51,6 @@ export const CreatePost: React.FC<Props> = ({fetchPosts}: Props): JSX.Element =>
                     margin: 0,
                 }}
             />
-        </form>
-    );
-};
+        </Styled.CreatePost>
+    )
+}

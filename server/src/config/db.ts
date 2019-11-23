@@ -1,10 +1,10 @@
-import mysql2 from 'mysql2';
+import mysql2 from 'mysql2'
 
 const pool = mysql2.createPool({
     host: 'localhost',
     user: 'root',
     database: 'node_learning',
-    password: '1234'
-});
+    password: '1234',
+})
 
-export default pool.promise();
+export default pool.promise()

@@ -3,6 +3,8 @@ module.exports = {
     extends: [
         'plugin:react/recommended',
         'plugin:@typescript-eslint/recommended',
+        'plugin:prettier/recommended',
+        'prettier'
     ],
     parserOptions: {
         ecmaVersion: 10,
@@ -11,7 +13,10 @@ module.exports = {
     overrides: [
         {
             files: ['*.ts*'],
-            plugins: ['react-hooks'],
+            plugins: [
+                'react-hooks',
+                'prettier'
+            ],
             rules: {
                 '@typescript-eslint/explicit-function-return-type': ['warn', {
                     allowExpressions: true,
@@ -20,6 +25,7 @@ module.exports = {
                 }],
                 'react-hooks/rules-of-hooks': ['error'],
                 'react-hooks/exhaustive-deps': ['warn'],
+                "prettier/prettier": ["error"],
                 quotes: ['warn', 'single'],
             }
         }

@@ -1,9 +1,16 @@
-import React from 'react';
+import React from 'react'
 
-import Main from 'views/pages/Main';
+import Main from 'views/pages/Main'
+
+import { GlobalStyles } from 'styles/globalStyles'
 
 const App = (): JSX.Element => {
-    return <Main/>;
-};
+    return (
+        <>
+            <GlobalStyles />
+            <Main />
+        </>
+    )
+}
 
-export default App;
+export default App
