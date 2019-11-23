@@ -3,19 +3,22 @@ module.exports = {
     extends: [
         'plugin:@typescript-eslint/recommended',
         'plugin:prettier/recommended',
-        'prettier'
+        'prettier',
     ],
     overrides: [
         {
             files: ['src/**/*.ts'],
+            plugins: [
+                'prettier',
+            ],
             rules: {
-                "@typescript-eslint/no-var-requires": ["off"],
-                "prettier/prettier": ["error"],
-            }
-        }
+                '@typescript-eslint/no-var-requires': ['off'],
+                'prettier/prettier': ['error'],
+            },
+        },
     ],
-    parserOptions:  {
+    parserOptions: {
         ecmaVersion: 10,
-        sourceType: "module"
-    }
-};
+        sourceType: 'module',
+    },
+}

@@ -1,3 +1,3 @@
-import { RowDataPacket } from 'mysql'
+import { RowDataPacket } from 'mysql';
 
-export type WithRowDataPacket<T> = T & RowDataPacket
+export type WithRowDataPacket<T> = T & RowDataPacket;

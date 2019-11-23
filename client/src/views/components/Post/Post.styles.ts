@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 export const Styled = {
     Post: styled.section`
@@ -6,6 +6,6 @@ export const Styled = {
         min-width: 250px;
         max-width: 450px;
         min-height: 80px;
-        border: 1px solid #F4F4F4;
-    `
+        border: 1px solid #f4f4f4;
+    `,
 };

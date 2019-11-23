@@ -1,7 +1,7 @@
-import React from 'react'
+import React from 'react';
 
-import { Props } from './Post.types'
-import { Styled } from './Post.styles'
+import { Props } from './Post.types';
+import { Styled } from './Post.styles';
 
 const Post: React.FC<Props> = ({ data }: Props): JSX.Element => {
     return (
@@ -9,7 +9,7 @@ const Post: React.FC<Props> = ({ data }: Props): JSX.Element => {
             <h3>{data.title}</h3>
             <p>{data.body}</p>
         </Styled.Post>
-    )
-}
+    );
+};
 
-export default Post
+export default Post;

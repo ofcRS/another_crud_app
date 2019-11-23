@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const getHeaders = (): object => ({
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
 });
 
 const instance = axios.create({
@@ -10,4 +10,3 @@ const instance = axios.create({
 });
 
 export default instance;
-

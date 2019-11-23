@@ -1,8 +1,8 @@
-import React from 'react'
+import React from 'react';
 
-import Main from 'views/pages/Main'
+import Main from 'views/pages/Main';
 
-import { GlobalStyles } from 'styles/globalStyles'
+import { GlobalStyles } from 'styles/globalStyles';
 
 const App = (): JSX.Element => {
     return (
@@ -10,7 +10,7 @@ const App = (): JSX.Element => {
             <GlobalStyles />
             <Main />
         </>
-    )
-}
+    );
+};
 
-export default App
+export default App;

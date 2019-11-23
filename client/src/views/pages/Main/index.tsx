@@ -19,20 +19,15 @@ const Main = (): JSX.Element => {
     };
 
     useEffect(() => {
-        fetchPosts()
+        fetchPosts();
     }, []);
 
     return (
         <div>
-            <CreatePost
-                fetchPosts={fetchPosts}
-            />
-            {
-                posts.map((post) => <Post
-                    key={post.id}
-                    data={post}
-                />)
-            }
+            <CreatePost fetchPosts={fetchPosts} />
+            {posts.map(post => (
+                <Post key={post.id} data={post} />
+            ))}
         </div>
     );
 };

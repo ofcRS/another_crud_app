@@ -1,35 +1,35 @@
-import React, { useState } from 'react'
-import { AxiosResponse } from 'axios'
+import React, { useState } from 'react';
+import { AxiosResponse } from 'axios';
 
-import { submitPost } from 'api/post'
-import { Styled } from './CreatePost.styles'
-import { Props } from './CreatePost.types'
+import { submitPost } from 'api/post';
+import { Styled } from './CreatePost.styles';
+import { Props } from './CreatePost.types';
 
 export const CreatePost: React.FC<Props> = ({
     fetchPosts,
 }: Props): JSX.Element => {
-    const [title, setTitle] = useState<string>('')
-    const [body, setBody] = useState<string>('')
+    const [title, setTitle] = useState<string>('');
+    const [body, setBody] = useState<string>('');
 
     const clearForm = (): void => {
-        setTitle('')
-        setBody('')
-    }
+        setTitle('');
+        setBody('');
+    };
 
     const handleSubmit = async (
         event: React.FormEvent<HTMLFormElement>
     ): Promise<void> => {
-        event.preventDefault()
+        event.preventDefault();
 
         const response: AxiosResponse = await submitPost({
             body,
             title,
-        })
+        });
         if (response.data.isOk) {
-            clearForm()
-            fetchPosts()
+            clearForm();
+            fetchPosts();
         }
-    }
+    };
 
     return (
         <Styled.CreatePost onSubmit={handleSubmit}>
@@ -52,5 +52,5 @@ export const CreatePost: React.FC<Props> = ({
                 }}
             />
         </Styled.CreatePost>
-    )
-}
+    );
+};
