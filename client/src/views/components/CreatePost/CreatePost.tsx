@@ -1,21 +1,29 @@
 import React, { useState } from 'react';
 
 import { submitPost } from 'api/post';
+import { Props } from './CreatePost.types';
+import { AxiosResponse } from 'axios';
 
-const CreatePost = (): JSX.Element => {
+export const CreatePost: React.FC<Props> = ({fetchPosts}: Props): JSX.Element => {
     const [title, setTitle] = useState<string>('');
     const [body, setBody] = useState<string>('');
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
+    const clearForm = (): void => {
+        setTitle('');
+        setBody('');
+    };
+
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
         event.preventDefault();
 
-        submitPost({
+        const response: AxiosResponse = await submitPost({
             body,
             title
-        })
-            .then((res) => {
-                console.log(res)
-            })
+        });
+        if (response.data.isOk) {
+            clearForm();
+            fetchPosts();
+        }
     };
 
     return (
@@ -47,5 +55,3 @@ const CreatePost = (): JSX.Element => {
         </form>
     );
 };
-
-export default CreatePost;

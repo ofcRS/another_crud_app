@@ -1,13 +1,14 @@
 import React from 'react';
 
 import { Props } from './Post.types';
+import { Styled } from './Post.styles';
 
-const Post = ({data}: Props): JSX.Element => {
+const Post: React.FC<Props> = ({data}: Props): JSX.Element => {
     return (
-        <div>
+        <Styled.Post>
             <h3>{data.title}</h3>
             <p>{data.body}</p>
-        </div>
+        </Styled.Post>
     );
 };
 

@@ -5,25 +5,25 @@ import { PostRequest } from 'types/rewrited/express';
 import { DBPost } from 'types/post';
 import { BasePost, RecordPost } from 'shared/types/Post';
 
-import db from 'utils/db';
+import db from 'config/db';
 
 export const router = express.Router();
 
-router.post('/posts', (req: PostRequest<BasePost>, res: Response) => {
+router.post('/posts', async (req: PostRequest<BasePost>, res: Response) => {
     const {title, body} = req.body;
-    db.execute<OkPacket>('INSERT INTO `node-learning`.`posts` (`title`, `body`)' + `VALUES ('${title}', '${body}')`)
-        .then((result) => {
-            const [rows] = result;
-            res.send({
-                isOk: true,
-                id: rows.insertId
-            });
-        });
+    const [rows] = await db.execute<OkPacket>('INSERT INTO posts (title, body)' + `VALUES ('${title}', '${body}')`)
+    res.send({
+        isOk: true,
+        id: rows.insertId
+    });
 });
 
 router.get('/posts', async (req: Request, res: Response) => {
     try {
-        const [list]: [RecordPost[], FieldPacket[]] = await db.execute<DBPost[]>('SELECT * FROM `posts`');
+        const [list]: [RecordPost[], FieldPacket[]] = await db.execute<DBPost[]>(
+            `SELECT * FROM posts
+                  ORDER BY id DESC`
+        );
 
         res.send({
             isOk: true,
@@ -39,7 +39,7 @@ router.get('/posts', async (req: Request, res: Response) => {
 router.get('/posts/:id', (async (req: Request<{ id: string }>, res: Response) => {
     const id = req.params.id;
     try {
-        const [rows]: [RecordPost[], FieldPacket[]] = await db.execute<DBPost[]>('SELECT * FROM `node-learning`.`posts`' +
+        const [rows]: [RecordPost[], FieldPacket[]] = await db.execute<DBPost[]>('SELECT * FROM posts' +
             `WHERE id = ${id}`);
 
         const [post] = rows;

@@ -11,20 +11,24 @@ import { RecordPost } from 'shared/types/Post';
 const Main = (): JSX.Element => {
     const [posts, setPost] = useState<RecordPost[]>([]);
 
+    const fetchPosts = async (): Promise<void> => {
+        const response: AxiosResponse = await getPosts();
+        if (response.statusText === 'OK') {
+            setPost(response.data.list);
+        }
+    };
+
     useEffect(() => {
-        getPosts()
-            .then((response: AxiosResponse) => {
-                if (response.statusText === 'OK') {
-                    setPost(response.data.list);
-                }
-            });
+        fetchPosts()
     }, []);
 
     return (
         <div>
-            <CreatePost/>
+            <CreatePost
+                fetchPosts={fetchPosts}
+            />
             {
-                posts.map(post => <Post
+                posts.map((post) => <Post
                     key={post.id}
                     data={post}
                 />)
