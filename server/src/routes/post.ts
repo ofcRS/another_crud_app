@@ -11,13 +11,21 @@ export const router = express.Router();
 
 router.post('/posts', async (req: PostRequest<BasePost>, res: Response) => {
     const { title, body } = req.body;
-    const [row] = await db.execute<OkPacket>(
-        'INSERT INTO posts (title, body)' + `VALUES ('${title}', '${body}')`
-    );
-    res.send({
-        isOk: true,
-        id: row.insertId,
-    });
+    try {
+        const [row] = await db.execute<OkPacket>(
+            'INSERT INTO posts (title, body)' + `VALUES ('${title}', '${body}')`
+        );
+        res.send({
+            isOk: true,
+            id: row.insertId,
+        });
+    } catch (error) {
+        res.status(400);
+        res.send({
+            isOk: false,
+            error,
+        });
+    }
 });
 
 router.get('/posts', async (req: Request, res: Response) => {
@@ -56,6 +64,7 @@ router.get(
                 post,
             });
         } catch (error) {
+            res.status(400);
             res.send({
                 isOk: false,
                 error,
@@ -76,6 +85,7 @@ router.delete(
                 isOk: true,
             });
         } catch (error) {
+            res.status(400);
             res.send({
                 isOk: false,
                 error,

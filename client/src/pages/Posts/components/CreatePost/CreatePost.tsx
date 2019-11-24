@@ -39,10 +39,17 @@ export const CreatePost: React.FC<Props> = ({
                     justifyContent: 'space-between',
                 }}
             >
-                <input value={title} onChange={e => setTitle(e.target.value)} />
-                <button type={'submit'}>submit</button>
+                <input
+                    tabIndex={1}
+                    value={title}
+                    onChange={e => setTitle(e.target.value)}
+                />
+                <button tabIndex={3} type={'submit'}>
+                    submit
+                </button>
             </div>
             <textarea
+                tabIndex={2}
                 value={body}
                 onChange={e => setBody(e.target.value)}
                 style={{
