@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Main from 'views/pages/Main';
+import Main from 'pages/Posts';
 
 import { GlobalStyles } from 'styles/globalStyles';
 

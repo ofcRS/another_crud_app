@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { AxiosResponse } from 'axios';
 
-import { Post } from 'views/components/Post';
-import { CreatePost } from 'views/components/CreatePost';
+import { Post } from './components/Post';
+import { CreatePost } from './components/CreatePost';
+import { MoreButton } from 'components/Button/MoreButton';
 
 import { getPosts } from 'api/post';
 

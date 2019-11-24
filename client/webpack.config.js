@@ -3,6 +3,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = env => {
     const mode = env.production ? 'production' : 'development';
@@ -15,8 +16,8 @@ module.exports = env => {
             minimize: isProd,
             runtimeChunk: 'single',
             splitChunks: {
-                chunks: 'all'
-            }
+                chunks: 'all',
+            },
         },
         entry: {
             app: path.join(__dirname, 'src/index.tsx'),
@@ -26,8 +27,9 @@ module.exports = env => {
             new CleanWebpackPlugin(),
             new HtmlWebpackPlugin({
                 title: 'caching',
-                template: path.join(__dirname, 'public/index.html')
+                template: path.join(__dirname, 'public/index.html'),
             }),
+            // new BundleAnalyzerPlugin()
         ],
         module: {
             rules: [
@@ -39,8 +41,12 @@ module.exports = env => {
                         cacheDirectory: true,
                         cacheCompression: isProd,
                         compact: isProd,
-                    }
-                }
+                    },
+                },
+                {
+                    test: /\.svg$/,
+                    use: ['@svgr/webpack'],
+                },
             ],
         },
         devServer: {
@@ -48,16 +54,16 @@ module.exports = env => {
             hot: true,
             writeToDisk: true,
             historyApiFallback: true,
-            port: 3000
+            port: 3000,
         },
         resolve: {
             extensions: ['.ts', '.js', '.tsx'],
-            plugins: [new TsconfigPathsPlugin({})]
+            plugins: [new TsconfigPathsPlugin({})],
         },
         output: {
             filename: isProd ? '[name].[contenthash].js' : '[name].[hash].js',
             publicPath: '/',
             path: path.resolve(__dirname, 'dist'),
-        }
+        },
     });
 };
