@@ -1,3 +1,9 @@
+export type CalloutItem = {
+    label: string;
+    key: string | number;
+    onClick?: () => void;
+};
+
 export type Props = {
-    onClick: () => void;
+    calloutItems: CalloutItem[];
 };

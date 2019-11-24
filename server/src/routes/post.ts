@@ -11,12 +11,12 @@ export const router = express.Router();
 
 router.post('/posts', async (req: PostRequest<BasePost>, res: Response) => {
     const { title, body } = req.body;
-    const [rows] = await db.execute<OkPacket>(
+    const [row] = await db.execute<OkPacket>(
         'INSERT INTO posts (title, body)' + `VALUES ('${title}', '${body}')`
     );
     res.send({
         isOk: true,
-        id: rows.insertId,
+        id: row.insertId,
     });
 });
 
@@ -54,6 +54,26 @@ router.get(
             res.send({
                 isOk: true,
                 post,
+            });
+        } catch (error) {
+            res.send({
+                isOk: false,
+                error,
+            });
+        }
+    }
+);
+
+router.delete(
+    '/posts/:id',
+    async (req: Request<{ id: string }>, res: Response) => {
+        const id = req.params.id;
+        try {
+            const [row] = await db.execute<OkPacket>(
+                `DELETE FROM posts WHERE id = ${id}`
+            );
+            res.send({
+                isOk: true,
             });
         } catch (error) {
             res.send({

@@ -25,13 +25,16 @@ export const Styled = {
     `,
     Callout: styled.div`
         position: absolute;
-        width: 55px;
-        height: 100%;
+        width: max-content;
+        height: max-content;
         overflow-y: hidden;
-        background: red;
         cursor: auto;
         animation-name: ${openCallout};
-        animation-duration: 200ms;
+        animation-duration: 150ms;
         animation-timing-function: ease-in-out;
+    `,
+    CalloutItem: styled.div`
+        cursor: pointer;
+        border: 1px solid #000000;
     `,
 };

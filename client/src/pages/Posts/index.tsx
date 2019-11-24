@@ -27,7 +27,7 @@ const Main = (): JSX.Element => {
         <div>
             <CreatePost fetchPosts={fetchPosts} />
             {posts.map(post => (
-                <Post key={post.id} data={post} />
+                <Post refreshList={fetchPosts} key={post.id} data={post} />
             ))}
         </div>
     );
