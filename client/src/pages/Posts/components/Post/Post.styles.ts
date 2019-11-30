@@ -10,6 +10,10 @@ export const Styled = {
         max-width: 450px;
         min-height: 80px;
         border: 1px solid #f4f4f4;
+
+        p {
+            white-space: pre-line;
+        }
     `,
     MoreButton: styled(MoreButton)`
         position: absolute;

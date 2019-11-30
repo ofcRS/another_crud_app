@@ -1,8 +1,8 @@
+import { Record } from './utility';
+
 export type BasePost = {
     title: string;
     body: string;
 }
 
-export type RecordPost = BasePost & {
-    id: number;
-}
+export type RecordPost = Record<BasePost>

@@ -1,4 +1,5 @@
 import axios from 'utils/axios';
+
 import { BasePost } from 'shared/types/Post';
 
 export const submitPost = (post: BasePost) => axios.post('/posts', post);

@@ -1,8 +1,5 @@
-import {
-    Request as ExpressRequest,
-    Response as ExpressResponse,
-} from 'express';
+import { Request as ExpressRequest } from 'express';
 
-export interface PostRequest<T = undefined> extends ExpressRequest {
+export interface PostRequest<T> extends ExpressRequest {
     body: T;
 }

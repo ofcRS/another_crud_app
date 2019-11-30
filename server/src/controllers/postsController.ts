@@ -1,19 +1,24 @@
-import { Request, Response } from 'express';
-import { BasePost, RecordPost } from '../shared/types/Post';
 import { FieldPacket, OkPacket } from 'mysql';
-import db from '../config/db';
-import { DBPost } from '../types/post';
-import { PostRequest } from '../types/rewrited/express';
+
+import db from 'config/db';
+
+import { DBPost } from 'types/post';
+import {
+    DeleteController,
+    GetController,
+    PostController,
+} from 'types/utility/controller';
+import { BasePost, RecordPost } from 'shared/types/Post';
 
 type PostControllerType = {
-    getList: () => {};
+    getList: GetController;
+    addItem: PostController<BasePost>;
+    getItem: GetController<{ id: string }>;
+    deleteItem: DeleteController<{ id: string }>;
 };
 
-export const PostController = {
-    addItem: async (
-        req: PostRequest<BasePost>,
-        res: Response
-    ): Promise<void> => {
+export const postsController: PostControllerType = {
+    addItem: async (req, res) => {
         const { title, body } = req.body;
         try {
             const [row] = await db.execute<OkPacket>(
@@ -32,7 +37,7 @@ export const PostController = {
             });
         }
     },
-    getList: async (req: Request, res: Response): Promise<void> => {
+    getList: async (req, res) => {
         try {
             const [list]: [RecordPost[], FieldPacket[]] = await db.execute<
                 DBPost[]
@@ -51,10 +56,7 @@ export const PostController = {
             });
         }
     },
-    getItem: async (
-        req: Request<{ id: string }>,
-        res: Response
-    ): Promise<void> => {
+    getItem: async (req, res) => {
         const id = req.params.id;
         try {
             const [rows]: [RecordPost[], FieldPacket[]] = await db.execute<
@@ -75,15 +77,10 @@ export const PostController = {
             });
         }
     },
-    deleteItem: async (
-        req: Request<{ id: string }>,
-        res: Response
-    ): Promise<void> => {
+    deleteItem: async (req, res) => {
         const id = req.params.id;
         try {
-            const [row] = await db.execute<OkPacket>(
-                `DELETE FROM posts WHERE id = ${id}`
-            );
+            await db.execute<OkPacket>(`DELETE FROM posts WHERE id = ${id}`);
             res.send({
                 isOk: true,
             });

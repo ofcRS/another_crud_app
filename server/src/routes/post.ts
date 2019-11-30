@@ -1,11 +1,11 @@
 import express from 'express';
 
-import { PostController } from 'controllers/postController';
+import { postsController } from 'controllers/postsController';
 
 export const router = express.Router();
 
 router
-    .get('/posts', PostController.getList)
-    .get('/posts/:id', PostController.getItem)
-    .post('/posts', PostController.addItem)
-    .delete('/posts/:id', PostController.deleteItem);
+    .get('/posts', postsController.getList)
+    .get('/posts/:id', postsController.getItem)
+    .post('/posts', postsController.addItem)
+    .delete('/posts/:id', postsController.deleteItem);

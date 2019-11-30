@@ -1,14 +1,25 @@
 import React from 'react';
+import { Redirect, Route, Router, Switch } from 'react-router';
+import { createBrowserHistory } from 'history';
 
-import Main from 'pages/Posts';
+import { Posts } from 'pages/Posts';
+import { Login } from 'pages/Login';
 
 import { GlobalStyles } from 'styles/globalStyles';
+
+const history = createBrowserHistory();
 
 const App = (): JSX.Element => {
     return (
         <>
             <GlobalStyles />
-            <Main />
+            <Router history={history}>
+                <Switch>
+                    <Route path={'/list'} component={Posts} />
+                    <Route path={'/login'} component={Login} />
+                    <Redirect to={'/list'} />
+                </Switch>
+            </Router>
         </>
     );
 };

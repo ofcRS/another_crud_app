@@ -7,6 +7,7 @@ import bodyParser from 'body-parser';
 import logger from 'services/logger';
 
 import { router as postRoutes } from 'routes/post';
+import { router as userRoutes } from 'routes/user';
 
 dotenv.config({
     path: path.join(__dirname, '../.env'),
@@ -29,6 +30,7 @@ app.use((req, res, next) => {
 });
 
 app.use(postRoutes);
+app.use(userRoutes);
 
 const server = http.createServer(app);
 

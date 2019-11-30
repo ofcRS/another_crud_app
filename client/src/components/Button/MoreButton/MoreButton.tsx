@@ -14,11 +14,12 @@ export const MoreButton: React.FC<Props> = ({
     const buttonRef = useRef<HTMLButtonElement>(null);
 
     const handleClickDocument = useCallback((event: MouseEvent): void => {
-        if (buttonRef && buttonRef.current) {
-            if (
-                event.target instanceof Element &&
-                !buttonRef.current.contains(event.target)
-            ) {
+        if (
+            buttonRef?.current &&
+            event.target instanceof Element &&
+            !buttonRef.current.contains(event.target)
+        ) {
+            {
                 setCalloutHidden(true);
             }
         }
