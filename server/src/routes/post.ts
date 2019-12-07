@@ -2,10 +2,12 @@ import express from 'express';
 
 import { postsController } from 'controllers/postsController';
 
-export const router = express.Router();
+const router = express.Router();
 
 router
-    .get('/posts', postsController.getList)
-    .get('/posts/:id', postsController.getItem)
-    .post('/posts', postsController.addItem)
-    .delete('/posts/:id', postsController.deleteItem);
+    .get('/', postsController.getList)
+    .post('/', postsController.addItem)
+    .get('/:id', postsController.getItem)
+    .delete('/:id', postsController.deleteItem);
+
+export default router;

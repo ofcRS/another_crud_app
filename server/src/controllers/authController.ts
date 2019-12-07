@@ -18,10 +18,11 @@ export const authController: AuthController = {
             WHERE password = '${password}' AND email = '${email}'
         `);
             if (rows.length !== 0) {
+                const { email } = rows[0];
                 const secret: jwt.Secret = process.env.JWT_SECRET!;
                 const token = jwt.sign(
                     {
-                        email: 'user',
+                        email,
                     },
                     secret,
                     {
@@ -29,13 +30,9 @@ export const authController: AuthController = {
                     }
                 );
 
-                jwt.verify(token, secret, (err, decoded) => {
-                    console.log(decoded)
-                })
-
                 res.send({
                     isOk: true,
-                    user: rows[0],
+                    token,
                 });
             } else {
                 throw 'Неверный логин или пароль';
