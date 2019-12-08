@@ -8,7 +8,6 @@ import { User } from 'shared/types/User';
 const Login = (): JSX.Element => {
     const handleSubmit = async (values: User): Promise<void> => {
         const data = await login(values);
-        console.log(data);
     };
 
     return (

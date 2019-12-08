@@ -1,10 +1,21 @@
+import * as jwt from 'jsonwebtoken';
 import { NextFunction, Request, Response } from 'express';
 
-export const checkJwt = (req: Request, res: Response, next: NextFunction) => {
+const checkJwt = (
+    req: Request,
+    res: Response,
+    next: NextFunction
+): Response | undefined => {
     try {
-        console.log(req.cookies)
+        const secret = process.env.JWT_SECRET!;
+        console.log(req.cookies);
+        const token = req.cookies.token;
+
+        jwt.verify(token, secret);
     } catch (error) {
-        return res.status(401).send({ message: 'UNAUTHORIZED' });
+        return res.status(401).send({ message: error.toString() });
     }
     next();
 };
+
+export default (...handler) => [checkJwt, ...handler];

@@ -3,6 +3,7 @@ import path from 'path';
 import express from 'express';
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
 
 import logger from 'services/logger';
 
@@ -18,12 +19,15 @@ const app = express();
 
 app.use(bodyParser.json());
 
+app.use(cookieParser());
+
 app.use((req, res, next) => {
     res.set({
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': '*',
+        'Access-Control-Allow-Origin': 'http://localhost:3000',
+        'Access-Control-Allow-Methods': '*, DELETE',
         'Access-Control-Allow-Headers':
             'Origin, X-Requested-With, Content-Type, Accept',
+        'Access-Control-Allow-Credentials': true,
     });
     next();
 });

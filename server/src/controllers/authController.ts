@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken';
+import * as jwt from 'jsonwebtoken';
 import db from 'config/db';
 
 import { PostController } from 'types/utility/controller';
@@ -30,9 +30,12 @@ export const authController: AuthController = {
                     }
                 );
 
+                res.cookie('token', token, {
+                    httpOnly: true,
+                });
+
                 res.send({
                     isOk: true,
-                    token,
                 });
             } else {
                 throw 'Неверный логин или пароль';
