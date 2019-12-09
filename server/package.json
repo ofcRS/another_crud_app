@@ -48,6 +48,8 @@
         "express": "^4.17.1",
         "jsonwebtoken": "^8.5.1",
         "mysql2": "^2.0.0",
-        "pino-pretty": "^3.3.0"
+        "pino-pretty": "^3.3.0",
+        "reflect-metadata": "^0.1.13",
+        "typeorm": "^0.2.21"
     }
 }
