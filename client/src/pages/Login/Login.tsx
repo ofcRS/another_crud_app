@@ -1,6 +1,8 @@
 import React from 'react';
 import { Formik, Form, Field } from 'formik';
 
+import { history } from 'App';
+
 import { login } from 'api/user';
 
 import { User } from 'shared/types/User';
@@ -8,6 +10,7 @@ import { User } from 'shared/types/User';
 const Login = (): JSX.Element => {
     const handleSubmit = async (values: User): Promise<void> => {
         const data = await login(values);
+        history.push('/list');
     };
 
     return (

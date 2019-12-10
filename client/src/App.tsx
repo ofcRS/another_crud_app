@@ -8,7 +8,7 @@ import { Login } from 'pages/Login';
 
 import { GlobalStyles } from 'styles/globalStyles';
 
-const history = createBrowserHistory();
+export const history = createBrowserHistory();
 
 const App = (): JSX.Element => {
     return (

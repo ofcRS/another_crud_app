@@ -10,6 +10,7 @@ import { createConnection } from 'typeorm';
 import logger from 'services/logger';
 
 import routes from './routes';
+import { Post } from 'entities';
 
 dotenv.config({
     path: path.join(__dirname, '../.env'),
@@ -17,40 +18,49 @@ dotenv.config({
 
 const PORT = process.env.PORT;
 
+(async () => {
+    const connection = await createConnection({
+        type: 'mysql',
+        host: 'localhost',
+        port: 3306,
+        username: 'root',
+        password: '1234',
+        database: 'node_learning',
+        entities: [Post],
+        synchronize: true,
+        logging: false,
+    });
+    
 
-        const connection = createConnection({
-            type: 'mysql',
-            host: 'localhost',
-            port: 3306,
-            username: 'root',
-            password: '1234',
-            database: 'node_learning',
-            entities: [],
-            synchronize: true,
-            logging: false,
+    const post = new Post();
+
+    post.title = 'Тайп орм';
+    post.body = 'тестирование';
+
+    await connection.manager.save(post);
+
+    const app = express();
+
+    app.use(bodyParser.json());
+
+    app.use(cookieParser());
+
+    app.use((req, res, next) => {
+        res.set({
+            'Access-Control-Allow-Origin': 'http://localhost:3000',
+            'Access-Control-Allow-Methods': '*, DELETE',
+            'Access-Control-Allow-Headers':
+                'Origin, X-Requested-With, Content-Type, Accept',
+            'Access-Control-Allow-Credentials': true,
         });
+        next();
+    });
 
-        const app = express();
+    app.use(routes);
 
-        app.use(bodyParser.json());
+    const server = http.createServer(app);
 
-        app.use(cookieParser());
-
-        app.use((req, res, next) => {
-            res.set({
-                'Access-Control-Allow-Origin': 'http://localhost:3000',
-                'Access-Control-Allow-Methods': '*, DELETE',
-                'Access-Control-Allow-Headers':
-                    'Origin, X-Requested-With, Content-Type, Accept',
-                'Access-Control-Allow-Credentials': true,
-            });
-            next();
-        });
-
-        app.use(routes);
-
-        const server = http.createServer(app);
-
-        server.listen(PORT, () => {
-            logger.info(`server start on ${PORT}`);
-        });
+    server.listen(PORT, () => {
+        logger.info(`server start on ${PORT}`);
+    });
+})();
