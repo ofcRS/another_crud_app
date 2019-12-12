@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToOne } from 'typeorm';
+import { PostMetaData } from './postmetadata';
 
 @Entity()
 export class Post {
@@ -10,4 +11,10 @@ export class Post {
 
     @Column()
     body: string;
+
+    @OneToOne(
+        type => PostMetaData,
+        meta => meta.post
+    )
+    metadata: PostMetaData;
 }

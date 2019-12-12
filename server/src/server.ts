@@ -34,17 +34,28 @@ const PORT = process.env.PORT;
         });
 
         const postRepository = connection.getRepository(Post);
-        const postmetadataRepository = connection.getRepository(PostMetaData);
+        const postMetaDataRepository = connection.getRepository(PostMetaData);
 
-        const every = await postRepository.find();
+        const post = new Post();
+        post.title = '32';
+        post.body = 'видите';
 
         const postMetadata = new PostMetaData();
 
+        postMetadata.anotherColumn = Math.random().toString(10);
         postMetadata.publicationDate = new Date();
-        postMetadata.anotherColumn = 'something else';
-        postMetadata.post = every[1];
+        postMetadata.post = post;
 
-        await postmetadataRepository.save(postMetadata);
+        await postRepository.save(post);
+        await postMetaDataRepository.save(postMetadata);
+
+        const posts = await connection
+            .getRepository(Post)
+            .createQueryBuilder('post')
+            .innerJoinAndSelect('post.metadata', 'metadata')
+            .getMany();
+
+        console.log(posts);
 
         const app = express();
 

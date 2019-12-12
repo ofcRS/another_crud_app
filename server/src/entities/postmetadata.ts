@@ -19,7 +19,10 @@ export class PostMetaData {
     @Column()
     anotherColumn: string;
 
-    @OneToOne(type => Post)
+    @OneToOne(
+        type => Post,
+        post => post.metadata
+    )
     @JoinColumn()
     post: Post;
 }
