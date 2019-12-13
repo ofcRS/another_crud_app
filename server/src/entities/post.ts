@@ -1,5 +1,12 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne } from 'typeorm';
+import {
+    Entity,
+    Column,
+    PrimaryGeneratedColumn,
+    OneToOne,
+    ManyToOne,
+} from 'typeorm';
 import { PostMetaData } from './postmetadata';
+import { User } from './user';
 
 @Entity()
 export class Post {
@@ -14,7 +21,16 @@ export class Post {
 
     @OneToOne(
         type => PostMetaData,
-        meta => meta.post
+        meta => meta.post,
+        {
+            cascade: true,
+        }
     )
     metadata: PostMetaData;
+
+    @ManyToOne(
+        type => User,
+        user => user.posts
+    )
+    user: User;
 }

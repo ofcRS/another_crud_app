@@ -28,34 +28,30 @@ const PORT = process.env.PORT;
             username: 'root',
             password: '1234',
             database: 'node_learning',
-            entities: [Post, PostMetaData],
+            entities: [__dirname + '/entities/*.ts'],
             synchronize: true,
             logging: false,
         });
 
         const postRepository = connection.getRepository(Post);
-        const postMetaDataRepository = connection.getRepository(PostMetaData);
-
-        const post = new Post();
-        post.title = '32';
-        post.body = 'видите';
 
         const postMetadata = new PostMetaData();
 
         postMetadata.anotherColumn = Math.random().toString(10);
         postMetadata.publicationDate = new Date();
-        postMetadata.post = post;
+
+        const post = new Post();
+        post.title = '32';
+        post.body = 'видите';
+        post.metadata = postMetadata;
 
         await postRepository.save(post);
-        await postMetaDataRepository.save(postMetadata);
 
         const posts = await connection
             .getRepository(Post)
             .createQueryBuilder('post')
             .innerJoinAndSelect('post.metadata', 'metadata')
             .getMany();
-
-        console.log(posts);
 
         const app = express();
 
