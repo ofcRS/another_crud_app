@@ -21,7 +21,10 @@ export class PostMetaData {
 
     @OneToOne(
         type => Post,
-        post => post.metadata
+        post => post.metadata,
+        {
+            onDelete: 'CASCADE',
+        }
     )
     @JoinColumn()
     post: Post;

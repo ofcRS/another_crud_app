@@ -8,7 +8,6 @@ const checkJwt = (
 ): Response | undefined => {
     try {
         const secret = process.env.JWT_SECRET!;
-        console.log(req.cookies);
         const token = req.cookies.token;
 
         jwt.verify(token, secret);

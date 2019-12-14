@@ -26,6 +26,7 @@ export class Post {
         meta => meta.post,
         {
             cascade: true,
+            onDelete: 'CASCADE',
         }
     )
     metadata: PostMetaData;
@@ -41,6 +42,7 @@ export class Post {
         tag => tag.posts,
         {
             cascade: true,
+            onDelete: 'CASCADE',
         }
     )
     tags: Tag[];

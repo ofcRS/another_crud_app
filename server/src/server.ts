@@ -66,11 +66,7 @@ const PORT = process.env.PORT;
 
         post.tags = [tag1, tag2];
 
-        const all = await postRepository.find({
-            relations: ['tags', 'user'],
-        });
-
-        console.log(all);
+        await postRepository.save(post);
 
         const server = http.createServer(app);
 

@@ -1,4 +1,5 @@
 import { FieldPacket, OkPacket } from 'mysql';
+import { getManager } from 'typeorm';
 
 import db from 'config/db';
 
@@ -9,6 +10,7 @@ import {
     PostController,
 } from 'types/utility/controller';
 import { BasePost, RecordPost } from 'shared/types/Post';
+import { Post } from 'entities';
 
 type PostControllerType = {
     getList: GetController;
@@ -20,14 +22,19 @@ type PostControllerType = {
 export const postsController: PostControllerType = {
     addItem: async (req, res) => {
         const { title, body } = req.body;
+
         try {
-            const [row] = await db.execute<OkPacket>(
-                'INSERT INTO posts (title, body)' +
-                    `VALUES ('${title}', '${body}')`
-            );
+            const postRepository = getManager().getRepository(Post);
+
+            const post = new Post();
+            post.title = title;
+            post.body = body;
+
+            await postRepository.save(post);
+
             res.send({
                 isOk: true,
-                id: row.insertId,
+                id: post.id,
             });
         } catch (error) {
             res.status(400);
@@ -39,12 +46,9 @@ export const postsController: PostControllerType = {
     },
     getList: async (req, res) => {
         try {
-            const [list]: [RecordPost[], FieldPacket[]] = await db.execute<
-                DBPost[]
-            >(
-                `SELECT * FROM posts
-                  ORDER BY id DESC`
-            );
+            const postRepository = getManager().getRepository(Post);
+
+            const list = await postRepository.find();
 
             res.send({
                 isOk: true,
@@ -80,7 +84,10 @@ export const postsController: PostControllerType = {
     deleteItem: async (req, res) => {
         const id = req.params.id;
         try {
-            await db.execute<OkPacket>(`DELETE FROM posts WHERE id = ${id}`);
+            const postRepository = getManager().getRepository(Post);
+
+            await postRepository.delete(id);
+
             res.send({
                 isOk: true,
             });
