@@ -10,8 +10,9 @@ import { createConnection } from 'typeorm';
 import logger from 'services/logger';
 
 import routes from './routes';
-import { Post } from 'entities';
+import { Post, User } from 'entities';
 import { PostMetaData } from './entities/postmetadata';
+import { Tag } from 'entities/tag';
 
 dotenv.config({
     path: path.join(__dirname, '../.env'),
@@ -33,26 +34,6 @@ const PORT = process.env.PORT;
             logging: false,
         });
 
-        const postRepository = connection.getRepository(Post);
-
-        const postMetadata = new PostMetaData();
-
-        postMetadata.anotherColumn = Math.random().toString(10);
-        postMetadata.publicationDate = new Date();
-
-        const post = new Post();
-        post.title = '32';
-        post.body = 'видите';
-        post.metadata = postMetadata;
-
-        await postRepository.save(post);
-
-        const posts = await connection
-            .getRepository(Post)
-            .createQueryBuilder('post')
-            .innerJoinAndSelect('post.metadata', 'metadata')
-            .getMany();
-
         const app = express();
 
         app.use(bodyParser.json());
@@ -71,6 +52,25 @@ const PORT = process.env.PORT;
         });
 
         app.use(routes);
+
+        const postRepository = connection.getRepository(Post);
+        const post = new Post();
+        post.title = new Date().toString();
+        post.body = Math.random().toString(3);
+
+        const tag1 = new Tag();
+        tag1.name = 'tag1';
+
+        const tag2 = new Tag();
+        tag2.name = 'tag2';
+
+        post.tags = [tag1, tag2];
+
+        const all = await postRepository.find({
+            relations: ['tags', 'user'],
+        });
+
+        console.log(all);
 
         const server = http.createServer(app);
 
