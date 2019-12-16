@@ -1,5 +1,7 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 
+import { Callout } from 'components/Callout';
+
 import { Styled } from './MoreButton.styles';
 import { Props } from './MoreButton.types';
 
@@ -31,21 +33,24 @@ export const MoreButton: React.FC<Props> = ({
     }, [handleClickDocument]);
 
     return (
-        <Styled.MoreButton
-            ref={buttonRef}
-            onClick={() => setCalloutHidden(false)}
-            {...props}
-        >
-            <Icon />
-            {!calloutHidden && (
-                <Styled.Callout>
-                    {calloutItems.map(({ key, label, onClick }) => (
-                        <Styled.CalloutItem key={key} onClick={onClick}>
-                            {label}
-                        </Styled.CalloutItem>
-                    ))}
-                </Styled.Callout>
-            )}
-        </Styled.MoreButton>
+        <>
+            <Callout target={buttonRef.current} />
+            <Styled.MoreButton
+                ref={buttonRef}
+                onClick={() => setCalloutHidden(false)}
+                {...props}
+            >
+                <Icon />
+                {!calloutHidden && (
+                    <Styled.Callout>
+                        {calloutItems.map(({ key, label, onClick }) => (
+                            <Styled.CalloutItem key={key} onClick={onClick}>
+                                {label}
+                            </Styled.CalloutItem>
+                        ))}
+                    </Styled.Callout>
+                )}
+            </Styled.MoreButton>
+        </>
     );
 };

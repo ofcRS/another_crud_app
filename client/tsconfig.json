@@ -2,6 +2,7 @@
     "compilerOptions": {
         "baseUrl": "./src",
         "module": "esnext",
+        "lib": ["dom"],
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
         "noImplicitAny": true,
