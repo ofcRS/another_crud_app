@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 
-import { Callout } from 'components/Callout';
+import { Callout } from 'components';
 
 import { Styled } from './MoreButton.styles';
 import { Props } from './MoreButton.types';
@@ -15,42 +15,27 @@ export const MoreButton: React.FC<Props> = ({
 
     const buttonRef = useRef<HTMLButtonElement>(null);
 
-    const handleClickDocument = useCallback((event: MouseEvent): void => {
-        if (
-            buttonRef?.current &&
-            event.target instanceof Element &&
-            !buttonRef.current.contains(event.target)
-        ) {
-            {
-                setCalloutHidden(true);
-            }
-        }
-    }, []);
-
-    useEffect(() => {
-        document.addEventListener('click', handleClickDocument);
-        return () => document.removeEventListener('click', handleClickDocument);
-    }, [handleClickDocument]);
-
     return (
         <>
-            <Callout target={buttonRef.current} />
             <Styled.MoreButton
                 ref={buttonRef}
                 onClick={() => setCalloutHidden(false)}
                 {...props}
             >
                 <Icon />
-                {!calloutHidden && (
-                    <Styled.Callout>
-                        {calloutItems.map(({ key, label, onClick }) => (
-                            <Styled.CalloutItem key={key} onClick={onClick}>
-                                {label}
-                            </Styled.CalloutItem>
-                        ))}
-                    </Styled.Callout>
-                )}
             </Styled.MoreButton>
+            {!calloutHidden && (
+                <Callout
+                    onDismiss={() => setCalloutHidden(true)}
+                    target={buttonRef.current}
+                >
+                    {calloutItems.map(({ key, label, onClick }) => (
+                        <Styled.CalloutItem key={key} onClick={onClick}>
+                            {label}
+                        </Styled.CalloutItem>
+                    ))}
+                </Callout>
+            )}
         </>
     );
 };

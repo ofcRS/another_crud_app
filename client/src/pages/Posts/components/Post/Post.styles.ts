@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { MoreButton } from 'components/Button/MoreButton';
+import { MoreButton } from 'components';
 
 export const Styled = {
     Post: styled.section`

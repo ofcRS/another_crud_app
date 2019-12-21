@@ -23,18 +23,9 @@ export const Styled = {
             fill: #000000;
         }
     `,
-    Callout: styled.div`
-        position: absolute;
-        width: max-content;
-        height: max-content;
-        overflow-y: hidden;
-        cursor: auto;
-        animation-name: ${openCallout};
-        animation-duration: 150ms;
-        animation-timing-function: ease-in-out;
-    `,
     CalloutItem: styled.div`
         cursor: pointer;
+        width: max-content;
         border: 1px solid #000000;
     `,
 };
