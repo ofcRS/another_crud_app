@@ -18,7 +18,6 @@ export const Styled = {
         position: absolute;
         top: ${({ y }) => y + 'px'};
         left: ${({ x }) => x + 'px'};
-        width: 33px;
         height: max-content;
         animation-name: ${openCallout};
         animation-duration: 267ms;
