@@ -8,11 +8,15 @@ const checkJwt = (
 ): Response | undefined => {
     try {
         const secret = process.env.JWT_SECRET!;
-        const token = req.cookies.token;
+        const token = req.headers.authorization;
 
-        jwt.verify(token, secret);
+        if (typeof token === 'string') {
+            jwt.verify(token, secret);
+        } else {
+            return res.status(401).send({ error: 'you need to auth' });
+        }
     } catch (error) {
-        return res.status(401).send({ message: error.toString() });
+        return res.status(401).send({ error: error.toString() });
     }
     next();
 };

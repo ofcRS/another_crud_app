@@ -45,7 +45,7 @@ const PORT = process.env.PORT;
                 'Access-Control-Allow-Origin': 'http://localhost:3000',
                 'Access-Control-Allow-Methods': '*, DELETE',
                 'Access-Control-Allow-Headers':
-                    'Origin, X-Requested-With, Content-Type, Accept',
+                    'Origin, X-Requested-With, Content-Type, Accept, Authorization',
                 'Access-Control-Allow-Credentials': true,
             });
             next();

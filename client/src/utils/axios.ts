@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { getToken } from './auth';
 
 const getHeaders = (): object => ({
     'Content-Type': 'application/json',

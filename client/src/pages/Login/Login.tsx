@@ -3,13 +3,19 @@ import { Formik, Form, Field } from 'formik';
 
 import { history } from 'App';
 
-import { login } from 'api/user';
+import { loginRequest } from 'api/user';
+import { login } from 'utils/auth';
 
 import { User } from 'shared/types/User';
 
 const Login = (): JSX.Element => {
     const handleSubmit = async (values: User): Promise<void> => {
-        const data = await login(values);
+        const {
+            data: { token },
+        } = await loginRequest(values);
+        login({
+            token,
+        });
         history.push('/list');
     };
 

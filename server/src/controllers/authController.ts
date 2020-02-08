@@ -1,4 +1,4 @@
-import * as jwt from 'jsonwebtoken';
+import { sign, Secret } from 'jsonwebtoken';
 import db from 'config/db';
 import { getManager } from 'typeorm';
 import { hash, compare } from 'bcrypt';
@@ -38,7 +38,19 @@ export const authController: AuthController = {
             );
 
             if (isPasswordsValid) {
+                const secret: Secret = process.env.JWT_SECRET!;
+                const token = sign(
+                    {
+                        email,
+                    },
+                    secret,
+                    {
+                        expiresIn: 3600,
+                    }
+                );
+
                 return res.status(200).send({
+                    token,
                     isOk: true,
                 });
             } else {
