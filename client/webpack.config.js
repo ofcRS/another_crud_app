@@ -13,7 +13,7 @@ module.exports = env => {
         mode,
         target: 'web',
         optimization: {
-            minimize: isProd,
+            minimize: false,
             runtimeChunk: 'single',
             splitChunks: {
                 chunks: 'all',

@@ -9,12 +9,12 @@ import {
     GetController,
     PostController,
 } from 'types/utility/controller';
-import { BasePost, RecordPost } from 'shared/types/Post';
+import { RecordPost } from 'shared/types/Post';
 import { Post } from 'entities';
 
 type PostControllerType = {
     getList: GetController;
-    addItem: PostController<BasePost>;
+    addItem: PostController<Post>;
     getItem: GetController<{ id: string }>;
     deleteItem: DeleteController<{ id: string }>;
 };
@@ -48,7 +48,9 @@ export const postsController: PostControllerType = {
         try {
             const postRepository = getManager().getRepository(Post);
 
-            const list = await postRepository.find();
+            const list = await postRepository.find({
+                order: { id: 'DESC' },
+            });
 
             res.send({
                 isOk: true,

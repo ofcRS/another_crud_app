@@ -4,8 +4,8 @@ import express from 'express';
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
-import 'reflect-metadata';
 import { createConnection } from 'typeorm';
+import 'reflect-metadata';
 
 import logger from 'services/logger';
 
