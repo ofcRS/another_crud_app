@@ -11,7 +11,6 @@ module.exports = {
         ],
     ],
     plugins: [
-        '@babel/plugin-transform-runtime',
         '@babel/plugin-proposal-optional-chaining',
         [
             'babel-plugin-named-asset-import',
