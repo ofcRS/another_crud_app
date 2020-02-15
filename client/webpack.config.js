@@ -13,7 +13,7 @@ module.exports = env => {
         mode,
         target: 'web',
         optimization: {
-            minimize: false,
+            minimize: isProd,
             runtimeChunk: 'single',
             splitChunks: {
                 chunks: 'all',
@@ -22,7 +22,7 @@ module.exports = env => {
         entry: {
             app: path.join(__dirname, 'src/index.tsx'),
         },
-        devtool: 'inline-source-map',
+        devtool: isProd ? false : 'inline-source-map',
         plugins: [
             new CleanWebpackPlugin(),
             new HtmlWebpackPlugin({

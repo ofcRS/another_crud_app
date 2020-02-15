@@ -13,4 +13,5 @@ export const login: Login = ({ token, expiry }, noRedirect) => {
     }
 };
 
-export const getToken = (): string => inMemoryToken ? inMemoryToken.token : '';
+export const getToken = (): string =>
+    inMemoryToken ? inMemoryToken.token : '';

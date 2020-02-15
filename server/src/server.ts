@@ -10,9 +10,8 @@ import 'reflect-metadata';
 import logger from 'services/logger';
 
 import routes from './routes';
-import { Post, User } from 'entities';
+import { Post, User, Tag } from 'entities';
 import { PostMetaData } from './entities/postmetadata';
-import { Tag } from 'entities/tag';
 
 dotenv.config({
     path: path.join(__dirname, '../.env'),
@@ -20,7 +19,7 @@ dotenv.config({
 
 const PORT = process.env.PORT;
 
-(async () => {
+(async (): Promise<void> => {
     try {
         const connection = await createConnection({
             type: 'mysql',
@@ -51,7 +50,7 @@ const PORT = process.env.PORT;
             next();
         });
 
-        app.use(routes);
+        app.use('/api', routes);
 
         const postRepository = connection.getRepository(Post);
         const post = new Post();
