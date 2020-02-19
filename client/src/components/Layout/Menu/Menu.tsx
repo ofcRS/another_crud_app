@@ -1,5 +1,5 @@
 import React from 'react';
-import { Styled } from './Menu.styled';
+import { Styled } from './Menu.styles';
 
 import { tabRoutes } from 'routes';
 

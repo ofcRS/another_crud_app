@@ -1,7 +1,7 @@
 import React, { PropsWithChildren } from 'react';
 
 import { Menu } from './Menu';
-import { Styled } from './Layout.styled';
+import { Styled } from './Layout.styles';
 
 export const Layout: React.FC = ({ children }: PropsWithChildren<{}>) => {
     return (
