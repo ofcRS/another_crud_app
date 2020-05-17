@@ -42,7 +42,7 @@ export const Callout: React.FC<Props> = ({
             const yOffset = window.pageYOffset;
             const xOffset = window.pageXOffset;
 
-            const targetWidth = target.offsetWidth;
+            const targetWidtgh = target.offsetWidth;
             const targetHeight = target.offsetHeight;
 
             const y =

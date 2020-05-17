@@ -11,9 +11,6 @@ export const Core: React.FC = () => {
     return (
         <Layout>
             <Suspense fallback={'Loading...'}>
-                <Modal open={open} onClose={() => setOpen(false)}>
-                    123
-                </Modal>
                 <Switch>
                     {allRoutes.map(({ component, path }) => (
                         <Route key={path} path={path} component={component} />

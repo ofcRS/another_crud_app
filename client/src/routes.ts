@@ -1,7 +1,7 @@
 import React, { lazy } from 'react';
 
 export type Route = {
-    component: React.LazyExoticComponent<() => JSX.Element>;
+    component: React.LazyExoticComponent<React.FC>;
     path: string;
     name?: string;
 };
@@ -24,6 +24,12 @@ export const tabRoutes: TabRoute[] = [
         component: lazy(() => import('pages/Login')),
         path: '/login',
         label: 'Log in / sign up',
+    },
+    {
+        name: 'Video',
+        component: lazy(() => import('pages/Video')),
+        label: 'Stream',
+        path: '/video',
     },
 ];
 
