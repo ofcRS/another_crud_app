@@ -14,6 +14,11 @@ module.exports = {
             rules: {
                 '@typescript-eslint/no-var-requires': ['off'],
                 'prettier/prettier': ['error'],
+                '@typescript-eslint/explicit-function-return-type': ['off', {
+                    allowExpressions: true,
+                    allowTypedFunctionExpressions: true,
+                    allowHigherOrderFunctions: true,
+                }],
             },
         },
     ],

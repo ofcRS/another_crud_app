@@ -1,68 +1,45 @@
 import http from 'http';
-import path from 'path';
-import express from 'express';
-import dotenv from 'dotenv';
-import bodyParser from 'body-parser';
-import cookieParser from 'cookie-parser';
+import { Express } from 'express';
+
 import { createConnection } from 'typeorm';
 import 'reflect-metadata';
 
 import logger from 'services/logger';
+import { ApolloServer } from 'apollo-server-express';
+import { buildSchema } from 'type-graphql';
+import { UserResolver } from './resolvers/UserResolver';
 
-import routes from './routes';
-import { Post, User, Tag } from 'entities';
-import { PostMetaData } from './entities/postmetadata';
+export class Server {
+    port: string;
+    app: Express;
 
-dotenv.config({
-    path: path.join(__dirname, '../.env'),
-});
-
-const PORT = process.env.PORT;
-
-(async (): Promise<void> => {
-    try {
-        const connection = await createConnection();
-
-        const app = express();
-
-        app.use(bodyParser.json());
-
-        app.use(cookieParser());
-
-        app.use((req, res, next) => {
-            res.set({
-                'Access-Control-Allow-Origin': 'http://localhost:3000',
-                'Access-Control-Allow-Methods': '*, DELETE',
-                'Access-Control-Allow-Headers':
-                    'Origin, X-Requested-With, Content-Type, Accept, Authorization',
-                'Access-Control-Allow-Credentials': true,
-            });
-            next();
-        });
-
-        app.use('/api', routes);
-
-        const postRepository = connection.getRepository(Post);
-        const post = new Post();
-        post.title = new Date().toString();
-        post.body = Math.random().toString(3);
-
-        const tag1 = new Tag();
-        tag1.name = 'tag1';
-
-        const tag2 = new Tag();
-        tag2.name = 'tag2';
-
-        post.tags = [tag1, tag2];
-
-        await postRepository.save(post);
-
-        const server = http.createServer(app);
-
-        server.listen(PORT, () => {
-            logger.info(`server start on ${PORT}`);
-        });
-    } catch (error) {
-        logger.error(error);
+    constructor({ port, app }: { port: string; app: Express }) {
+        this.port = port;
+        this.app = app;
     }
-})();
+
+    start = async (): Promise<void> => {
+        try {
+            await createConnection();
+
+            const apolloServer = new ApolloServer({
+                schema: await buildSchema({
+                    resolvers: [UserResolver],
+                }),
+                context: ({ req, res }) => ({
+                    req,
+                    res,
+                }),
+            });
+
+            apolloServer.applyMiddleware({ app: this.app });
+
+            const server = http.createServer(this.app);
+            server.listen(this.port, () => {
+                logger.info(`server start on ${this.port}`);
+            });
+        } catch ({ message }) {
+            logger.error(message);
+        }
+    };
+}

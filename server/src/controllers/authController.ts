@@ -59,30 +59,6 @@ export const authController: AuthController = {
                     error: 'Password is incorrect',
                 });
             }
-
-            /*if (rows.length !== 0) {
-                const { email } = rows[0];
-                const secret: jwt.Secret = process.env.JWT_SECRET!;
-                const token = jwt.sign(
-                    {
-                        email,
-                    },
-                    secret,
-                    {
-                        expiresIn: 3600,
-                    }
-                );
-
-                res.cookie('token', token, {
-                    httpOnly: true,
-                });
-
-                res.send({
-                    isOk: true,
-                });
-            } else {
-                throw 'Неверный логин или пароль';
-            }*/
         } catch (error) {
             res.status(404);
             res.send({
