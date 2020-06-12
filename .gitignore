@@ -16,3 +16,6 @@ server/storage/*
 
 #shared
 */src/shared
+
+#generated
+schema.graphql
