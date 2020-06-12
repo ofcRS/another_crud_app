@@ -6,7 +6,7 @@
     "scripts": {
         "start": "node dist/bundle.js",
         "build": "webpack -p --env.production",
-        "dev": "ts-node-dev -r tsconfig-paths/register src/server.ts"
+        "dev": "ts-node-dev -r tsconfig-paths/register src/server.ts ./node_modules/.bin/typeorm"
     },
     "author": "",
     "license": "ISC",

@@ -21,17 +21,7 @@ const PORT = process.env.PORT;
 
 (async (): Promise<void> => {
     try {
-        const connection = await createConnection({
-            type: 'mysql',
-            host: 'localhost',
-            port: 3306,
-            username: 'root',
-            password: '1234',
-            database: 'node_learning',
-            entities: [__dirname + '/entities/*.ts'],
-            synchronize: true,
-            logging: false,
-        });
+        const connection = await createConnection();
 
         const app = express();
 
