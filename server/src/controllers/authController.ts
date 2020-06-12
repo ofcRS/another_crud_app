@@ -1,4 +1,4 @@
-import { sign, Secret } from 'jsonwebtoken';
+import { sign, Secret, verify } from 'jsonwebtoken';
 import db from 'config/db';
 import { getManager } from 'typeorm';
 import { hash, compare } from 'bcrypt';
@@ -6,10 +6,19 @@ import { hash, compare } from 'bcrypt';
 import { PostController } from 'types/utility/controller';
 import { WithRowDataPacket } from 'types/services/db';
 import { User } from 'entities';
+import { ContextPayload } from 'types/services/context';
+import { parseForESLint } from '@typescript-eslint/parser';
+import {
+    createAccessToken,
+    createRefreshToken,
+    sendRefreshToken,
+} from '../services/auth';
+import logger from 'services/logger';
 
 type AuthController = {
     login: PostController<User>;
     signUp: PostController<User>;
+    refreshToken: PostController;
 };
 
 export const authController: AuthController = {
@@ -100,6 +109,34 @@ export const authController: AuthController = {
                 isOk: false,
                 error,
             });
+        }
+    },
+    refreshToken: async (req, res) => {
+        const token = req.cookies.jid;
+        if (!token) {
+            return res.send({ ok: false, accessToken: '' });
+        }
+        let payload: ContextPayload | null = null;
+        try {
+            payload = verify(
+                token,
+                process.env.REFRESH_JWT_SECRET!
+            ) as ContextPayload;
+
+            /* refresh token is valid, we
+            can send back an access token */
+            const user = await User.findOne({ id: payload.id });
+            if (!user) {
+                throw new Error('user not found');
+            }
+            if (user.tokenVersion !== payload.version) {
+                throw new Error("versions of tokens aren't equal");
+            }
+            sendRefreshToken(res, createRefreshToken(user));
+            return res.send({ ok: true, accessToken: createAccessToken(user) });
+        } catch ({ message }) {
+            logger.error(message);
+            res.send({ ok: false, accessToken: '' });
         }
     },
 };

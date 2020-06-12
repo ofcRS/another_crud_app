@@ -52,7 +52,7 @@ module.exports = env => {
         devServer: {
             contentBase: './dist',
             hot: true,
-            writeToDisk: true,
+            writeToDisk: false,
             historyApiFallback: true,
             port: 3000,
         },

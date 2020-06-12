@@ -28,4 +28,7 @@ export class User extends BaseEntity {
         post => post.user
     )
     posts: Post[];
+
+    @Column('int', { default: 0 })
+    tokenVersion: number;
 }

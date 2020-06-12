@@ -10,10 +10,14 @@ import {
 } from 'type-graphql';
 import { compare, hash } from 'bcrypt';
 import { User } from 'entities/user';
-import { getManager } from 'typeorm';
+import { getConnection, getManager, getRepository } from 'typeorm';
 import { Secret, sign } from 'jsonwebtoken';
 import { Context } from '../types/services/context';
-import { createAccessToken, createRefreshToken } from '../services/auth';
+import {
+    createAccessToken,
+    createRefreshToken,
+    sendRefreshToken,
+} from '../services/auth';
 import { checkAuth } from '../middlewares/checkJwt';
 
 @ObjectType()
@@ -40,6 +44,13 @@ export class UserResolver {
         return User.find();
     }
 
+    @Mutation(() => Boolean) async revokeRefreshTokens(@Arg('id') id: number) {
+        await getConnection()
+            .getRepository(User)
+            .increment({ id }, 'tokenVersion', 1);
+        return true;
+    }
+
     @Mutation(() => LoginResponse)
     async login(
         @Arg('email') email: string,
@@ -62,9 +73,7 @@ export class UserResolver {
             throw new Error('Password is incorrect');
         }
 
-        res.cookie('jid', createRefreshToken(user), {
-            httpOnly: true,
-        });
+        sendRefreshToken(res, createRefreshToken(user));
 
         return {
             accessToken: createAccessToken(user),
