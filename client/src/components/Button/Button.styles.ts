@@ -5,3 +5,9 @@ export const Styled = {
         cursor: pointer;
     `,
 };
+
+export const One = styled.button`
+    text-align: center;
+`;
+
+export const Two = styled(One)``;

@@ -47,6 +47,10 @@ module.exports = env => {
                     test: /\.svg$/,
                     use: ['@svgr/webpack'],
                 },
+                {
+                    test: /\.(woff|woff2)$/i,
+                    use: 'url-loader?limit=100000',
+                },
             ],
         },
         devServer: {

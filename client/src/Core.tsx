@@ -1,11 +1,12 @@
-import React, { Suspense, useState } from 'react';
+import React, { Suspense } from 'react';
 import { Redirect, Route, Switch } from 'react-router';
 
-import { Layout, Modal } from 'components';
+import { Layout } from 'components';
 
 import { allRoutes } from './routes';
+import { observer } from 'mobx-react';
 
-export const Core: React.FC = () => {
+export const Core = observer(() => {
     return (
         <Layout>
             <Suspense fallback={'Loading...'}>
@@ -18,4 +19,4 @@ export const Core: React.FC = () => {
             </Suspense>
         </Layout>
     );
-};
+});

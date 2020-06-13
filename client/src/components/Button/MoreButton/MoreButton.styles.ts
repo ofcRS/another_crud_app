@@ -1,4 +1,4 @@
-import styled, { keyframes } from 'styled-components';
+import styled, { AnyStyledComponent, keyframes } from 'styled-components';
 
 import { Styled as BaseButton } from '../Button.styles';
 

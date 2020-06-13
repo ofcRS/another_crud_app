@@ -19,12 +19,6 @@ export const tabRoutes: TabRoute[] = [
         path: '/list',
         label: 'Posts',
     },
-    {
-        name: 'Login',
-        component: lazy(() => import('pages/Login')),
-        path: '/login',
-        label: 'Log in / sign up',
-    },
 ];
 
 export const allRoutes = [...routes, ...tabRoutes];

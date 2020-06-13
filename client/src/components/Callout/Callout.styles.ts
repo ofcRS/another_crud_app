@@ -1,6 +1,7 @@
 import styled, { keyframes } from 'styled-components';
 
 import { Position } from './Callout.types';
+import { smoothTime, smoothTiming } from 'consts/animation';
 
 const openCallout = keyframes`
     0% {
@@ -20,8 +21,8 @@ export const Styled = {
         left: ${({ x }) => x + 'px'};
         height: max-content;
         animation-name: ${openCallout};
-        animation-duration: 267ms;
-        animation-timing-function: cubic-bezier(0.1, 0.9, 0.2, 1);
+        animation-duration: ${smoothTime.ms};
+        animation-timing-function: ${smoothTiming};
         animation-fill-mode: both;
     `,
 };

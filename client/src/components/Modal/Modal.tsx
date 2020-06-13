@@ -1,23 +1,30 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
-
 import { Backdrop } from 'components';
+import { root, body } from 'links';
+
+import { useDelayUnmount } from 'hooks/useDelayUnmount';
 
 import { Styled } from './Modal.styles';
-
 import { Props } from './Modal.types';
+import { smoothTime } from '../../consts/animation';
 
-import { root } from 'links';
+export const Modal: React.FC<Props> = ({ children }) => {
+    const [mounted, setMounted] = useState(false);
 
-export const Modal: React.FC<Props> = ({ children, onClose, open }) => {
-    if (!root || !open) return null;
+    const shouldRender = useDelayUnmount({
+        mounted,
+        delay: smoothTime.int,
+    });
+
+    if (!root || !shouldRender) return null;
+
     return createPortal(
         <>
-            <Backdrop onClick={onClose} />
-            <Styled.Modal onClick={onClose}>{children}</Styled.Modal>
+            <Backdrop show={mounted} onClick={() => setMounted(false)}>
+                <Styled.Modal show={mounted}>{children}</Styled.Modal>
+            </Backdrop>
         </>,
-        root
+        body
     );
 };
-
-export default Modal;

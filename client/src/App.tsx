@@ -1,13 +1,12 @@
 import React from 'react';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
-import { gql } from 'apollo-boost';
-import { useQuery } from '@apollo/react-hooks';
-
-import { Core } from './Core';
+import { Core } from 'Core';
 
 import { GlobalStyles } from 'styles/globalStyles';
 import { useHelloQuery } from 'graphql/generated/graphql';
+import { StoreProvider } from 'store/store';
+import { UIStoreProvider } from './store/uiStore';
 
 export const history = createBrowserHistory();
 
@@ -19,12 +18,14 @@ const App: React.FC = () => {
     }
 
     return (
-        <>
-            <GlobalStyles />
-            <Router history={history}>
-                <Core />
-            </Router>
-        </>
+        <StoreProvider>
+            <UIStoreProvider>
+                <GlobalStyles />
+                <Router history={history}>
+                    <Core />
+                </Router>
+            </UIStoreProvider>
+        </StoreProvider>
     );
 };
 
