@@ -6,7 +6,7 @@ const getHeaders = (): object => ({
 });
 
 const instance = axios.create({
-    baseURL: 'http://localhost:3001/api',
+    baseURL: 'http://192.168.1.170:3001/api',
     headers: getHeaders(),
     withCredentials: true,
 });

@@ -1,9 +1,9 @@
 import styled, { keyframes } from 'styled-components';
 
-import { Position } from './Callout.types';
+import { Position, StyledCalloutProps } from './Callout.types';
 import { smoothTime, smoothTiming } from 'consts/animation';
 
-const openCallout = keyframes`
+const fadeIn = keyframes`
     0% {
         opacity: 0;
         transform: translateY(10px)
@@ -14,13 +14,24 @@ const openCallout = keyframes`
     }
 `;
 
+const fadeOut = keyframes`
+    0% {
+        opacity: 1;
+        transform: translateY(0)
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+`;
+
 export const Styled = {
-    Callout: styled.div<Position>`
+    Callout: styled.div<Position & StyledCalloutProps>`
         position: absolute;
         top: ${({ y }) => y + 'px'};
         left: ${({ x }) => x + 'px'};
         height: max-content;
-        animation-name: ${openCallout};
+        animation-name: ${({ show }) => (show ? fadeIn : fadeOut)};
         animation-duration: ${smoothTime.ms};
         animation-timing-function: ${smoothTiming};
         animation-fill-mode: both;

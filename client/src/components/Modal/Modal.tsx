@@ -9,11 +9,9 @@ import { Styled } from './Modal.styles';
 import { Props } from './Modal.types';
 import { smoothTime } from '../../consts/animation';
 
-export const Modal: React.FC<Props> = ({ children }) => {
-    const [mounted, setMounted] = useState(false);
-
+export const Modal: React.FC<Props> = ({ children, open, onClose }) => {
     const shouldRender = useDelayUnmount({
-        mounted,
+        mounted: open,
         delay: smoothTime.int,
     });
 
@@ -21,8 +19,8 @@ export const Modal: React.FC<Props> = ({ children }) => {
 
     return createPortal(
         <>
-            <Backdrop show={mounted} onClick={() => setMounted(false)}>
-                <Styled.Modal show={mounted}>{children}</Styled.Modal>
+            <Backdrop show={open} onClick={onClose}>
+                <Styled.Modal show={open}>{children}</Styled.Modal>
             </Backdrop>
         </>,
         body

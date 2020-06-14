@@ -1,17 +1,16 @@
 import {
+    Arg,
+    Ctx,
+    Field,
     Mutation,
+    ObjectType,
     Query,
     Resolver,
-    Arg,
-    ObjectType,
-    Field,
-    Ctx,
     UseMiddleware,
 } from 'type-graphql';
 import { compare, hash } from 'bcrypt';
 import { User } from 'entities/user';
-import { getConnection, getManager, getRepository } from 'typeorm';
-import { Secret, sign } from 'jsonwebtoken';
+import { getConnection, getManager } from 'typeorm';
 import { Context } from '../types/services/context';
 import {
     createAccessToken,

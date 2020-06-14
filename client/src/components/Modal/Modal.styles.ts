@@ -4,7 +4,7 @@ import { smoothTime, smoothTiming } from 'consts/animation';
 const fadeIn = keyframes`
     0% {
         opacity: 0;
-        transform:  translateY(50px) translateX(-50%);
+        transform:  translateY(15px) translateX(-50%);
     }
     100% {
         opacity: 1;
@@ -20,7 +20,7 @@ const fadeOut = keyframes`
     }
     100% {
         opacity: 0;
-        transform:  translateY(50px) translateX(-50%);
+        transform:  translateY(15px) translateX(-50%);
 
     }
 `;

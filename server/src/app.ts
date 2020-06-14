@@ -23,7 +23,7 @@ class App {
         app.use(cookieParser());
         app.use((req, res, next) => {
             res.set({
-                'Access-Control-Allow-Origin': 'http://localhost:3000',
+                'Access-Control-Allow-Origin': 'http://192.168.1.170:3000',
                 'Access-Control-Allow-Methods': '*, DELETE',
                 'Access-Control-Allow-Headers':
                     'Origin, X-Requested-With, Content-Type, Accept, Authorization',

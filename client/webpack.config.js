@@ -59,6 +59,7 @@ module.exports = env => {
             writeToDisk: false,
             historyApiFallback: true,
             port: 3000,
+            host: '0.0.0.0'
         },
         resolve: {
             extensions: ['.ts', '.js', '.tsx'],

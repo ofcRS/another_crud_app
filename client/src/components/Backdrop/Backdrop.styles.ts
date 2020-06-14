@@ -24,7 +24,7 @@ export const Styled = {
         visibility: ${({ show }) => (show ? 'visible' : 'hidden')};
         left: 0;
         top: 0;
-        background: rgba(0, 0, 0, 0.3);
+        background: rgba(0, 0, 0, 0.75);
         position: fixed;
         width: 100%;
         height: 100%;
