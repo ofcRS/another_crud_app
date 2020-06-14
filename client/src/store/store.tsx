@@ -1,13 +1,29 @@
 import React from 'react';
 import { useLocalStore } from 'mobx-react';
-import { User } from 'graphql/generated/graphql';
+import {
+    LoginMutationFn,
+    LoginMutationVariables,
+    User,
+} from 'graphql/generated/graphql';
 
 export type Store = {
     user: User | null;
+    login: (values: LoginMutationVariables, login: LoginMutationFn) => void;
 };
 
 export const createStore = (): Store => ({
     user: null,
+    login: async function({ password, email }, login) {
+        const { data } = await login({
+            variables: {
+                email,
+                password,
+            },
+        });
+        if (data?.login.user) {
+            this.user = data?.login.user;
+        }
+    },
 });
 
 const storeContext = React.createContext<null | Store>(null);

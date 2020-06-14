@@ -1,13 +1,16 @@
 import styled from 'styled-components';
 
-export const Styled = {
-    Button: styled.button`
-        cursor: pointer;
-    `,
-};
-
-export const One = styled.button`
-    text-align: center;
+const Button = styled.button`
+    cursor: pointer;
 `;
 
-export const Two = styled(One)``;
+const LinkButton = styled(Button)`
+    color: #359ff4;
+    border: none;
+    background: none;
+`;
+
+export const Styled = {
+    Button,
+    LinkButton,
+};

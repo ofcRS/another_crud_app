@@ -32,7 +32,13 @@ export class Server {
                 }),
             });
 
-            apolloServer.applyMiddleware({ app: this.app });
+            apolloServer.applyMiddleware({
+                app: this.app,
+                cors: {
+                    credentials: true,
+                    origin: 'http://192.168.1.170:3000',
+                },
+            });
 
             const server = http.createServer(this.app);
             server.listen(this.port, () => {

@@ -9,6 +9,7 @@ import { root } from 'links';
 
 const client = new ApolloClient({
     uri: 'http://192.168.1.170:3001/graphql',
+    credentials: 'include',
 });
 
 render(

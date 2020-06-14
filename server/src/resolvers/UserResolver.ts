@@ -23,6 +23,9 @@ import { checkAuth } from '../middlewares/checkJwt';
 class LoginResponse {
     @Field()
     accessToken: string;
+
+    @Field()
+    user: User;
 }
 
 @Resolver()
@@ -76,6 +79,7 @@ export class UserResolver {
 
         return {
             accessToken: createAccessToken(user),
+            user,
         };
     }
 

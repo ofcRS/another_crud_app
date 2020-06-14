@@ -7,6 +7,7 @@ schema {
 
 type LoginResponse {
     accessToken: String!
+    user: User!
 }
 
 type Mutation {

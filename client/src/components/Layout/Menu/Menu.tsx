@@ -2,10 +2,13 @@ import React from 'react';
 import { Styled } from './Menu.styles';
 
 import { tabRoutes } from 'routes';
-import { useUIStore } from '../../../store/uiStore';
+import { useUIStore } from 'store/uiStore';
+import { useStore } from 'store/store';
+import { observer } from 'mobx-react';
 
-export const Menu: React.FC = () => {
+export const Menu = observer(() => {
     const uiStore = useUIStore();
+    const store = useStore();
     return (
         <Styled.Menu>
             {tabRoutes.map(({ path, label }) => (
@@ -14,6 +17,11 @@ export const Menu: React.FC = () => {
                 </Styled.NavLink>
             ))}
             <button onClick={uiStore.toggleRegistryModal}>log in</button>
+            {store.user && (
+                <div>
+                    {store.user.email} - [{store.user.id}]
+                </div>
+            )}
         </Styled.Menu>
     );
-};
+});
