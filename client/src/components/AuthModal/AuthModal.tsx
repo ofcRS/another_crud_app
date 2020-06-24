@@ -29,7 +29,7 @@ export const AuthModal = observer(() => {
 
     return (
         <Modal
-            onClose={uiStore.toggleRegistryModal}
+            onClose={() => uiStore.toggleRegistryModal(false)}
             open={uiStore.registryModalOpen}
         >
             <Styled.FormWrapper>

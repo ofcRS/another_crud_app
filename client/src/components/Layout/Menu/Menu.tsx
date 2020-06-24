@@ -16,7 +16,9 @@ export const Menu = observer(() => {
                     {label}
                 </Styled.NavLink>
             ))}
-            <button onClick={uiStore.toggleRegistryModal}>log in</button>
+            <button onClick={() => uiStore.toggleRegistryModal(true)}>
+                log in
+            </button>
             {store.user && (
                 <div>
                     {store.user.email} - [{store.user.id}]

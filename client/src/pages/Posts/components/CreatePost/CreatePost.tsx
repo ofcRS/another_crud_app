@@ -5,12 +5,10 @@ import { observer } from 'mobx-react';
 import { submitPost } from 'api/post';
 import { Styled } from './CreatePost.styles';
 import { Props } from './CreatePost.types';
-import { useStore } from 'store/store';
 
 export const CreatePost = observer(({ fetchPosts }: Props) => {
     const [title, setTitle] = useState<string>('');
     const [body, setBody] = useState<string>('');
-    const store = useStore();
 
     const clearForm = (): void => {
         setTitle('');

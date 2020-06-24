@@ -3,13 +3,13 @@ import { useLocalStore } from 'mobx-react';
 
 export type UIStore = {
     registryModalOpen: boolean;
-    toggleRegistryModal: () => void;
+    toggleRegistryModal: (value: boolean) => void;
 };
 
 export const createStore = (): UIStore => ({
     registryModalOpen: false,
-    toggleRegistryModal() {
-        this.registryModalOpen = !this.registryModalOpen;
+    toggleRegistryModal(value: boolean) {
+        this.registryModalOpen = value;
     },
 });
 
