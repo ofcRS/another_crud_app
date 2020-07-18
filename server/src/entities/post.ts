@@ -5,19 +5,25 @@ import {
     OneToOne,
     ManyToOne,
     ManyToMany,
+    BaseEntity,
 } from 'typeorm';
+import { ObjectType, Field } from 'type-graphql';
+
 import { PostMetaData } from './postmetadata';
 import { User } from './user';
 import { Tag } from './tag';
 
+@ObjectType()
 @Entity()
-export class Post {
+export class Post extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
+    @Field()
     @Column()
     title: string;
 
+    @Field()
     @Column()
     body: string;
 

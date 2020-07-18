@@ -2,12 +2,14 @@ import http from 'http';
 import { Express } from 'express';
 
 import { createConnection } from 'typeorm';
-import 'reflect-metadata';
 
 import logger from 'services/logger';
 import { ApolloServer } from 'apollo-server-express';
 import { buildSchema } from 'type-graphql';
-import { UserResolver } from './resolvers/UserResolver';
+
+import { UserResolver, PostResolver } from './resolvers';
+
+import 'reflect-metadata';
 
 export class Server {
     port: string;
@@ -24,7 +26,7 @@ export class Server {
 
             const apolloServer = new ApolloServer({
                 schema: await buildSchema({
-                    resolvers: [UserResolver],
+                    resolvers: [UserResolver, PostResolver],
                 }),
                 context: ({ req, res }) => ({
                     req,

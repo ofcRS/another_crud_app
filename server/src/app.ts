@@ -8,7 +8,6 @@ import { Server } from './server';
 
 import routes from './routes';
 import dotenv from 'dotenv';
-import { Secret } from 'jsonwebtoken';
 
 dotenv.config({
     path: path.join(__dirname, '../.env'),

@@ -4,12 +4,15 @@ module.exports = {
         'plugin:@typescript-eslint/recommended',
         'plugin:prettier/recommended',
         'prettier',
+        'plugin:import/errors',
+        'plugin:import/warnings',
     ],
     overrides: [
         {
             files: ['src/**/*.ts'],
             plugins: [
                 'prettier',
+                'unused-imports'
             ],
             rules: {
                 '@typescript-eslint/no-var-requires': ['off'],
@@ -19,6 +22,16 @@ module.exports = {
                     allowTypedFunctionExpressions: true,
                     allowHigherOrderFunctions: true,
                 }],
+                'unused-imports/no-unused-imports-ts': 'warn',
+                'unused-imports/no-unused-vars-ts': [
+                    'warn',
+                    {
+                        vars: 'all',
+                        varsIgnorePattern: '^_',
+                        args: 'after-used',
+                        argsIgnorePattern: '^_',
+                    },
+                ],
             },
         },
     ],
