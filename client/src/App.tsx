@@ -1,28 +1,37 @@
-import React from 'react';
-import { Router } from 'react-router';
+import React, { Suspense } from 'react';
+import { Redirect, Route, Router, Switch } from 'react-router';
 import { createBrowserHistory } from 'history';
-import { Core } from 'Core';
+
+import { Layout } from 'components/Layout';
+
+import { allRoutes } from 'routes';
+
+import { StoreProvider, UIStoreProvider } from 'store';
 
 import { GlobalStyles } from 'styles/globalStyles';
-import { useHelloQuery } from 'graphql/generated/graphql';
-import { StoreProvider } from 'store/store';
-import { UIStoreProvider } from './store/uiStore';
 
 export const history = createBrowserHistory();
 
 const App: React.FC = () => {
-    const { loading } = useHelloQuery();
-
-    if (loading) {
-        return <div>loading...</div>;
-    }
-
     return (
         <StoreProvider>
             <UIStoreProvider>
                 <GlobalStyles />
                 <Router history={history}>
-                    <Core />
+                    <Layout>
+                        <Suspense fallback={'Loading...'}>
+                            <Switch>
+                                {allRoutes.map(({ component, path }) => (
+                                    <Route
+                                        key={path}
+                                        path={path}
+                                        component={component}
+                                    />
+                                ))}
+                                <Redirect to={'/list'} />
+                            </Switch>
+                        </Suspense>
+                    </Layout>
                 </Router>
             </UIStoreProvider>
         </StoreProvider>

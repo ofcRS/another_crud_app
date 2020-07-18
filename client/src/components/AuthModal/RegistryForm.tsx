@@ -1,8 +1,10 @@
 import React from 'react';
+
 import {
     RegisterMutationVariables,
     useRegisterMutation,
-} from '../../graphql/generated/graphql';
+} from 'graphql/generated/graphql';
+
 import { Styled } from './AuthModal.styles';
 import { Field, Form, Formik } from 'formik';
 import { Styled as StyledButton } from '../Button/Button.styles';

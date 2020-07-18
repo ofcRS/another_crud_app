@@ -1,8 +1,9 @@
 import React, { PropsWithChildren } from 'react';
 
 import { Menu } from './Menu';
+import { AuthModal } from 'components/AuthModal';
+
 import { Styled } from './Layout.styles';
-import { AuthModal } from 'components/AuthModal/AuthModal';
 
 export const Layout: React.FC = ({ children }: PropsWithChildren<{}>) => (
     <Styled.Layout>

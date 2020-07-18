@@ -15,7 +15,7 @@ module.exports = {
     overrides: [
         {
             files: ['*.ts*'],
-            plugins: ['react-hooks', 'prettier'],
+            plugins: ['react-hooks', 'prettier', 'unused-imports'],
             rules: {
                 '@typescript-eslint/explicit-function-return-type': 'off',
                 'react-hooks/rules-of-hooks': ['error'],
@@ -23,7 +23,18 @@ module.exports = {
                 'prettier/prettier': ['error'],
                 'react/prop-types': 'off',
                 quotes: ['warn', 'single'],
-                'import/no-unresolved': 'off'
+                'import/no-unresolved': 'off',
+                '@typescript-eslint/no-unused-vars': 'off',
+                'unused-imports/no-unused-imports-ts': 'warn',
+                'unused-imports/no-unused-vars-ts': [
+                    'warn',
+                    {
+                        vars: 'all',
+                        varsIgnorePattern: '^_',
+                        args: 'after-used',
+                        argsIgnorePattern: '^_',
+                    },
+                ],
             },
         },
     ],

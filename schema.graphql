@@ -16,9 +16,15 @@ type Mutation {
     revokeRefreshTokens(id: Float!): Boolean!
 }
 
+type Post {
+    body: String!
+    title: String!
+}
+
 type Query {
     bye: String!
     hello: String!
+    posts: [Post!]!
     users: [User!]!
 }
 

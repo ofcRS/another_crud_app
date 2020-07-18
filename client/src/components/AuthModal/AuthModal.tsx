@@ -4,11 +4,12 @@ import { observer, useLocalStore } from 'mobx-react';
 import { Modal } from 'components';
 import { LoginForm } from './LoginForm';
 import { RegistryForm } from './RegistryForm';
-import { useUIStore } from 'store/uiStore';
+import { useUIStore, useStore } from 'store';
 import { Styled } from './AuthModal.styles';
 
 export const AuthModal = observer(() => {
     const uiStore = useUIStore();
+    const store = useStore();
     const localStore = useLocalStore<{ mode: 'login' | 'registry' }>(() => ({
         mode: 'login',
     }));
@@ -16,8 +17,9 @@ export const AuthModal = observer(() => {
     useEffect(() => {
         if (!uiStore.registryModalOpen) {
             localStore.mode = 'login';
+            store.loginError = null;
         }
-    }, [localStore, uiStore.registryModalOpen]);
+    }, [localStore, store, uiStore.registryModalOpen]);
 
     const title = localStore.mode === 'login' ? 'Login' : 'Join';
     const form =

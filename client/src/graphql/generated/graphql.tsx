@@ -14,9 +14,16 @@ export type Scalars = {
 
 export type Query = {
   __typename?: 'Query';
+  posts: Array<Post>;
   hello: Scalars['String'];
   bye: Scalars['String'];
   users: Array<User>;
+};
+
+export type Post = {
+  __typename?: 'Post';
+  title: Scalars['String'];
+  body: Scalars['String'];
 };
 
 export type User = {
@@ -61,6 +68,17 @@ export type HelloQueryVariables = Exact<{ [key: string]: never; }>;
 export type HelloQuery = (
   { __typename?: 'Query' }
   & Pick<Query, 'hello'>
+);
+
+export type PostQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type PostQuery = (
+  { __typename?: 'Query' }
+  & { posts: Array<(
+    { __typename?: 'Post' }
+    & Pick<Post, 'title' | 'body'>
+  )> }
 );
 
 export type RegisterMutationVariables = Exact<{
@@ -123,6 +141,39 @@ export function useHelloLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOp
 export type HelloQueryHookResult = ReturnType<typeof useHelloQuery>;
 export type HelloLazyQueryHookResult = ReturnType<typeof useHelloLazyQuery>;
 export type HelloQueryResult = ApolloReactCommon.QueryResult<HelloQuery, HelloQueryVariables>;
+export const PostDocument = gql`
+    query Post {
+  posts {
+    title
+    body
+  }
+}
+    `;
+
+/**
+ * __usePostQuery__
+ *
+ * To run a query within a React component, call `usePostQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePostQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = usePostQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function usePostQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<PostQuery, PostQueryVariables>) {
+        return ApolloReactHooks.useQuery<PostQuery, PostQueryVariables>(PostDocument, baseOptions);
+      }
+export function usePostLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<PostQuery, PostQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<PostQuery, PostQueryVariables>(PostDocument, baseOptions);
+        }
+export type PostQueryHookResult = ReturnType<typeof usePostQuery>;
+export type PostLazyQueryHookResult = ReturnType<typeof usePostLazyQuery>;
+export type PostQueryResult = ApolloReactCommon.QueryResult<PostQuery, PostQueryVariables>;
 export const RegisterDocument = gql`
     mutation Register($email: String!, $password: String!) {
   register(email: $email, password: $password)

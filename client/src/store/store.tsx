@@ -1,7 +1,7 @@
-import React from 'react';
-import { useLocalStore } from 'mobx-react';
-import { LoginMutation, LoginResponse, User } from 'graphql/generated/graphql';
-import { CaughtGraphQLError, GraphQlResponse } from 'typings/network';
+import { createStore } from './createStore';
+
+import { GraphQlResponse } from 'typings/network';
+import { LoginMutation, User } from 'graphql/generated/graphql';
 import { parseGraphQLError } from 'utils/validators';
 
 export type Store = {
@@ -11,7 +11,7 @@ export type Store = {
     loginError: string | null;
 };
 
-export const createStore = (): Store => ({
+export const [StoreProvider, useStore] = createStore<Store>(() => ({
     user: null,
     login: async function(loginFn) {
         try {
@@ -27,21 +27,4 @@ export const createStore = (): Store => ({
         }
     },
     loginError: null,
-});
-
-const storeContext = React.createContext<null | Store>(null);
-
-export const StoreProvider: React.FC = ({ children }) => {
-    const store = useLocalStore(createStore);
-    return (
-        <storeContext.Provider value={store}>{children}</storeContext.Provider>
-    );
-};
-
-export const useStore = () => {
-    const store = React.useContext(storeContext);
-    if (!store) {
-        throw new Error('useStore must be within a StoreProvider');
-    }
-    return store;
-};
+}));

@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { AxiosResponse } from 'axios';
 
-import { Post } from './components/Post';
-import { CreatePost } from './components/CreatePost';
+import { Post } from './Post';
+import { CreatePost } from './CreatePost';
 
 import { getPosts } from 'api/post';
+import { usePostQuery } from 'graphql/generated/graphql';
 
 import { RecordPost } from 'shared/types/Post';
 
-const List = (): JSX.Element => {
+export const List = (): JSX.Element => {
     const [posts, setPost] = useState<RecordPost[]>([]);
+    const { loading, data, fetchMore } = usePostQuery();
 
     const fetchPosts = async (): Promise<void> => {
         const response: AxiosResponse = await getPosts();
@@ -31,5 +33,3 @@ const List = (): JSX.Element => {
         </div>
     );
 };
-
-export default List;
