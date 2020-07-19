@@ -4,8 +4,6 @@ module.exports = {
         'plugin:@typescript-eslint/recommended',
         'plugin:prettier/recommended',
         'prettier',
-        'plugin:import/errors',
-        'plugin:import/warnings',
     ],
     overrides: [
         {

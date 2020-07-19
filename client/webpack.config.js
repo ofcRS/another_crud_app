@@ -1,13 +1,22 @@
+const webpack = require('webpack');
 const path = require('path');
+const dotenv = require('dotenv');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
-module.exports = env => {
+module.exports = () => {
+    const env = dotenv.config().parsed;
+
     const mode = env.production ? 'production' : 'development';
     const isProd = mode === 'production';
+
+    const envKeys = Object.keys(env).reduce((prev, next) => {
+        prev[`process.env.${next}`] = JSON.stringify(env[next]);
+        return prev;
+    }, {});
 
     return ({
         mode,
@@ -29,6 +38,7 @@ module.exports = env => {
                 title: 'caching',
                 template: path.join(__dirname, 'public/index.html'),
             }),
+            new webpack.DefinePlugin(envKeys),
             // new BundleAnalyzerPlugin()
         ],
         module: {

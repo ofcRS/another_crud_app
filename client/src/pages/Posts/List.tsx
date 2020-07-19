@@ -11,7 +11,7 @@ import { RecordPost } from 'shared/types/Post';
 
 export const List = (): JSX.Element => {
     const [posts, setPost] = useState<RecordPost[]>([]);
-    const { loading, data, fetchMore } = usePostQuery();
+    const { loading, data, refetch } = usePostQuery();
 
     const fetchPosts = async (): Promise<void> => {
         const response: AxiosResponse = await getPosts();
@@ -26,6 +26,7 @@ export const List = (): JSX.Element => {
 
     return (
         <div>
+            <button onClick={() => refetch()}>test</button>
             <CreatePost fetchPosts={fetchPosts} />
             {posts.map(post => (
                 <Post refreshList={fetchPosts} key={post.id} data={post} />

@@ -1,17 +1,7 @@
-type InMemoryToken = { token: string; expiry?: string };
-
-let inMemoryToken: InMemoryToken | undefined;
-
-type Login = (token: InMemoryToken, noRedirect?: boolean) => void;
-
-export const login: Login = ({ token, expiry }, noRedirect) => {
-    inMemoryToken = {
-        token,
-        expiry,
-    };
-    if (!noRedirect) {
-    }
+type InMemoryToken = {
+    accessToken: string | undefined;
 };
 
-export const getToken = (): string =>
-    inMemoryToken ? inMemoryToken.token : '';
+export const inMemoryToken: InMemoryToken = {
+    accessToken: undefined,
+};

@@ -1,13 +1,13 @@
 import { sign, Secret, verify } from 'jsonwebtoken';
-import db from 'config/db';
+
 import { getManager } from 'typeorm';
 import { hash, compare } from 'bcrypt';
 
 import { PostController } from 'types/utility/controller';
-import { WithRowDataPacket } from 'types/services/db';
+
 import { User } from 'entities';
 import { ContextPayload } from 'types/services/context';
-import { parseForESLint } from '@typescript-eslint/parser';
+
 import {
     createAccessToken,
     createRefreshToken,
@@ -114,7 +114,7 @@ export const authController: AuthController = {
     refreshToken: async (req, res) => {
         const token = req.cookies.jid;
         if (!token) {
-            return res.send({ ok: false, accessToken: '' });
+            throw 'no tokens was provided';
         }
         let payload: ContextPayload | null = null;
         try {
@@ -123,8 +123,7 @@ export const authController: AuthController = {
                 process.env.REFRESH_JWT_SECRET!
             ) as ContextPayload;
 
-            /* refresh token is valid, we
-            can send back an access token */
+            /* рефреш токен валидный и мы можем отправить access токен клиенту */
             const user = await User.findOne({ id: payload.id });
             if (!user) {
                 throw new Error('user not found');
@@ -136,7 +135,7 @@ export const authController: AuthController = {
             return res.send({ ok: true, accessToken: createAccessToken(user) });
         } catch ({ message }) {
             logger.error(message);
-            res.send({ ok: false, accessToken: '' });
+            res.status(400).send({ ok: false });
         }
     },
 };

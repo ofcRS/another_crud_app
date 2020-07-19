@@ -2,7 +2,9 @@ import { createStore } from './createStore';
 
 import { GraphQlResponse } from 'typings/network';
 import { LoginMutation, User } from 'graphql/generated/graphql';
+
 import { parseGraphQLError } from 'utils/validators';
+import { inMemoryToken } from 'utils/auth';
 
 export type Store = {
     user: User | null;
@@ -22,6 +24,7 @@ export const [StoreProvider, useStore] = createStore<Store>(() => ({
              * */
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             this.user = data!.login.user;
+            inMemoryToken.accessToken = data?.login.accessToken;
         } catch (error) {
             this.loginError = parseGraphQLError(error);
         }
