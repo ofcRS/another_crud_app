@@ -112,12 +112,12 @@ export const authController: AuthController = {
         }
     },
     refreshToken: async (req, res) => {
-        const token = req.cookies.jid;
-        if (!token) {
-            throw 'no tokens was provided';
-        }
-        let payload: ContextPayload | null = null;
         try {
+            const token = req.cookies.jid;
+            if (!token) {
+                throw 'no tokens was provided';
+            }
+            let payload: ContextPayload | null = null;
             payload = verify(
                 token,
                 process.env.REFRESH_JWT_SECRET!
