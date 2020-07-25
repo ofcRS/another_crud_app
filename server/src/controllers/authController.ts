@@ -132,7 +132,10 @@ export const authController: AuthController = {
                 throw new Error("versions of tokens aren't equal");
             }
             sendRefreshToken(res, createRefreshToken(user));
-            return res.send({ ok: true, accessToken: createAccessToken(user) });
+            return res.send({
+                ok: true,
+                accessToken: createAccessToken(user),
+            });
         } catch ({ message }) {
             logger.error(message);
             res.status(400).send({ ok: false });

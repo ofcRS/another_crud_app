@@ -3,7 +3,7 @@ import React from 'react';
 import {
     RegisterMutationVariables,
     useRegisterMutation,
-} from 'graphql/generated/graphql';
+} from 'graphql/generated';
 
 import { Styled } from './AuthModal.styles';
 import { Field, Form, Formik } from 'formik';

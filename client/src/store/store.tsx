@@ -1,13 +1,16 @@
 import { createStore } from './createStore';
 
 import { GraphQlResponse } from 'typings/network';
-import { LoginMutation, User } from 'graphql/generated/graphql';
+import { LoginMutation, User } from 'graphql/generated';
 
 import { parseGraphQLError } from 'utils/validators';
-import { inMemoryToken } from 'utils/auth';
+import { inMemoryToken, refreshToken } from 'utils/auth';
 
 export type Store = {
     user: User | null;
+
+    initializationInProgress: boolean;
+    initApp: () => void;
 
     login: (loginFn: () => GraphQlResponse<LoginMutation>) => Promise<void>;
     loginError: string | null;
@@ -15,6 +18,17 @@ export type Store = {
 
 export const [StoreProvider, useStore] = createStore<Store>(() => ({
     user: null,
+
+    initApp: async function() {
+        try {
+            await refreshToken();
+        } catch (error) {
+        } finally {
+            this.initializationInProgress = false;
+        }
+    },
+    initializationInProgress: true,
+
     login: async function(loginFn) {
         try {
             const { data } = await loginFn();

@@ -1,54 +1,45 @@
 import React, { Suspense, useEffect } from 'react';
 import { Redirect, Route, Router, Switch } from 'react-router';
 import { createBrowserHistory } from 'history';
+import { observer } from 'mobx-react';
 
 import { Layout } from 'components/Layout';
 
 import { allRoutes } from 'routes';
 
-import { StoreProvider, UIStoreProvider } from 'store';
-import { inMemoryToken } from 'utils/auth';
-
 import { GlobalStyles } from 'styles/globalStyles';
-import { request } from 'utils/request';
+import { useStore } from 'store';
 
 export const history = createBrowserHistory();
 
-const App: React.FC = () => {
+const App: React.FC = observer(() => {
+    const store = useStore();
+
     useEffect(() => {
-        const refreshToken = async () => {
-            const { accessToken } = await request({
-                url: '/auth/refresh_token',
-                method: 'post',
-            });
-            inMemoryToken.accessToken = accessToken;
-        };
-        refreshToken();
-    }, []);
+        store.initApp();
+    }, [store]);
+
+    if (store.initializationInProgress) return null;
 
     return (
-        <StoreProvider>
-            <UIStoreProvider>
-                <GlobalStyles />
-                <Router history={history}>
-                    <Layout>
-                        <Suspense fallback={'Loading...'}>
-                            <Switch>
-                                {allRoutes.map(({ component, path }) => (
-                                    <Route
-                                        key={path}
-                                        path={path}
-                                        component={component}
-                                    />
-                                ))}
-                                <Redirect to={'/list'} />
-                            </Switch>
-                        </Suspense>
-                    </Layout>
-                </Router>
-            </UIStoreProvider>
-        </StoreProvider>
+        <Router history={history}>
+            <GlobalStyles />
+            <Layout>
+                <Suspense fallback={null}>
+                    <Switch>
+                        {allRoutes.map(({ component, path }) => (
+                            <Route
+                                key={path}
+                                path={path}
+                                component={component}
+                            />
+                        ))}
+                        <Redirect to={'/list'} />
+                    </Switch>
+                </Suspense>
+            </Layout>
+        </Router>
     );
-};
+});
 
 export default App;

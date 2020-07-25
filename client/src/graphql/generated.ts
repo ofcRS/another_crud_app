@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
-import * as ApolloReactCommon from '@apollo/react-common';
-import * as ApolloReactHooks from '@apollo/react-hooks';
+import * as ApolloReactCommon from '@apollo/client';
+import * as ApolloReactHooks from '@apollo/client';
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: any }> = { [K in keyof T]: T[K] };
 /** All built-in and custom scalars, mapped to their actual values */
@@ -16,12 +16,12 @@ export type Query = {
   __typename?: 'Query';
   posts: Array<Post>;
   hello: Scalars['String'];
-  bye: Scalars['String'];
   users: Array<User>;
 };
 
 export type Post = {
   __typename?: 'Post';
+  id: Scalars['Int'];
   title: Scalars['String'];
   body: Scalars['String'];
 };
@@ -77,7 +77,7 @@ export type PostQuery = (
   { __typename?: 'Query' }
   & { posts: Array<(
     { __typename?: 'Post' }
-    & Pick<Post, 'title' | 'body'>
+    & Pick<Post, 'title' | 'body' | 'id'>
   )> }
 );
 
@@ -146,6 +146,7 @@ export const PostDocument = gql`
   posts {
     title
     body
+    id
   }
 }
     `;

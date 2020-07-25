@@ -18,11 +18,11 @@ type Mutation {
 
 type Post {
     body: String!
+    id: Float!
     title: String!
 }
 
 type Query {
-    bye: String!
     hello: String!
     posts: [Post!]!
     users: [User!]!

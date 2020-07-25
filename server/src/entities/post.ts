@@ -7,7 +7,7 @@ import {
     ManyToMany,
     BaseEntity,
 } from 'typeorm';
-import { ObjectType, Field } from 'type-graphql';
+import { ObjectType, Field, Int } from 'type-graphql';
 
 import { PostMetaData } from './postmetadata';
 import { User } from './user';
@@ -16,6 +16,7 @@ import { Tag } from './tag';
 @ObjectType()
 @Entity()
 export class Post extends BaseEntity {
+    @Field(() => Int)
     @PrimaryGeneratedColumn()
     id: number;
 

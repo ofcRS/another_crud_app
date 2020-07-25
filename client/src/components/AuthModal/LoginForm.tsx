@@ -1,9 +1,6 @@
 import React from 'react';
 import { Field, Form, Formik } from 'formik';
-import {
-    RegisterMutationVariables,
-    useLoginMutation,
-} from 'graphql/generated/graphql';
+import { RegisterMutationVariables, useLoginMutation } from 'graphql/generated';
 import { observer } from 'mobx-react';
 import { Styled } from './AuthModal.styles';
 import { Styled as StyledButton } from 'components/Button/Button.styles';

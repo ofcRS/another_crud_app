@@ -1,5 +1,5 @@
 import { Response } from 'express';
-import { Secret, sign } from 'jsonwebtoken';
+import { sign } from 'jsonwebtoken';
 import { User } from 'entities';
 
 export const createAccessToken = (user: User) =>
@@ -9,7 +9,7 @@ export const createAccessToken = (user: User) =>
         },
         process.env.JWT_SECRET!,
         {
-            expiresIn: 3600,
+            expiresIn: '10s',
         }
     );
 

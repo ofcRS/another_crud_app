@@ -1,6 +1,7 @@
 query Post {
     posts {
         title,
-        body
+        body,
+        id
     }
 }
