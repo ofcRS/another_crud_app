@@ -18,10 +18,17 @@ const requestLink = new ApolloLink(
             let handle: ZenObservable.Subscription;
             const processRequest = async () => {
                 try {
+                    /*
+                     * проверяем валидность токена перед каждым запросом
+                     * и если нужно - получаем новый
+                     * */
                     if (!isAccessTokenValidOrUndefined()) {
                         await refreshToken();
                     }
 
+                    /*
+                     * записываем в куки аксесс токен, если он есть
+                     * */
                     if (inMemoryToken.accessToken !== undefined) {
                         operation.setContext({
                             headers: {

@@ -12,7 +12,9 @@ export type Store = {
     initializationInProgress: boolean;
     initApp: () => void;
 
-    login: (loginFn: () => GraphQlResponse<LoginMutation>) => Promise<void>;
+    login: (
+        loginFn: () => GraphQlResponse<LoginMutation | null>
+    ) => Promise<void>;
     loginError: string | null;
 };
 

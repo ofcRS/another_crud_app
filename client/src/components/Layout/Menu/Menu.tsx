@@ -3,12 +3,25 @@ import { Styled } from './Menu.styles';
 
 import { tabRoutes } from 'routes';
 import { useUIStore } from 'store/uiStore';
-import { useStore } from 'store/store';
+
 import { observer } from 'mobx-react';
+
+import { useMeQuery } from 'graphql/generated';
 
 export const Menu = observer(() => {
     const uiStore = useUIStore();
-    const store = useStore();
+    const { data, loading } = useMeQuery();
+
+    let userBlock: React.ReactNode;
+
+    if (loading) {
+        userBlock = null;
+    } else if (!data?.me) {
+        userBlock = 'not logged in';
+    } else {
+        userBlock = `logged in as: ${data.me.email}`;
+    }
+
     return (
         <Styled.Menu>
             {tabRoutes.map(({ path, label }) => (
@@ -19,11 +32,7 @@ export const Menu = observer(() => {
             <button onClick={() => uiStore.toggleRegistryModal(true)}>
                 log in
             </button>
-            {store.user && (
-                <div>
-                    {store.user.email} - [{store.user.id}]
-                </div>
-            )}
+            <div>{userBlock}</div>
         </Styled.Menu>
     );
 });

@@ -1,6 +1,11 @@
 import React from 'react';
 import { Field, Form, Formik } from 'formik';
-import { RegisterMutationVariables, useLoginMutation } from 'graphql/generated';
+import {
+    MeDocument,
+    MeQuery,
+    RegisterMutationVariables,
+    useLoginMutation,
+} from 'graphql/generated';
 import { observer } from 'mobx-react';
 import { Styled } from './AuthModal.styles';
 import { Styled as StyledButton } from 'components/Button/Button.styles';
@@ -23,6 +28,15 @@ export const LoginForm = observer<React.FC<LoginFormProps>>(({ onSignIn }) => {
                 store.login(() =>
                     login({
                         variables: values,
+                        update: (store, { data }) => {
+                            if (!data) return null;
+                            store.writeQuery<MeQuery>({
+                                query: MeDocument,
+                                data: {
+                                    me: data.login.user,
+                                },
+                            });
+                        },
                     })
                 );
             }}
