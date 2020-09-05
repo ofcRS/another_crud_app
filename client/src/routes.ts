@@ -1,7 +1,7 @@
 import React, { lazy } from 'react';
 
 export type Route = {
-    component: React.LazyExoticComponent<() => JSX.Element>;
+    component: React.LazyExoticComponent<React.FC>;
     path: string;
     name?: string;
 };

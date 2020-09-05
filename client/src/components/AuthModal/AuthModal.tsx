@@ -1,14 +1,13 @@
 import React from 'react';
 import { observer, useLocalStore } from 'mobx-react';
 
-import { Modal } from 'components';
 import { LoginForm } from './LoginForm';
 import { RegistryForm } from './RegistryForm';
 
-import { useUIStore } from 'store';
-
 import { Styled } from './AuthModal.styles';
 import { AuthModalLocalStore } from './AuthModal.types';
+import { Modal } from 'components/Modal';
+import { useUIStore } from 'store/uiStore';
 
 const ModalBody = observer(() => {
     const localStore = useLocalStore<AuthModalLocalStore>(() => ({

@@ -1,33 +1,23 @@
 import React from 'react';
 import { Field, Form, Formik } from 'formik';
-import {
-    MeDocument,
-    MeQuery,
-    RegisterMutationVariables,
-    useLoginMutation,
-} from 'graphql/generated';
 import { observer } from 'mobx-react';
 import { Styled } from './AuthModal.styles';
 import { Styled as StyledButton } from 'components/Button/Button.styles';
 import { LoginFormProps } from './AuthModal.types';
 
-import { ErrorMessage } from '../FormError';
-
-import { parseGraphQLError } from 'utils/validators';
-import { useStore } from 'store';
-
 export const LoginForm = observer<React.FC<LoginFormProps>>(({ onSignIn }) => {
-    const store = useStore();
+    /*const store = useStore();
 
     const [login, { error }] = useLoginMutation({
         errorPolicy: 'all',
         onCompleted: store.login,
-    });
+    });*/
 
     return (
-        <Formik<RegisterMutationVariables>
-            onSubmit={values =>
-                login({
+        <Formik
+            onSubmit={
+                values => null
+                /*login({
                     variables: values,
                     update: (store, { data }) => {
                         if (!data) return;
@@ -38,7 +28,7 @@ export const LoginForm = observer<React.FC<LoginFormProps>>(({ onSignIn }) => {
                             },
                         });
                     },
-                })
+                })*/
             }
             initialValues={{
                 email: '',
@@ -47,9 +37,9 @@ export const LoginForm = observer<React.FC<LoginFormProps>>(({ onSignIn }) => {
         >
             {({ isSubmitting }) => (
                 <Form>
-                    {error && (
+                    {/*{error && (
                         <ErrorMessage>{parseGraphQLError(error)}</ErrorMessage>
-                    )}
+                    )}*/}
                     <Styled.InputWrapper>
                         <Styled.Label htmlFor="email">email</Styled.Label>
                         <Field id="email" name="email" />

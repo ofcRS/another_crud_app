@@ -19,3 +19,4 @@ server/storage/*
 
 #generated
 schema.graphql
+/client/src/models/*

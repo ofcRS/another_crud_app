@@ -1,31 +1,24 @@
 import React from 'react';
 
-import {
-    RegisterMutationVariables,
-    useRegisterMutation,
-} from 'graphql/generated';
-
 import { Styled } from './AuthModal.styles';
 import { Field, Form, Formik } from 'formik';
 import { Styled as StyledButton } from '../Button/Button.styles';
 import { RegistryFormProps } from './AuthModal.types';
-import { ErrorMessage } from '../FormError';
-import { parseGraphQLError } from '../../utils/validators';
 
 export const RegistryForm: React.FC<RegistryFormProps> = ({
     onBackToLogin,
 }) => {
-    const [registry, { error }] = useRegisterMutation();
+    /*const [registry, { error }] = useRegisterMutation();*/
 
     return (
-        <Formik<RegisterMutationVariables>
+        <Formik
             onSubmit={async ({ password, email }) => {
-                await registry({
+                /*await registry({
                     variables: {
                         email,
                         password,
                     },
-                });
+                });*/
             }}
             initialValues={{
                 email: '',
@@ -34,9 +27,9 @@ export const RegistryForm: React.FC<RegistryFormProps> = ({
         >
             {({ isSubmitting }) => (
                 <Form>
-                    {error && (
+                    {/*{error && (
                         <ErrorMessage>{parseGraphQLError(error)}</ErrorMessage>
-                    )}
+                    )}*/}
                     <Styled.InputWrapper>
                         <Styled.Label htmlFor="email">email</Styled.Label>
                         <Field id="email" name="email" />

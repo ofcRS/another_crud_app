@@ -2,25 +2,23 @@ import React from 'react';
 import { Styled } from './Menu.styles';
 
 import { mainMenuRoutes } from 'routes';
-import { useUIStore } from 'store/uiStore';
 
 import { observer } from 'mobx-react';
-
-import { useMeQuery } from 'graphql/generated';
+import { useUIStore } from 'store/uiStore';
 
 export const Menu = observer(() => {
     const uiStore = useUIStore();
-    const { data, loading } = useMeQuery();
+    // const { data, loading } = useMeQuery();
 
     let userBlock: React.ReactNode;
 
-    if (loading) {
+    /*if (loading) {
         userBlock = null;
     } else if (!data?.me) {
         userBlock = 'not logged in';
     } else {
         userBlock = `logged in as: ${data.me.email}`;
-    }
+    }*/
 
     return (
         <Styled.Menu>

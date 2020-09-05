@@ -61,6 +61,11 @@ module.exports = () => {
                     test: /\.(woff|woff2)$/i,
                     use: 'url-loader?limit=100000',
                 },
+                {
+                    test: /\.mjs$/,
+                    include: /node_modules/,
+                    type: "javascript/auto",
+                }
             ],
         },
         devServer: {
@@ -72,7 +77,7 @@ module.exports = () => {
             host: '0.0.0.0'
         },
         resolve: {
-            extensions: ['.ts', '.js', '.tsx'],
+            extensions: ['.ts', '.js', '.tsx', '.mjs'],
             plugins: [new TsconfigPathsPlugin({})],
         },
         output: {

@@ -4,21 +4,15 @@ import { observer } from 'mobx-react';
 import { Post } from './Post';
 import { CreatePost } from './CreatePost';
 
-import { usePostStore, PostStoreProvider } from './store';
-
-import { usePostQuery } from 'graphql/generated';
+import { useQuery } from 'models';
 
 const ListBody = observer(() => {
-    const postStore = usePostStore();
-    usePostQuery({
-        fetchPolicy: 'network-only',
-        onCompleted: postStore.setPosts,
-    });
+    const { data } = useQuery(store => store.queryPosts());
 
     return (
         <div>
             <CreatePost fetchPosts={() => null} />
-            {postStore.posts.map(post => (
+            {data?.posts.map(post => (
                 <Post refreshList={() => null} key={post.id} data={post} />
             ))}
         </div>
@@ -26,9 +20,5 @@ const ListBody = observer(() => {
 });
 
 export const List: React.FC = () => {
-    return (
-        <PostStoreProvider>
-            <ListBody />
-        </PostStoreProvider>
-    );
+    return <ListBody />;
 };

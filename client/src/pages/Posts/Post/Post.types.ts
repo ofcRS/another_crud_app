@@ -1,6 +1,6 @@
-import { RecordPost } from 'shared/types/Post';
+import { PostModelType } from 'models';
 
 export type Props = {
-    data: RecordPost;
+    data: PostModelType;
     refreshList: () => void;
 };
