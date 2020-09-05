@@ -1,22 +1,30 @@
+import { types, Instance } from 'mobx-state-tree';
 import { createStore } from './createStore';
-import { Store } from './store';
+import { Store, StoreModel } from './store';
 
 export type UIStore = {
     registryModalOpen: boolean;
-    toggleRegistryModal: (value: boolean) => void;
 
     store: Store | null;
-    initUIStore: (store: Store) => void;
 };
 
-export const [UIStoreProvider, useUIStore] = createStore<UIStore>(() => ({
-    initUIStore(store) {
-        this.store = store;
-    },
-    store: null,
+const UIStoreModel = types
+    .model({
+        registryModalOpen: types.boolean,
+        store: types.maybeNull(StoreModel),
+    })
+    .actions(self => ({
+        initUIStore: (store: Instance<typeof StoreModel>) => {
+            self.store = store;
+        },
+        toggleRegistryModal(value: boolean) {
+            self.registryModalOpen = value;
+        },
+    }));
 
-    registryModalOpen: false,
-    toggleRegistryModal(value: boolean) {
-        this.registryModalOpen = value;
-    },
-}));
+export const [UIStoreProvider, useUIStore] = createStore<typeof UIStoreModel>(
+    UIStoreModel.create({
+        registryModalOpen: false,
+        store: null,
+    })
+);

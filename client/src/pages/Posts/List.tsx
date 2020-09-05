@@ -1,25 +1,34 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { observer } from 'mobx-react';
 
 import { Post } from './Post';
 import { CreatePost } from './CreatePost';
 
+import { usePostStore, PostStoreProvider } from './store';
+
 import { usePostQuery } from 'graphql/generated';
 
-import { RecordPost } from 'shared/types/Post';
-
-export const List = (): JSX.Element => {
-    const [posts, setPost] = useState<RecordPost[]>([]);
-    const { loading, data, refetch } = usePostQuery({
+const ListBody = observer(() => {
+    const postStore = usePostStore();
+    usePostQuery({
         fetchPolicy: 'network-only',
+        onCompleted: postStore.setPosts,
     });
 
     return (
         <div>
-            <button onClick={() => refetch()}>test</button>
-            <CreatePost fetchPosts={refetch} />
-            {data?.posts.map(post => (
-                <Post refreshList={refetch} key={post.id} data={post} />
+            <CreatePost fetchPosts={() => null} />
+            {postStore.posts.map(post => (
+                <Post refreshList={() => null} key={post.id} data={post} />
             ))}
         </div>
+    );
+});
+
+export const List: React.FC = () => {
+    return (
+        <PostStoreProvider>
+            <ListBody />
+        </PostStoreProvider>
     );
 };

@@ -35,6 +35,7 @@ module.exports = {
                         argsIgnorePattern: '^_',
                     },
                 ],
+                'import/named': 'off',
             },
         },
     ],

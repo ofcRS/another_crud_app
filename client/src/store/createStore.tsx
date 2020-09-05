@@ -1,10 +1,10 @@
 import React from 'react';
-import { useLocalStore } from 'mobx-react';
+import { IModelType, Instance } from 'mobx-state-tree';
 
-export const createStore = <Store extends Record<string, unknown>>(
-    createStore: () => Store
-): [React.FC, () => Store] => {
-    const storeContext = React.createContext<null | Store>(null);
+export const createStore = <Store extends IModelType<any, any>>(
+    store: any
+): [React.FC, () => Instance<Store>] => {
+    const storeContext = React.createContext<null | Instance<Store>>(null);
 
     const useStore = () => {
         const store = React.useContext(storeContext);
@@ -14,14 +14,9 @@ export const createStore = <Store extends Record<string, unknown>>(
         return store;
     };
 
-    const StoreProvider: React.FC = ({ children }) => {
-        const store = useLocalStore(createStore);
-        return (
-            <storeContext.Provider value={store}>
-                {children}
-            </storeContext.Provider>
-        );
-    };
+    const StoreProvider: React.FC = ({ children }) => (
+        <storeContext.Provider value={store}>{children}</storeContext.Provider>
+    );
 
     return [StoreProvider, useStore];
 };
