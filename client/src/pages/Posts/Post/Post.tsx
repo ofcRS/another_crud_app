@@ -1,16 +1,9 @@
-import React, { useEffect } from 'react';
-
-import { deletePost } from 'api/post';
+import React from 'react';
 
 import { Props } from './Post.types';
 import { Styled } from './Post.styles';
 
-const Post: React.FC<Props> = ({ data, refreshList }: Props): JSX.Element => {
-    const removePost = async (): Promise<void> => {
-        await deletePost(data.id);
-        refreshList();
-    };
-
+const Post: React.FC<Props> = ({ data, refreshList }: Props) => {
     return (
         <Styled.Post>
             <Styled.MoreButton
@@ -18,7 +11,6 @@ const Post: React.FC<Props> = ({ data, refreshList }: Props): JSX.Element => {
                     {
                         key: 'rm',
                         label: 'Remove post',
-                        onClick: removePost,
                     },
                 ]}
             />

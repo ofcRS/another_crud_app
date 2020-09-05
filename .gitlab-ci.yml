@@ -1,24 +1,25 @@
-build site:
-  image: node:10
-  stage: build
-  before_script:
-    - npm install -g yarn
-  script:
-    - chmod +x ./shared.sh
-    - ./shared.sh
-    - cd client
-    - rm yarn.lock
-    - yarn && yarn build
-    - cd ../server
-    - rm yarn.lock
-    - yarn && yarn build
-
-deploy:
-  image: alpine
-  stage: deploy
-  script:
-    - apk add --no-cache rsync openssh
-    - mkdir -p ~/.ssh
-    - echo "$SSH_PRIVATE_KEY" >> ~/.ssh/id_dsa
-    - chmod 600 ~/.ssh/id_dsa
-    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+#закоментил пока не разберусь, как деплоить
+#build site:
+#  image: node:10
+#  stage: build
+#  before_script:
+#    - npm install -g yarn
+#  script:
+#    - chmod +x ./shared.sh
+#    - ./shared.sh
+#    - cd client
+#    - rm yarn.lock
+#    - yarn && yarn build
+#    - cd ../server
+#    - rm yarn.lock
+#    - yarn && yarn build
+#
+#deploy:
+#  image: alpine
+#  stage: deploy
+#  script:
+#    - apk add --no-cache rsync openssh
+#    - mkdir -p ~/.ssh
+#    - echo "$SSH_PRIVATE_KEY" >> ~/.ssh/id_dsa
+#    - chmod 600 ~/.ssh/id_dsa
+#    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config

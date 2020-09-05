@@ -5,3 +5,7 @@ export type LoginFormProps = {
 export type RegistryFormProps = {
     onBackToLogin: () => void;
 };
+
+export type AuthModalLocalStore = {
+    mode: 'login' | 'registry';
+};

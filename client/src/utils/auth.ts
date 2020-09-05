@@ -10,7 +10,7 @@ export const inMemoryToken: InMemoryToken = {
 };
 
 export const refreshToken = async () => {
-    const { accessToken } = await request({
+    const { accessToken } = await request<{ accessToken: string }>({
         url: '/auth/refresh_token',
     });
     inMemoryToken.accessToken = accessToken;

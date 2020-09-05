@@ -9,11 +9,13 @@ import { Styled } from './AuthModal.styles';
 import { Field, Form, Formik } from 'formik';
 import { Styled as StyledButton } from '../Button/Button.styles';
 import { RegistryFormProps } from './AuthModal.types';
+import { ErrorMessage } from '../FormError';
+import { parseGraphQLError } from '../../utils/validators';
 
 export const RegistryForm: React.FC<RegistryFormProps> = ({
     onBackToLogin,
 }) => {
-    const [registry] = useRegisterMutation();
+    const [registry, { error }] = useRegisterMutation();
 
     return (
         <Formik<RegisterMutationVariables>
@@ -32,6 +34,9 @@ export const RegistryForm: React.FC<RegistryFormProps> = ({
         >
             {({ isSubmitting }) => (
                 <Form>
+                    {error && (
+                        <ErrorMessage>{parseGraphQLError(error)}</ErrorMessage>
+                    )}
                     <Styled.InputWrapper>
                         <Styled.Label htmlFor="email">email</Styled.Label>
                         <Field id="email" name="email" />

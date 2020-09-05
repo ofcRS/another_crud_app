@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { AxiosResponse } from 'axios';
+import React, { useState } from 'react';
+
 import { observer } from 'mobx-react';
 
-import { submitPost } from 'api/post';
 import { Styled } from './CreatePost.styles';
 import { Props } from './CreatePost.types';
 
@@ -10,28 +9,8 @@ export const CreatePost = observer(({ fetchPosts }: Props) => {
     const [title, setTitle] = useState<string>('');
     const [body, setBody] = useState<string>('');
 
-    const clearForm = (): void => {
-        setTitle('');
-        setBody('');
-    };
-
-    const handleSubmit = async (
-        event: React.FormEvent<HTMLFormElement>
-    ): Promise<void> => {
-        event.preventDefault();
-
-        const response: AxiosResponse = await submitPost({
-            body,
-            title,
-        });
-        if (response.data.isOk) {
-            clearForm();
-            fetchPosts();
-        }
-    };
-
     return (
-        <Styled.CreatePost onSubmit={handleSubmit}>
+        <Styled.CreatePost onSubmit={console.log}>
             <div
                 style={{
                     display: 'flex',

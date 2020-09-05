@@ -8,9 +8,10 @@ import {
     Resolver,
 } from 'type-graphql';
 import { compare, hash } from 'bcrypt';
+import * as jwt from 'jsonwebtoken';
 import { User } from 'entities/user';
 import { getConnection, getManager } from 'typeorm';
-import { Context } from '../types/services/context';
+import { Context, ContextPayload } from '../types/services/context';
 import {
     createAccessToken,
     createRefreshToken,
@@ -90,7 +91,7 @@ export class UserResolver {
             });
 
             if (userWithSameEmail) {
-                throw 'User already exist';
+                throw new Error('User already exist');
             }
             const hashedPassword = await hash(password, 10);
 
@@ -100,7 +101,28 @@ export class UserResolver {
             await user.save();
             return true;
         } catch (error) {
-            return false;
+            throw error;
+        }
+    }
+
+    @Query(() => User, { nullable: true })
+    async me(@Ctx() { req }: Context): Promise<User | null> {
+        try {
+            const token = req.cookies.headers.authorization;
+            if (!token) return null;
+
+            const payload = jwt.verify(
+                token,
+                process.env.JWT_SECRET!
+            ) as ContextPayload;
+
+            if (!payload.id) return null;
+
+            const user = await User.findOne({ id: payload.id });
+            if (!user) return null;
+            return user;
+        } catch (error) {
+            return null;
         }
     }
 }

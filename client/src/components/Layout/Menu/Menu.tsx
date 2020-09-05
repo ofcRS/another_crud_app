@@ -1,7 +1,7 @@
 import React from 'react';
 import { Styled } from './Menu.styles';
 
-import { tabRoutes } from 'routes';
+import { mainMenuRoutes } from 'routes';
 import { useUIStore } from 'store/uiStore';
 
 import { observer } from 'mobx-react';
@@ -24,7 +24,7 @@ export const Menu = observer(() => {
 
     return (
         <Styled.Menu>
-            {tabRoutes.map(({ path, label }) => (
+            {mainMenuRoutes.map(({ path, label }) => (
                 <Styled.NavLink key={path} to={path}>
                     {label}
                 </Styled.NavLink>

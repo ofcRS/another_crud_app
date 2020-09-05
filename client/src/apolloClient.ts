@@ -5,7 +5,6 @@ import {
     InMemoryCache,
     Observable,
 } from '@apollo/client';
-import { ZenObservable } from 'zen-observable-ts/lib/types';
 import {
     inMemoryToken,
     isAccessTokenValidOrUndefined,

@@ -1,6 +1,6 @@
-import { CaughtGraphQLError } from 'typings/network';
+import { ApolloError } from '@apollo/client';
 
-export const parseGraphQLError = (error: CaughtGraphQLError): string => {
+export const parseGraphQLError = (error: ApolloError): string => {
     if (error.graphQLErrors) {
         return error.graphQLErrors[0].message;
     } else if (error.networkError) {

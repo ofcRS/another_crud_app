@@ -1,9 +1,7 @@
 import { createStore } from './createStore';
 
-import { GraphQlResponse } from 'typings/network';
 import { LoginMutation, User } from 'graphql/generated';
 
-import { parseGraphQLError } from 'utils/validators';
 import { inMemoryToken, refreshToken } from 'utils/auth';
 
 export type Store = {
@@ -12,10 +10,7 @@ export type Store = {
     initializationInProgress: boolean;
     initApp: () => void;
 
-    login: (
-        loginFn: () => GraphQlResponse<LoginMutation | null>
-    ) => Promise<void>;
-    loginError: string | null;
+    login: (response: LoginMutation) => void;
 };
 
 export const [StoreProvider, useStore] = createStore<Store>(() => ({
@@ -31,19 +26,13 @@ export const [StoreProvider, useStore] = createStore<Store>(() => ({
     },
     initializationInProgress: true,
 
-    login: async function(loginFn) {
-        try {
-            const { data } = await loginFn();
-            /*
-             * Кастую через not-null assertion, потому что data будет во всех случях, кроме того,
-             * когда запрос вернет ошибку(она ловится ниже).
-             * */
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            this.user = data!.login.user;
-            inMemoryToken.accessToken = data?.login.accessToken;
-        } catch (error) {
-            this.loginError = parseGraphQLError(error);
+    login(response) {
+        if (response) {
+            const {
+                login: { user, accessToken },
+            } = response;
+            this.user = user;
+            inMemoryToken.accessToken = accessToken;
         }
     },
-    loginError: null,
 }));

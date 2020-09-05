@@ -10,36 +10,36 @@ import { observer } from 'mobx-react';
 import { Styled } from './AuthModal.styles';
 import { Styled as StyledButton } from 'components/Button/Button.styles';
 import { LoginFormProps } from './AuthModal.types';
-import { useStore } from 'store/store';
 
 import { ErrorMessage } from '../FormError';
 
+import { parseGraphQLError } from 'utils/validators';
+import { useStore } from 'store';
+
 export const LoginForm = observer<React.FC<LoginFormProps>>(({ onSignIn }) => {
     const store = useStore();
-    const [login] = useLoginMutation({
-        errorPolicy: 'all',
-    });
 
-    const loginError = store.loginError;
+    const [login, { error }] = useLoginMutation({
+        errorPolicy: 'all',
+        onCompleted: store.login,
+    });
 
     return (
         <Formik<RegisterMutationVariables>
-            onSubmit={async values => {
-                store.login(() =>
-                    login({
-                        variables: values,
-                        update: (store, { data }) => {
-                            if (!data) return null;
-                            store.writeQuery<MeQuery>({
-                                query: MeDocument,
-                                data: {
-                                    me: data.login.user,
-                                },
-                            });
-                        },
-                    })
-                );
-            }}
+            onSubmit={values =>
+                login({
+                    variables: values,
+                    update: (store, { data }) => {
+                        if (!data) return;
+                        store.writeQuery<MeQuery>({
+                            query: MeDocument,
+                            data: {
+                                me: data.login.user,
+                            },
+                        });
+                    },
+                })
+            }
             initialValues={{
                 email: '',
                 password: '',
@@ -47,7 +47,9 @@ export const LoginForm = observer<React.FC<LoginFormProps>>(({ onSignIn }) => {
         >
             {({ isSubmitting }) => (
                 <Form>
-                    {loginError && <ErrorMessage>{loginError}</ErrorMessage>}
+                    {error && (
+                        <ErrorMessage>{parseGraphQLError(error)}</ErrorMessage>
+                    )}
                     <Styled.InputWrapper>
                         <Styled.Label htmlFor="email">email</Styled.Label>
                         <Field id="email" name="email" />

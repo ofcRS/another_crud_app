@@ -12,7 +12,7 @@ export type TabRoute = Route & {
 
 export const routes: Route[] = [];
 
-export const tabRoutes: TabRoute[] = [
+export const mainMenuRoutes: TabRoute[] = [
     {
         name: 'Posts',
         component: lazy(() => import('pages/Posts')),
@@ -21,4 +21,4 @@ export const tabRoutes: TabRoute[] = [
     },
 ];
 
-export const allRoutes = [...routes, ...tabRoutes];
+export const allRoutes = [...routes, ...mainMenuRoutes];
