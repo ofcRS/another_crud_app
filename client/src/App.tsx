@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import { observer } from 'mobx-react';
 import { Redirect, Route, Router, Switch } from 'react-router';
 import { createBrowserHistory } from 'history';
@@ -8,23 +8,18 @@ import { Layout } from 'components/Layout';
 import { allRoutes } from 'routes';
 
 import { GlobalStyles } from 'styles/globalStyles';
+import { useStore } from 'store';
 
 export const history = createBrowserHistory();
 
 const App: React.FC = observer(() => {
-    /*const store = useStore();
-    const uiStore = useUIStore();
+    const { app, post } = useStore();
 
     useEffect(() => {
-        store.initApp();
-    }, [store]);
+        app.initApp();
+    }, [app]);
 
-    useEffect(() => {
-        uiStore.initUIStore(store);
-    }, [store, uiStore]);
-
-    if (store.initializationInProgress) return null;
-    if (!uiStore.store) return null;*/
+    if (!app.initialized) return null;
 
     return (
         <Router history={history}>

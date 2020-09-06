@@ -1,15 +1,18 @@
 import {
     ApolloClient,
     ApolloLink,
+    execute,
     HttpLink,
     InMemoryCache,
     Observable,
 } from '@apollo/client';
 import {
     inMemoryToken,
-    isAccessTokenValidOrUndefined,
     refreshToken,
+    isAccessTokenValidOrUndefined,
 } from './utils/auth';
+
+import { GraphQLRequest } from '@apollo/client/link/core/types';
 
 const requestLink = new ApolloLink(
     (operation, forward) =>
@@ -21,9 +24,7 @@ const requestLink = new ApolloLink(
                      * проверяем валидность токена перед каждым запросом
                      * и если нужно - получаем новый
                      * */
-                    if (!isAccessTokenValidOrUndefined()) {
-                        await refreshToken();
-                    }
+                    if (!isAccessTokenValidOrUndefined()) await refreshToken();
 
                     /*
                      * записываем в куки аксесс токен, если он есть
@@ -51,6 +52,14 @@ const requestLink = new ApolloLink(
         })
 );
 
+export const apolloLink = ApolloLink.from([
+    requestLink,
+    new HttpLink({
+        uri: process.env.GRAPHQL_URL,
+        credentials: 'include',
+    }),
+]);
+
 export const client = new ApolloClient({
     link: ApolloLink.from([
         requestLink,
@@ -61,3 +70,11 @@ export const client = new ApolloClient({
     ]),
     cache: new InMemoryCache(),
 });
+
+export const makePromise = <T>(operation: GraphQLRequest) =>
+    new Promise<T>((resolve, reject) =>
+        execute(apolloLink, operation).subscribe({
+            next: data => resolve(data as T),
+            error: reject,
+        })
+    );

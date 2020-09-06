@@ -4,31 +4,34 @@ import { observer } from 'mobx-react';
 import { Styled } from './AuthModal.styles';
 import { Styled as StyledButton } from 'components/Button/Button.styles';
 import { LoginFormProps } from './AuthModal.types';
+import { useLoginMutation, MeDocument, MeQuery } from '../../graphql/generated';
+import { useStore } from 'store';
+import { parseGraphQLError } from 'utils/validators';
+import { ErrorMessage } from 'components/FormError';
 
 export const LoginForm = observer<React.FC<LoginFormProps>>(({ onSignIn }) => {
-    /*const store = useStore();
+    const { app } = useStore();
 
     const [login, { error }] = useLoginMutation({
         errorPolicy: 'all',
-        onCompleted: store.login,
-    });*/
+        onCompleted: app.login,
+        update: (store, { data }) => {
+            if (!data) return;
+            store.writeQuery<MeQuery>({
+                query: MeDocument,
+                data: {
+                    me: data.login.user,
+                },
+            });
+        },
+    });
 
     return (
         <Formik
-            onSubmit={
-                values => null
-                /*login({
+            onSubmit={values =>
+                login({
                     variables: values,
-                    update: (store, { data }) => {
-                        if (!data) return;
-                        store.writeQuery<MeQuery>({
-                            query: MeDocument,
-                            data: {
-                                me: data.login.user,
-                            },
-                        });
-                    },
-                })*/
+                })
             }
             initialValues={{
                 email: '',
@@ -37,9 +40,9 @@ export const LoginForm = observer<React.FC<LoginFormProps>>(({ onSignIn }) => {
         >
             {({ isSubmitting }) => (
                 <Form>
-                    {/*{error && (
+                    {error && (
                         <ErrorMessage>{parseGraphQLError(error)}</ErrorMessage>
-                    )}*/}
+                    )}
                     <Styled.InputWrapper>
                         <Styled.Label htmlFor="email">email</Styled.Label>
                         <Field id="email" name="email" />

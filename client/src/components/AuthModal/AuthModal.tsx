@@ -7,7 +7,8 @@ import { RegistryForm } from './RegistryForm';
 import { Styled } from './AuthModal.styles';
 import { AuthModalLocalStore } from './AuthModal.types';
 import { Modal } from 'components/Modal';
-import { useUIStore } from 'store/uiStore';
+
+import { useStore } from '../../store';
 
 const ModalBody = observer(() => {
     const localStore = useLocalStore<AuthModalLocalStore>(() => ({
@@ -30,13 +31,13 @@ const ModalBody = observer(() => {
 });
 
 export const AuthModal = observer(() => {
-    const uiStore = useUIStore();
+    const { ui } = useStore();
 
     // выношу тело в отдельный компонент, чтобы он анмаунтился при закрытие модалки
     return (
         <Modal
-            onClose={() => uiStore.toggleRegistryModal(false)}
-            open={uiStore.registryModalOpen}
+            onClose={() => ui.toggleRegistryModal(false)}
+            open={ui.registryModalOpen}
         >
             <ModalBody />
         </Modal>

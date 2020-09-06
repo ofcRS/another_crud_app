@@ -7,7 +7,7 @@ export type UIStore = {
     registryModalOpen: boolean;
 };
 
-const UIStoreModel = types
+export const UIStoreModel = types
     .model({
         registryModalOpen: types.boolean,
     })

@@ -136,9 +136,9 @@ export const authController: AuthController = {
                 ok: true,
                 accessToken: createAccessToken(user),
             });
-        } catch ({ message }) {
-            logger.error(message);
-            res.status(400).send({ ok: false });
+        } catch (error) {
+            logger.error(error);
+            res.status(400).send({ ok: false, error });
         }
     },
 };

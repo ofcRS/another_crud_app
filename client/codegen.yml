@@ -1,12 +1,15 @@
 overwrite: true
 schema: "http://localhost:3001/graphql"
 documents: "src/graphql/**/*.graphql"
+watch: true
 generates:
   src/graphql/generated.ts:
     plugins:
-      - "typescript"
-      - "typescript-operations"
-      - "typescript-react-apollo"
+      - typescript
+      - typescript-operations
+      - typescript-react-apollo
+#      - typescript-graphql-request
+      - graphql-codegen-extenstion.js
     config:
       withHOC: false
       withComponent: false

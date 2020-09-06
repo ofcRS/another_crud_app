@@ -108,8 +108,8 @@ export class UserResolver {
     @Query(() => User, { nullable: true })
     async me(@Ctx() { req }: Context): Promise<User | null> {
         try {
-            const token = req.cookies.headers.authorization;
-            if (!token) return null;
+            const token = req.headers.authorization;
+            if (!token) throw new Error('no token in headers');
 
             const payload = jwt.verify(
                 token,
@@ -122,7 +122,7 @@ export class UserResolver {
             if (!user) return null;
             return user;
         } catch (error) {
-            return null;
+            throw error;
         }
     }
 }

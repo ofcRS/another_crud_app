@@ -4,7 +4,6 @@ import { Props } from './Post.types';
 import { Styled } from './Post.styles';
 
 const Post: React.FC<Props> = ({ data, refreshList }: Props) => {
-    console.log(data);
     return (
         <Styled.Post>
             <Styled.MoreButton

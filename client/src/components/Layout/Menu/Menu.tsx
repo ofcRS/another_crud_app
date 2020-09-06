@@ -4,21 +4,23 @@ import { Styled } from './Menu.styles';
 import { mainMenuRoutes } from 'routes';
 
 import { observer } from 'mobx-react';
-import { useUIStore } from 'store/uiStore';
+
+import { useStore } from 'store';
+import { useMeQuery } from 'graphql/generated';
 
 export const Menu = observer(() => {
-    const uiStore = useUIStore();
-    // const { data, loading } = useMeQuery();
+    const { ui } = useStore();
+    const { data, loading } = useMeQuery();
 
     let userBlock: React.ReactNode;
 
-    /*if (loading) {
+    if (loading) {
         userBlock = null;
     } else if (!data?.me) {
         userBlock = 'not logged in';
     } else {
         userBlock = `logged in as: ${data.me.email}`;
-    }*/
+    }
 
     return (
         <Styled.Menu>
@@ -27,9 +29,7 @@ export const Menu = observer(() => {
                     {label}
                 </Styled.NavLink>
             ))}
-            <button onClick={() => uiStore.toggleRegistryModal(true)}>
-                log in
-            </button>
+            <button onClick={() => ui.toggleRegistryModal(true)}>log in</button>
             <div>{userBlock}</div>
         </Styled.Menu>
     );

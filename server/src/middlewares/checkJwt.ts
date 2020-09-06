@@ -9,13 +9,13 @@ export const checkAuth: MiddlewareFn<Context> = ({ context }, next) => {
         const token = context.req.headers.authorization;
 
         if (!token) {
-            throw 'there\'s not token in headers';
+            throw new Error("there's no token in headers");
         }
 
         const payload = jwt.verify(token, secret) as ContextPayload;
         context.payload = payload;
     } catch (error) {
-        throw new Error('not authenticated');
+        throw new Error(error.message);
     }
     return next();
 };
