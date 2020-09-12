@@ -8,7 +8,7 @@ import { Styled } from './AuthModal.styles';
 import { AuthModalLocalStore } from './AuthModal.types';
 import { Modal } from 'components/Modal';
 
-import { useStore } from '../../store';
+import { useStore } from 'store';
 
 const ModalBody = observer(() => {
     const localStore = useLocalStore<AuthModalLocalStore>(() => ({

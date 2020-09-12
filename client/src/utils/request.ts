@@ -20,10 +20,12 @@ export const request = async <
     method = 'get',
     url,
     params,
+    headers,
 }: {
     url: string;
     method?: 'get' | 'post' | 'delete' | 'put';
     params?: Params;
+    headers?: Record<string, string>;
 }): Promise<Response> => {
     let urlWithParams = url;
     if (params) {
@@ -39,6 +41,7 @@ export const request = async <
     const result = await window.fetch(formattedUrl, {
         method,
         credentials: 'include',
+        headers,
     });
     return await result.json();
 };

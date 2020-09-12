@@ -1,5 +1,6 @@
 import decode from 'jwt-decode';
 import { request } from './request';
+import { User } from 'graphql/generated';
 
 type InMemoryToken = {
     accessToken: string | undefined;
@@ -14,6 +15,19 @@ export const refreshToken = async () => {
         url: '/auth/refresh_token',
     });
     inMemoryToken.accessToken = accessToken;
+};
+
+export const getCurrentUser = async (): Promise<User | null> => {
+    if (inMemoryToken.accessToken) {
+        const { user } = await request<{ user: User }>({
+            url: '/auth/current',
+            headers: {
+                authorization: inMemoryToken.accessToken,
+            },
+        });
+        return user;
+    }
+    return null;
 };
 
 export const isAccessTokenValidOrUndefined = () => {

@@ -1,9 +1,9 @@
 import { types, flow } from 'mobx-state-tree';
 
 import { createStore } from './createStore';
-import { inMemoryToken, refreshToken } from 'utils/auth';
+import { inMemoryToken, refreshToken, getCurrentUser } from 'utils/auth';
 import { UserModel } from 'models';
-import { LoginMutation } from '../graphql/generated';
+import { LoginMutation } from 'graphql/generated';
 
 export const AppStoreModel = types
     .model({
@@ -14,6 +14,8 @@ export const AppStoreModel = types
         initApp: flow(function*() {
             try {
                 yield refreshToken();
+                const user = yield getCurrentUser();
+                self.user = UserModel.create(user);
             } catch (error) {
             } finally {
                 self.initialized = true;

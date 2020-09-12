@@ -1,6 +1,6 @@
-import { PostModelType } from 'models';
+import { Post } from 'graphql/generated';
 
 export type Props = {
-    data: PostModelType;
+    data: Post;
     refreshList: () => void;
 };

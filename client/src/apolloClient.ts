@@ -25,7 +25,6 @@ const requestLink = new ApolloLink(
                      * и если нужно - получаем новый
                      * */
                     if (!isAccessTokenValidOrUndefined()) await refreshToken();
-
                     /*
                      * записываем в куки аксесс токен, если он есть
                      * */

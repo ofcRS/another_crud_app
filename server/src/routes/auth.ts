@@ -4,8 +4,7 @@ import { authController } from 'controllers/authController';
 
 const router = express.Router();
 
-router.post('/login', authController.login);
-router.post('/signup', authController.signUp);
 router.get('/refresh_token', authController.refreshToken);
+router.get('/current', authController.getCurrentUser);
 
 export default router;
