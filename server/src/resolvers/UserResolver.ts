@@ -125,4 +125,10 @@ export class UserResolver {
             throw error;
         }
     }
+
+    @Mutation(() => Boolean)
+    async logout(@Ctx() { res }: Context) {
+        res.clearCookie('jid');
+        return true;
+    }
 }

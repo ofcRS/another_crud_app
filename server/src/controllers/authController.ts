@@ -52,16 +52,31 @@ export const authController: AuthController = {
         const token = req.headers.authorization;
         if (!token) {
             return res.status(401).send({
-                ifOk: false,
+                isOk: false,
                 message: 'no tokens was provided',
             });
         }
-        const context = verify(
+
+        const contextPayload = verify(
             token,
             process.env.JWT_SECRET!
         ) as ContextPayload;
 
-        const user = await User.findOne({ id: context.id });
+        const user = await User.findOne({ id: contextPayload.id });
+
+        if (!user) {
+            return res.status(404).send({
+                isOk: false,
+                message: 'user not found',
+            });
+        }
+
+        if (user.tokenVersion !== contextPayload.version) {
+            return res.status(403).send({
+                message: "versions of tokens aren't equal",
+                isOk: false,
+            });
+        }
 
         return res.send({
             user,

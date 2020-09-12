@@ -12,6 +12,7 @@ type LoginResponse {
 
 type Mutation {
     login(email: String!, password: String!): LoginResponse!
+    logout: Boolean!
     register(email: String!, password: String!): Boolean!
     revokeRefreshTokens(id: Float!): Boolean!
 }
