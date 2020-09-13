@@ -128,7 +128,9 @@ export class UserResolver {
 
     @Mutation(() => Boolean)
     async logout(@Ctx() { res }: Context) {
-        res.clearCookie('jid');
+        res.clearCookie('jid', {
+            path: '/api/auth/refresh_token',
+        });
         return true;
     }
 }

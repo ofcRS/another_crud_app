@@ -30,6 +30,10 @@ export const AppStoreModel = types
                 self.user = UserModel.create(user);
             }
         },
+        logout: flow(function*() {
+            inMemoryToken.accessToken = undefined;
+            self.user = null;
+        }),
     }));
 
 export const [StoreProvider, useStore] = createStore<typeof AppStoreModel>(

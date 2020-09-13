@@ -6,28 +6,24 @@ import { Props } from './UserBlock.types';
 
 import { useStore } from 'store';
 import { useLogoutMutation } from 'graphql/generated';
-import { inMemoryToken } from 'utils/auth';
 
 export const UserBlock: React.FC<Props> = observer(() => {
-    const {
-        ui,
-        app: { user, initialized },
-    } = useStore();
+    const { ui, app } = useStore();
     const [logout, { client }] = useLogoutMutation();
 
     let userBlock: React.ReactNode;
 
-    if (!initialized) {
+    if (!app.initialized) {
         userBlock = null;
-    } else if (!user) {
+    } else if (!app.user) {
         userBlock = 'not logged in';
     } else {
-        userBlock = `logged in as: ${user.email}`;
+        userBlock = `logged in as: ${app.user.email}`;
     }
 
     const onClickLogout = async () => {
         await logout();
-        inMemoryToken.accessToken = undefined;
+        app.logout();
         client?.resetStore();
     };
 

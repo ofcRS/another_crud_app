@@ -71,13 +71,6 @@ export const authController: AuthController = {
             });
         }
 
-        if (user.tokenVersion !== contextPayload.version) {
-            return res.status(403).send({
-                message: "versions of tokens aren't equal",
-                isOk: false,
-            });
-        }
-
         return res.send({
             user,
         });
