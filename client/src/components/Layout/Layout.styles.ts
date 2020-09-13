@@ -1,9 +1,21 @@
 import styled from 'styled-components';
 
-export const Styled = {
-    Layout: styled.div`
-        display: flex;
+const Layout = styled.div`
+    display: flex;
+    flex-wrap: wrap;
 
-        background: #fff;
-    `,
+    background: #fff;
+
+    > * {
+        margin: 0 16px;
+    }
+`;
+
+const MainArea = styled.main`
+    width: 50vw;
+`;
+
+export const Styled = {
+    Layout,
+    MainArea,
 };
