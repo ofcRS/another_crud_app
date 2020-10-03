@@ -1,9 +1,9 @@
 import http from 'http';
+import { logger, httpLogger } from 'services/logger';
 import { Express } from 'express';
 
 import { createConnection } from 'typeorm';
 
-import logger from 'services/logger';
 import { ApolloServer } from 'apollo-server-express';
 import { buildSchema } from 'type-graphql';
 
@@ -34,6 +34,8 @@ export class Server {
                 }),
             });
 
+            this.app.use(httpLogger);
+
             apolloServer.applyMiddleware({
                 app: this.app,
                 cors: {
@@ -41,8 +43,8 @@ export class Server {
                     origin: 'http://192.168.1.170:3000',
                 },
             });
-
             const server = http.createServer(this.app);
+
             server.listen(this.port, () => {
                 logger.info(`server start on ${this.port}`);
             });

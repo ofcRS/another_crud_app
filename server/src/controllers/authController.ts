@@ -11,7 +11,7 @@ import {
     sendRefreshToken,
 } from 'services/auth';
 
-import logger from 'services/logger';
+import { logger } from 'services/logger';
 import { AUTH_COOKIES_PATH } from '../config/network';
 
 type AuthController = {
