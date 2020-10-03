@@ -5,11 +5,9 @@ import { Styled } from './UserBlock.styles';
 import { Props } from './UserBlock.types';
 
 import { useStore } from 'store';
-import { useLogoutMutation } from 'graphql/generated';
 
 export const UserBlock: React.FC<Props> = observer(() => {
     const { ui, app } = useStore();
-    const [logout, { client }] = useLogoutMutation();
 
     let userBlock: React.ReactNode;
 
@@ -21,11 +19,7 @@ export const UserBlock: React.FC<Props> = observer(() => {
         userBlock = `logged in as: ${app.user.email}`;
     }
 
-    const onClickLogout = async () => {
-        await logout();
-        app.logout();
-        client?.resetStore();
-    };
+    const onClickLogout = async () => app.logout();
 
     return (
         <div style={{ border: '1px solid black', borderRadius: '5px' }}>

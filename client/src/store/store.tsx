@@ -1,9 +1,12 @@
 import { types, flow } from 'mobx-state-tree';
 
+import { client } from 'apolloClient';
 import { createStore } from './createStore';
 import { inMemoryToken, refreshToken, getCurrentUser } from 'utils/auth';
 import { UserModel } from 'models';
 import { LoginMutation } from 'graphql/generated';
+import { request } from 'utils/request';
+import { asyncFnToGenerator } from '../utils/typeCasting';
 
 export const AppStoreModel = types
     .model({
@@ -14,8 +17,10 @@ export const AppStoreModel = types
         initApp: flow(function*() {
             try {
                 yield refreshToken();
-                const user = yield getCurrentUser();
-                self.user = UserModel.create(user);
+                const user = yield* asyncFnToGenerator(getCurrentUser)();
+                if (user) {
+                    self.user = UserModel.create(user);
+                }
             } catch (error) {
             } finally {
                 self.initialized = true;
@@ -31,8 +36,16 @@ export const AppStoreModel = types
             }
         },
         logout: flow(function*() {
-            inMemoryToken.accessToken = undefined;
-            self.user = null;
+            const { isOk } = yield* asyncFnToGenerator(() =>
+                request<{ isOk: boolean }>({
+                    url: 'auth/logout',
+                })
+            )();
+            if (isOk) {
+                inMemoryToken.accessToken = undefined;
+                yield client.resetStore();
+                self.user = null;
+            }
         }),
     }));
 

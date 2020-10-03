@@ -12,10 +12,12 @@ import {
 } from 'services/auth';
 
 import logger from 'services/logger';
+import { AUTH_COOKIES_PATH } from '../config/network';
 
 type AuthController = {
     refreshToken: PostController;
     getCurrentUser: PostController;
+    logout: PostController;
 };
 
 export const authController: AuthController = {
@@ -73,6 +75,13 @@ export const authController: AuthController = {
 
         return res.send({
             user,
+        });
+    },
+    logout: async (req, res) => {
+        res.clearCookie('jid', {
+            path: AUTH_COOKIES_PATH,
+        }).send({
+            isOk: true,
         });
     },
 };

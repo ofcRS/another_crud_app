@@ -1,6 +1,7 @@
 import { Response } from 'express';
 import { sign } from 'jsonwebtoken';
 import { User } from 'entities';
+import { AUTH_COOKIES_PATH } from '../config/network';
 
 export const createAccessToken = (user: User) =>
     sign(
@@ -28,6 +29,6 @@ export const createRefreshToken = (user: User) =>
 export const sendRefreshToken = (res: Response, token: string) => {
     res.cookie('jid', token, {
         httpOnly: true,
-        path: '/api/auth/refresh_token',
+        path: AUTH_COOKIES_PATH,
     });
 };
