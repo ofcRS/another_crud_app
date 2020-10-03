@@ -1,4 +1,4 @@
-import { Instance, types } from 'mobx-state-tree';
+import { types } from 'mobx-state-tree';
 
 import { PostStoreModel } from './PostStoreModel';
 import { AppStoreModel } from './store';
@@ -11,19 +11,19 @@ const RootStore = types.model({
     ui: UIStoreModel,
 });
 
-export type RootStoreType = Instance<typeof RootStore.Type>;
+export const rootStore = RootStore.create({
+    post: PostStoreModel.create({
+        items: [],
+    }),
+    app: AppStoreModel.create({
+        user: null,
+        initialized: false,
+    }),
+    ui: UIStoreModel.create({
+        registryModalOpen: false,
+    }),
+});
 
 export const [RootStoreProvider, useRootStore] = createStore<typeof RootStore>(
-    RootStore.create({
-        post: PostStoreModel.create({
-            items: [],
-        }),
-        app: AppStoreModel.create({
-            user: null,
-            initialized: false,
-        }),
-        ui: UIStoreModel.create({
-            registryModalOpen: false,
-        }),
-    })
+    rootStore
 );

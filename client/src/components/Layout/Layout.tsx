@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { AuthModal } from 'components/AuthModal';
+import { AuthModal } from 'pages/AuthModal';
 
 import { Menu } from './Menu';
 import { UserBlock } from './UserBlock';

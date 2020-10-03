@@ -1,26 +1,31 @@
 import React from 'react';
 import { observer, useLocalStore } from 'mobx-react';
 
+import { Modal } from 'components/Modal';
+
 import { LoginForm } from './LoginForm';
 import { RegistryForm } from './RegistryForm';
 
 import { Styled } from './AuthModal.styles';
-import { AuthModalLocalStore } from './AuthModal.types';
-import { Modal } from 'components/Modal';
+import { AuthModalLocalStore, AuthModalMode } from './AuthModal.types';
 
 import { useStore } from 'store';
 
-const ModalBody = observer(() => {
+export const ModalBody = observer(() => {
     const localStore = useLocalStore<AuthModalLocalStore>(() => ({
-        mode: 'login',
+        mode: AuthModalMode.login,
     }));
 
-    const title = localStore.mode === 'login' ? 'Login' : 'Join';
+    const title = localStore.mode === AuthModalMode.login ? 'Login' : 'Join';
     const form =
-        localStore.mode === 'login' ? (
-            <LoginForm onSignIn={() => (localStore.mode = 'registry')} />
+        localStore.mode === AuthModalMode.login ? (
+            <LoginForm
+                onSignIn={() => (localStore.mode = AuthModalMode.registry)}
+            />
         ) : (
-            <RegistryForm onBackToLogin={() => (localStore.mode = 'login')} />
+            <RegistryForm
+                onBackToLogin={() => (localStore.mode = AuthModalMode.login)}
+            />
         );
     return (
         <Styled.FormWrapper>

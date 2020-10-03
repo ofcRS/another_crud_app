@@ -1,7 +1,7 @@
 import { types, flow } from 'mobx-state-tree';
 
 import { client } from 'apolloClient';
-import { createStore } from './createStore';
+
 import { inMemoryToken, refreshToken, getCurrentUser } from 'utils/auth';
 import { UserModel } from 'models';
 import { LoginMutation } from 'graphql/generated';
@@ -48,10 +48,3 @@ export const AppStoreModel = types
             }
         }),
     }));
-
-export const [StoreProvider, useStore] = createStore<typeof AppStoreModel>(
-    AppStoreModel.create({
-        initialized: false,
-        user: null,
-    })
-);

@@ -6,6 +6,11 @@ export type RegistryFormProps = {
     onBackToLogin: () => void;
 };
 
+export enum AuthModalMode {
+    login,
+    registry,
+}
+
 export type AuthModalLocalStore = {
-    mode: 'login' | 'registry';
+    mode: AuthModalMode;
 };

@@ -3,7 +3,7 @@ import { IModelType, Instance } from 'mobx-state-tree';
 
 export const createStore = <Store extends IModelType<any, any>>(
     store: any
-): [React.FC, () => Instance<Store>] => {
+): [React.FC, () => Instance<Store>, Instance<Store>] => {
     const storeContext = React.createContext<null | Instance<Store>>(null);
 
     const useStore = () => {
@@ -18,5 +18,6 @@ export const createStore = <Store extends IModelType<any, any>>(
         <storeContext.Provider value={store}>{children}</storeContext.Provider>
     );
 
-    return [StoreProvider, useStore];
+    // возвращаю store отдельно для мока при тестировании
+    return [StoreProvider, useStore, store];
 };

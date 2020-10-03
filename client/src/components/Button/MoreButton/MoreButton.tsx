@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 
 import { Callout } from 'components';
 
@@ -6,8 +6,9 @@ import { Styled } from './MoreButton.styles';
 import { Props } from './MoreButton.types';
 
 import Icon from './assets/more.svg';
-import { useDelayUnmount } from '../../../hooks/useDelayUnmount';
-import { smoothTime } from '../../../consts/animation';
+
+import { useDelayUnmount } from 'hooks/useDelayUnmount';
+import { smoothTime } from 'consts/animation';
 
 export const MoreButton: React.FC<Props> = ({
     calloutItems,

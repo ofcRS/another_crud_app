@@ -1,2 +1,5 @@
-export { UIStoreProvider, useUIStore } from './uiStore';
-export { useRootStore as useStore } from './RootStore';
+export {
+    useRootStore as useStore,
+    RootStoreProvider,
+    rootStore,
+} from './RootStore';

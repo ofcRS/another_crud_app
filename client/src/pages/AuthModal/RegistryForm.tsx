@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Styled } from './AuthModal.styles';
 import { Field, Form, Formik } from 'formik';
-import { Styled as StyledButton } from '../Button/Button.styles';
+import { Styled as StyledButton } from '../../components/Button/Button.styles';
 import { RegistryFormProps } from './AuthModal.types';
 
 export const RegistryForm: React.FC<RegistryFormProps> = ({

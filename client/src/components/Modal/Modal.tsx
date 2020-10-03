@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 
-import { Backdrop } from 'components';
+import { Backdrop } from 'components/Backdrop';
 
 import { useDelayUnmount } from 'hooks/useDelayUnmount';
 
@@ -33,11 +33,9 @@ export const Modal: React.FC<Props> = ({ children, open, onClose }) => {
     if (!root || !shouldRender) return null;
 
     return createPortal(
-        <>
-            <Backdrop show={open} onClick={onClose}>
-                <Styled.Modal show={open}>{children}</Styled.Modal>
-            </Backdrop>
-        </>,
+        <Backdrop show={open} onClick={onClose}>
+            <Styled.Modal show={open}>{children}</Styled.Modal>
+        </Backdrop>,
         body
     );
 };
