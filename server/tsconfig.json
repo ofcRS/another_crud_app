@@ -3,7 +3,7 @@
         "baseUrl": "./src",
         "target": "es6",
         "module": "commonjs",
-        "noImplicitAny": false,
+        "noImplicitAny": true,
         "sourceMap": true,
         "esModuleInterop": true,
         "noEmit": true,
@@ -12,5 +12,5 @@
         "strictPropertyInitialization": false,
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true
-    },
+    }
 }

@@ -12,6 +12,17 @@ export const stringifySearchParams = (
     ).toString();
 };
 
+const validateResponse = async (response: Response) => {
+    if (response.status < 200 || response.status > 399) {
+        throw response;
+    }
+    const data = await response.json();
+    if (!data.ok) {
+        throw response;
+    }
+    return data.data;
+};
+
 export const request = async <
     Response = unknown,
     Body = undefined,
@@ -43,5 +54,5 @@ export const request = async <
         credentials: 'include',
         headers,
     });
-    return await result.json();
+    return await validateResponse(result);
 };

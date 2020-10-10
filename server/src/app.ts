@@ -3,11 +3,10 @@ import PinoHttp from 'pino-http';
 import { createConnection } from 'typeorm';
 import { ApolloServer } from 'apollo-server-express';
 import { buildSchema } from 'type-graphql';
+import { ControllerImplementation } from 'controllers/controller';
 
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
-
-import routes from './routes';
 
 import { Logger } from 'types/services/logger';
 
@@ -17,6 +16,7 @@ type Conf = {
     port: number;
     logger: Logger;
     httpLogger: PinoHttp.HttpLogger;
+    controllers: ControllerImplementation[];
 };
 
 export class App {
@@ -27,7 +27,7 @@ export class App {
     // временно оставлю прямой импорт из пакета, потом напишу болле общий интерфейс для http логгера
     private readonly httpLogger: PinoHttp.HttpLogger;
 
-    constructor({ httpLogger, logger, port }: Conf) {
+    constructor({ httpLogger, logger, port, controllers }: Conf) {
         this.app = express();
         this.port = port;
         this.logger = logger;
@@ -35,7 +35,7 @@ export class App {
 
         App.initializeDatabase();
         this.initializeMiddlewares();
-        this.initializeApi(routes);
+        this.initializeApi(controllers);
         this.initializeApollo();
     }
 
@@ -55,8 +55,10 @@ export class App {
         this.app.use(this.httpLogger);
     }
 
-    private initializeApi(routes) {
-        this.app.use('/api', routes);
+    private initializeApi(controllers: ControllerImplementation[]) {
+        controllers.forEach(controller => {
+            this.app.use('/api', controller.router);
+        });
     }
 
     private static initializeDatabase() {

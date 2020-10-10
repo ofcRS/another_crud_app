@@ -2,7 +2,7 @@ import pino from 'pino';
 import pinoHTTP from 'pino-http';
 
 const config = {
-    level: 'info',
+    level: 'error',
     prettyPrint: {
         colorize: true,
     },
@@ -19,14 +19,14 @@ const config = {
             const result: Record<string, unknown> = {
                 method: req.method,
             };
-            const body = req.raw?.body;
-            const graphqlQuery = body?.query;
-            if (graphqlQuery) {
-                // не могу придумать как вывести graphql запрос в несколько строк по-другому
-                result.query = graphqlQuery.split('\n');
-            } else if (body) {
-                result.body = body;
-            }
+            // const body = req.raw?.body;
+            // const graphqlQuery = body?.query;
+            // if (graphqlQuery) {
+            // не могу придумать как вывести graphql запрос в несколько строк по-другому
+            // result.query = graphqlQuery.split('\n');
+            // } else if (body) {
+            //     result.body = body;
+            // }
             return result;
         },
         res: () => undefined,

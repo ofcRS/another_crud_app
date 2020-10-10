@@ -7,6 +7,7 @@ export const createAccessToken = (user: User) =>
     sign(
         {
             id: user.id,
+            version: user.tokenVersion,
         },
         process.env.JWT_SECRET!,
         {

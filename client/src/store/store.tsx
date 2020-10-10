@@ -36,12 +36,12 @@ export const AppStoreModel = types
             }
         },
         logout: flow(function*() {
-            const { isOk } = yield* asyncFnToGenerator(() =>
-                request<{ isOk: boolean }>({
+            const { ok } = yield* asyncFnToGenerator(() =>
+                request<{ ok: boolean }>({
                     url: 'auth/logout',
                 })
             )();
-            if (isOk) {
+            if (ok) {
                 inMemoryToken.accessToken = undefined;
                 yield client.resetStore();
                 self.user = null;
