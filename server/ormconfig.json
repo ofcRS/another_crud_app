@@ -7,5 +7,5 @@
     "database": "postgres",
     "entities": ["src/entities/**/*.ts"],
     "synchronize": true,
-    "logging": false
+    "logging": ["error"]
 }

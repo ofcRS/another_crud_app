@@ -1,4 +1,4 @@
-import { Resolver, Query } from 'type-graphql';
+import { Query, Resolver } from 'type-graphql';
 
 import { Post } from 'entities';
 
