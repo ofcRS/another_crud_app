@@ -1,3 +1,1 @@
-export type Props = {
-    fetchPosts: () => void;
-};
+export type Props = {};

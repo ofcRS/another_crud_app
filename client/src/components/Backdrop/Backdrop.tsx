@@ -11,9 +11,9 @@ export const Backdrop: React.FC<Props> = ({ onClick, children, show }) => {
         <Styled.Backdrop
             show={show}
             ref={backdropRef}
-            onClick={e => {
+            onClick={event => {
                 //ignore click on children
-                if (e.target === backdropRef.current) {
+                if (event.target === backdropRef.current) {
                     onClick();
                 }
             }}

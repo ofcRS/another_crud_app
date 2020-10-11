@@ -13,7 +13,7 @@ export const List: React.FC = observer(() => {
         <div>
             <CreatePost fetchPosts={() => null} />
             {data?.posts.map(post => (
-                <Post refreshList={() => null} key={post.id} data={post} />
+                <Post refreshList={() => null} key={post.id} post={post} />
             ))}
         </div>
     );

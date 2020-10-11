@@ -1,10 +1,16 @@
+import { ObjectType, Field } from 'type-graphql';
 import { Response } from 'express';
 
-type ApiResponse = {
-    data: unknown | null;
+@ObjectType()
+export class ApiResponse<T = unknown> {
+    data: T;
+
+    @Field()
     error?: string;
+
+    @Field()
     ok: boolean;
-};
+}
 
 type GetResponseObjectParams =
     | {

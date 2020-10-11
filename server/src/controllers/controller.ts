@@ -6,8 +6,13 @@ type Controller = {
 };
 
 export class ControllerImplementation implements Controller {
-    path = '';
-    router = Router();
+    path: string;
+    router: Router;
+
+    constructor(path: string) {
+        this.path = path;
+        this.router = Router();
+    }
 
     getApiPath(path: string) {
         const hasBackslash = path[0] === '/';

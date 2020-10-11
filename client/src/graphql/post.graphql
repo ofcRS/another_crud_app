@@ -5,3 +5,17 @@ query Post {
         id
     }
 }
+
+mutation AddPost($title: String!, $body: String!) {
+    addPost(title: $title, body: $body) {
+        body,
+        id,
+        title,
+    }
+}
+
+mutation DeletePost($id: Float!) {
+    deletePost(id: $id) {
+        ok
+    }
+}

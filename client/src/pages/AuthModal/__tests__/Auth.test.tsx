@@ -1,13 +1,13 @@
 import React from 'react';
 import { configure, mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
 import { MockedProvider } from '@apollo/client/testing';
+import Adapter from 'enzyme-adapter-react-16';
+
+configure({ adapter: new Adapter() });
 
 import { ModalBody } from '../AuthModal';
 
 jest.mock('store', () => require('../__mocks__/useStore'));
-
-configure({ adapter: new Adapter() });
 
 it('must render normal', () => {
     const modal = mount(<ModalBody />, {

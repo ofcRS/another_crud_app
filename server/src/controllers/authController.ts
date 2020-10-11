@@ -1,5 +1,5 @@
 import { verify } from 'jsonwebtoken';
-import { Router, Request, Response } from 'express';
+import { Request, Response } from 'express';
 
 import { User } from 'entities';
 import { ContextPayload } from 'types/services/context';
@@ -19,14 +19,13 @@ type CurrentUser = {
     error: string | null;
 };
 
+// апи с которым неудобно работать через graphql
 export class AuthController extends ControllerImplementation {
-    path = '/auth';
-    router = Router();
     readonly refreshTokenCookieName = 'jid';
     readonly accessTokenHeader = 'authorization';
 
     constructor() {
-        super();
+        super('/auth');
         this.initializeRoutes();
     }
 
@@ -36,6 +35,7 @@ export class AuthController extends ControllerImplementation {
         this.router.get(this.getApiPath('/logout'), this.logout);
     }
 
+    // получить текущего пользователя из рефреш или акксесс токена
     private static async getCurrentUser(
         token: string | null,
         secret: string
@@ -117,69 +117,3 @@ export class AuthController extends ControllerImplementation {
         return req.headers[this.accessTokenHeader] || null;
     }
 }
-
-// export const authController = {
-//     refreshToken: async (req, res) => {
-//         try {
-//             const token = req.cookies.jid;
-//             if (!token) {
-//                 throw 'no tokens was provided';
-//             }
-//             const payload: ContextPayload | null = verify(
-//                 token,
-//                 process.env.REFRESH_JWT_SECRET!
-//             ) as ContextPayload;
-//
-//             /* рефреш токен валидный и мы можем отправить access токен клиенту */
-//             const user = await User.findOne({ id: payload.id });
-//             if (!user) {
-//                 throw new Error('user not found');
-//             }
-//             if (user.tokenVersion !== payload.version) {
-//                 throw new Error("versions of tokens aren't equal");
-//             }
-//             sendRefreshToken(res, createRefreshToken(user));
-//             return res.send({
-//                 ok: true,
-//                 accessToken: createAccessToken(user),
-//             });
-//         } catch (error) {
-//             logger.error(error);
-//             res.status(400).send({ ok: false, error });
-//         }
-//     },
-//     getCurrentUser: async (req, res) => {
-//         const token = req.headers.authorization;
-//         if (!token) {
-//             return res.status(401).send({
-//                 isOk: false,
-//                 message: 'no tokens was provided',
-//             });
-//         }
-//
-//         const contextPayload = verify(
-//             token,
-//             process.env.JWT_SECRET!
-//         ) as ContextPayload;
-//
-//         const user = await User.findOne({ id: contextPayload.id });
-//
-//         if (!user) {
-//             return res.status(404).send({
-//                 isOk: false,
-//                 message: 'user not found',
-//             });
-//         }
-//
-//         return res.send({
-//             user,
-//         });
-//     },
-//     logout: async (req, res) => {
-//         res.clearCookie('jid', {
-//             path: AUTH_COOKIES_PATH,
-//         }).send({
-//             isOk: true,
-//         });
-//     },
-// };

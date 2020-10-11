@@ -5,12 +5,19 @@ schema {
     mutation: Mutation
 }
 
+type ApiResponse {
+    error: String!
+    ok: Boolean!
+}
+
 type LoginResponse {
     accessToken: String!
     user: User!
 }
 
 type Mutation {
+    addPost(body: String!, title: String!): Post!
+    deletePost(id: Float!): ApiResponse!
     login(email: String!, password: String!): LoginResponse!
     register(email: String!, password: String!): Boolean!
     revokeRefreshTokens(id: Float!): Boolean!
