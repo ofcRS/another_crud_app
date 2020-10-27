@@ -3,18 +3,19 @@ import { observer } from 'mobx-react';
 
 import { Post } from './Post';
 import { CreatePost } from './CreatePost';
-
 import { usePostQuery } from 'graphql/generated';
+
+import { FetchDataWrapper } from './FetchDataWrapper';
 
 export const List: React.FC = observer(() => {
     const { data } = usePostQuery();
 
     return (
-        <div>
-            <CreatePost fetchPosts={() => null} />
+        <FetchDataWrapper>
+            <CreatePost />
             {data?.posts.map(post => (
-                <Post refreshList={() => null} key={post.id} post={post} />
+                <Post key={post.id} post={post} />
             ))}
-        </div>
+        </FetchDataWrapper>
     );
 });

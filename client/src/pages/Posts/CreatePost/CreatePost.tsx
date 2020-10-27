@@ -1,58 +1,33 @@
-import React from 'react';
-import { Formik, Form, Field, FormikHelpers } from 'formik';
+import React, { useContext } from 'react';
+import { Formik, Form, Field } from 'formik';
 import { observer } from 'mobx-react';
 
-import {
-    AddPostMutationVariables,
-    useAddPostMutation,
-    PostQuery,
-    PostDocument,
-} from 'graphql/generated';
+import { AddPostMutationVariables } from 'graphql/generated';
+
+import { postsContext } from '../context';
+import { Styled } from './CreatePost.styles';
 
 export const CreatePost = observer(() => {
-    const [addPost, { client }] = useAddPostMutation();
-
-    const onSubmit = async (
-        values: AddPostMutationVariables,
-        helpers: FormikHelpers<AddPostMutationVariables>
-    ) => {
-        const { data } = await addPost({ variables: values });
-        const current = client?.readQuery<PostQuery>({
-            query: PostDocument,
-        });
-        if (current?.posts && data?.addPost) {
-            const updatedPosts = [data.addPost, ...current?.posts];
-            client?.writeQuery<PostQuery>({
-                query: PostDocument,
-                data: {
-                    posts: updatedPosts,
-                },
-            });
-            helpers.resetForm();
-        }
-    };
+    const { onAddPost } = useContext(postsContext);
 
     return (
         <Formik<AddPostMutationVariables>
-            onSubmit={onSubmit}
+            onSubmit={onAddPost}
             initialValues={{
                 title: '',
                 body: '',
             }}
         >
             <Form>
-                <div
-                    style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                    }}
-                >
-                    <Field tabIndex={1} name="title" />
-                    <button tabIndex={3} type={'submit'}>
-                        submit
-                    </button>
-                </div>
-                <Field tabIndex={2} as="textarea" name="body" />
+                <Styled.CreatePost>
+                    <div>
+                        <Field tabIndex={1} name="title" />
+                        <button tabIndex={3} type={'submit'}>
+                            submit
+                        </button>
+                    </div>
+                    <Field tabIndex={2} as="textarea" name="body" />
+                </Styled.CreatePost>
                 {/*<textarea*/}
                 {/*    value={body}*/}
                 {/*    onChange={e => setBody(e.target.value)}*/}

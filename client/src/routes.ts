@@ -1,7 +1,7 @@
 import React, { lazy } from 'react';
 
 export type Route = {
-    component: React.LazyExoticComponent<React.FC>;
+    component: React.LazyExoticComponent<React.FC> | React.FC;
     path: string;
     name?: string;
 };
@@ -18,6 +18,12 @@ export const mainMenuRoutes: TabRoute[] = [
         component: lazy(() => import('pages/Posts')),
         path: '/list',
         label: 'Posts',
+    },
+    {
+        name: 'Users',
+        component: () => null,
+        path: '/users',
+        label: 'Users',
     },
 ];
 

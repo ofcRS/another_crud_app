@@ -1,17 +1,18 @@
-import { Query, Resolver, Mutation, Arg } from 'type-graphql';
+import { Query, Resolver, Mutation, Arg, UseMiddleware } from 'type-graphql';
 
 import { Post } from 'entities';
 import { ApiResponse } from 'utils/ApiHandler';
+import { checkAuth } from 'middlewares/checkJwt';
 
 @Resolver()
 export class PostResolver {
     @Query(() => [Post])
-    // @UseMiddleware(checkAuth)
     posts() {
         return Post.find();
     }
 
     @Mutation(() => Post)
+    @UseMiddleware(checkAuth)
     async addPost(
         @Arg('title') title: string,
         @Arg('body') body: string
@@ -24,6 +25,7 @@ export class PostResolver {
     }
 
     @Mutation(() => ApiResponse)
+    @UseMiddleware(checkAuth)
     async deletePost(@Arg('id') id: number): Promise<ApiResponse> {
         await Post.delete(id);
         return {

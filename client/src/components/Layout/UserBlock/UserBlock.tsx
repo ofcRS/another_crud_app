@@ -22,16 +22,14 @@ export const UserBlock: React.FC<Props> = observer(() => {
     const onClickLogout = async () => app.logout();
 
     return (
-        <div style={{ border: '1px solid black', borderRadius: '5px' }}>
-            <Styled.UserBlock>
-                {userBlock}
-                <Styled.UserMenu>
-                    <button onClick={() => ui.toggleRegistryModal(true)}>
-                        login
-                    </button>
-                    <button onClick={onClickLogout}>logout</button>
-                </Styled.UserMenu>
-            </Styled.UserBlock>
-        </div>
+        <Styled.UserBlock>
+            {userBlock}
+            <Styled.UserMenu>
+                <button onClick={() => ui.toggleRegistryModal(true)}>
+                    login
+                </button>
+                <button onClick={onClickLogout}>logout</button>
+            </Styled.UserMenu>
+        </Styled.UserBlock>
     );
 });

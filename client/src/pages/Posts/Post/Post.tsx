@@ -1,34 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import { Props } from './Post.types';
 import { Styled } from './Post.styles';
-import {
-    PostDocument,
-    PostQuery,
-    useDeletePostMutation,
-} from 'graphql/generated';
+import { postsContext } from '../context';
 
 export const Post: React.FC<Props> = ({ post }: Props) => {
-    const [deletePost, { client }] = useDeletePostMutation();
-    const onDelete = async () => {
-        await deletePost({
-            variables: {
-                id: post.id,
-            },
-        });
-        const current = client?.readQuery<PostQuery>({
-            query: PostDocument,
-        });
-        if (current?.posts) {
-            const updatedList = current.posts.filter(
-                ({ id }) => id !== post.id
-            );
-            client?.writeQuery<PostQuery>({
-                query: PostDocument,
-                data: { posts: updatedList },
-            });
-        }
-    };
+    const { onDeletePost } = useContext(postsContext);
 
     return (
         <Styled.Post>
@@ -37,7 +14,7 @@ export const Post: React.FC<Props> = ({ post }: Props) => {
                     {
                         key: 'rm',
                         label: 'Remove post',
-                        onClick: onDelete,
+                        onClick: () => onDeletePost(post.id),
                     },
                 ]}
             />

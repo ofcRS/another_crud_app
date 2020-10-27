@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { medium } from 'styles/breakpoints';
 
 const UserMenu = styled.div`
     position: absolute;
@@ -14,6 +15,10 @@ const UserBlock = styled.div`
         ${UserMenu} {
             display: block;
         }
+    }
+
+    @media (max-height: ${medium}) {
+        display: none;
     }
 `;
 

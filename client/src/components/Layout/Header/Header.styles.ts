@@ -6,6 +6,11 @@ const Header = styled.header`
     margin-bottom: 32px;
 
     background: #3080d6;
+
+    svg {
+        height: 100%;
+        padding: 8px;
+    }
 `;
 
 export const Styled = {
