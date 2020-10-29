@@ -1,14 +1,15 @@
 import React from 'react';
+import { observer } from 'mobx-react';
 
-import BurgerButton from 'assets/svg/burgerButton.svg';
+import { Burger } from '../Burger';
 
 import { Props } from './Header.types';
 import { Styled } from './Header.styles';
 
-export const Header: React.FC<Props> = () => {
+export const Header = observer<React.FC<Props>>(() => {
     return (
         <Styled.Header>
-            <BurgerButton />
+            <Burger />
         </Styled.Header>
     );
-};
+});

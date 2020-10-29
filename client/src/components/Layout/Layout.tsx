@@ -2,7 +2,7 @@ import React from 'react';
 
 import { AuthModal } from 'pages/AuthModal';
 
-import { Menu } from './Menu';
+import { Sidebar } from './Sidebar';
 import { UserBlock } from './UserBlock';
 import { Header } from './Header';
 
@@ -13,7 +13,7 @@ export const Layout: React.FC = ({ children }) => (
         <AuthModal />
         <Header />
         <Styled.Layout>
-            <Menu />
+            <Sidebar />
             <Styled.MainArea>{children}</Styled.MainArea>
             <UserBlock />
         </Styled.Layout>

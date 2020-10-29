@@ -1,15 +1,14 @@
 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-    <path
-          d="M 0,0 L 24,24
-                 M 12,12 L 12,12
-                 M 0,24 L 24, 0
+    <!--<path
+          d="M 0,3 L 24,3
+             M 0,12 L 24,12
+             M 0,21 L 24, 21
 "
           fill="none"
-          stroke="red"
           stroke-width="3"
     >
         <animate
-                 begin="_myEvent"
+                 begin="indefinite"
                  attributeName="d"
                  dur="0.5"
                  repeatCount="1"
@@ -18,12 +17,12 @@
                  M 0,3 L 24,3
                  M 0,12 L 24,12
                  M 0,21 L 24, 21;
-                 M 0,0 L 24,24
+                 M 1,1 L 23,23
                  M 12,12 L 12,12
-                 M 0,24 L 24, 0"
+                 M 1,23 L 23, 1"
         />
         <animate
-                begin="_myEvent"
+                begin="indefinite"
                 fill="freeze"
                 attributeName="d"
                 dur="0.5"
@@ -35,20 +34,10 @@
                 M 0,12 L 24,12
                 M 0,21 L 24, 21"
         />
-    </path>
-    <!--<path
-            d="M 0,3 L 24,3 M 0,21 L 24, 21"
-            fill="none"
-            stroke="red"
-            stroke-width="3"
-    >
-        <animate attributeName="d"
-                 dur="1s"
-                 repeatCount="indefinite"
-                 values="
-                 M 0,0 L 24,24 M 0,24 L 24, 0;
-                 M 0,0 L 24,24 M 0,24 L 12, 12;
-                 M 0,0 L 24,24 M 0,24 L 24, 0"
-        />
     </path>-->
+    <path
+            d="M2 6a1 1 0 011-1h18a1 1 0 110 2H3a1 1 0 01-1-1zm0 6a1 1 0 011-1h18a1 1 0 110 2H3a1 1 0 01-1-1zm0 6a1 1 0 011-1h18a1 1 0 110 2H3a1 1 0 01-1-1z
+"
+            fill="red"
+    />
 </svg>

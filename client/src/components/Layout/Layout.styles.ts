@@ -5,14 +5,11 @@ const Layout = styled.div`
     flex-wrap: wrap;
 
     background: #fff;
-
-    > * {
-        margin: 0 16px;
-    }
 `;
 
 const MainArea = styled.main`
     width: 50vw;
+    margin: 0 auto;
 `;
 
 export const Styled = {
