@@ -4,11 +4,16 @@ const Header = styled.header`
     display: flex;
     align-items: center;
 
-    height: ${({ theme }) => theme.layout.headerHeight};
+    height: ${({ theme }) => theme.layout.headerHeight}px;
     width: 100%;
-    margin-bottom: 32px;
 
     background: ${({ theme }) => theme.colors.primaryColor};
+
+    svg {
+        path {
+            fill: ${({ theme }) => theme.colors.secondaryColor};
+        }
+    }
 `;
 
 export const Styled = {

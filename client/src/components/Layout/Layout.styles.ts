@@ -3,8 +3,10 @@ import styled from 'styled-components';
 const Layout = styled.div`
     display: flex;
     flex-wrap: wrap;
+    height: calc(100vh - ${({ theme }) => theme.layout.headerHeight}px);
 
-    background: #fff;
+    background: ${({ theme }) => theme.colors.baseBackground};
+    color: ${({ theme }) => theme.colors.neutral};
 `;
 
 const MainArea = styled.main`

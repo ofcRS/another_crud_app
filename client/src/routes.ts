@@ -21,7 +21,7 @@ export const mainMenuRoutes: TabRoute[] = [
     },
     {
         name: 'Users',
-        component: () => null,
+        component: lazy(() => import('pages/Users')),
         path: '/users',
         label: 'Users',
     },

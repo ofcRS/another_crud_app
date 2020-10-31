@@ -14,12 +14,13 @@ const Sidebar = styled.nav`
     height: 100%;
     border-right: 1px solid black;
 
-    background: #fff;
+    background: ${({ theme }) => theme.colors.baseBackground};
 
     @media (min-width: ${medium}) {
         position: static;
         border: 1px solid black;
         border-radius: 5px;
+        height: 100%;
     }
 `;
 
@@ -27,16 +28,19 @@ const NavLink = styled(NativeNavLink)`
     display: block;
     padding: 8px;
 
+    color: ${({ theme }) => theme.colors.neutral};
+    text-decoration: none;
+
     &.active {
-        background: red;
+        background: ${({ theme }) => theme.colors.active};
     }
 `;
 
 const SidebarHeader = styled.div`
     display: flex;
-    background: #fff;
+    background: ${({ theme }) => theme.colors.secondaryColor};
 
-    height: ${({ theme }) => theme.layout.headerHeight};
+    height: ${({ theme }) => theme.layout.headerHeight}px;
 
     @media (min-width: ${medium}) {
         display: none;

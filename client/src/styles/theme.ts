@@ -1,8 +1,12 @@
 export const theme = {
     layout: {
-        headerHeight: '48px',
+        headerHeight: 56,
     },
     colors: {
-        primaryColor: '#3080d6',
+        primaryColor: '#2b2d42',
+        secondaryColor: '#8d99ae',
+        baseBackground: '#1F2223',
+        neutral: '#edf2f4',
+        active: '#ef233c',
     },
 } as const;

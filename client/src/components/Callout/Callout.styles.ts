@@ -25,15 +25,23 @@ const fadeOut = keyframes`
     }
 `;
 
+const Callout = styled.div<Position & StyledCalloutProps>`
+    position: absolute;
+    top: ${({ y }) => y + 'px'};
+    left: ${({ x }) => x + 'px'};
+
+    height: max-content;
+
+    color: ${({ theme }) => theme.colors.neutral};
+
+    background: ${({ theme }) => theme.colors.baseBackground};
+
+    animation-name: ${({ show }) => (show ? fadeIn : fadeOut)};
+    animation-duration: ${smoothTime.ms};
+    animation-timing-function: ${smoothTiming};
+    animation-fill-mode: both;
+`;
+
 export const Styled = {
-    Callout: styled.div<Position & StyledCalloutProps>`
-        position: absolute;
-        top: ${({ y }) => y + 'px'};
-        left: ${({ x }) => x + 'px'};
-        height: max-content;
-        animation-name: ${({ show }) => (show ? fadeIn : fadeOut)};
-        animation-duration: ${smoothTime.ms};
-        animation-timing-function: ${smoothTiming};
-        animation-fill-mode: both;
-    `,
+    Callout,
 };

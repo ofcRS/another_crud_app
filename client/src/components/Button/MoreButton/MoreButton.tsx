@@ -5,10 +5,9 @@ import { Callout } from 'components';
 import { Styled } from './MoreButton.styles';
 import { Props } from './MoreButton.types';
 
-import Icon from './assets/more.svg';
-
 import { useDelayUnmount } from 'hooks/useDelayUnmount';
 import { smoothTime } from 'consts/animation';
+import { Icon } from '../../Icon';
 
 export const MoreButton: React.FC<Props> = ({
     calloutItems,
@@ -29,7 +28,7 @@ export const MoreButton: React.FC<Props> = ({
                 onClick={() => setCalloutHidden(false)}
                 {...props}
             >
-                <Icon />
+                <Icon iconName="more" />
             </Styled.MoreButton>
             {shouldRender && (
                 <Callout

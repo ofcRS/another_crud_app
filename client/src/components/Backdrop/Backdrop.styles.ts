@@ -20,6 +20,7 @@ const fadeOut = keyframes`
 `;
 
 const Backdrop = styled.div<{ show: boolean }>`
+    z-index: 1;
     visibility: ${({ show }) => (show ? 'visible' : 'hidden')};
     left: 0;
     top: 0;
