@@ -14,10 +14,16 @@ const Header = styled.header`
 
     background: ${({ theme }) => theme.colors.primaryColor};
 
-    svg {
-        path {
+    > :first-child {
+        margin-right: 16px;
+
+        svg {
             fill: ${({ theme }) => theme.colors.secondaryColor};
         }
+    }
+
+    > input {
+        margin-right: 16px;
     }
 
     > :last-child {

@@ -21,7 +21,7 @@ export const rootStore = RootStore.create({
     }),
     ui: UIStoreModel.create({
         registryModalOpen: false,
-        sidebarOpen: true,
+        sidebarOpen: false,
     }),
 });
 

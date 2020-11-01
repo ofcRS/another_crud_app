@@ -5,6 +5,7 @@ import { Styled } from './UserBlock.styles';
 import { Props } from './UserBlock.types';
 
 import { useStore } from 'store';
+import { Button } from 'components/Button';
 
 export const UserBlock: React.FC<Props> = observer(() => {
     const { ui, app } = useStore();
@@ -14,7 +15,9 @@ export const UserBlock: React.FC<Props> = observer(() => {
     if (!app.initialized) {
         userBlock = null;
     } else if (!app.user) {
-        userBlock = 'not logged in';
+        userBlock = (
+            <Button onClick={() => ui.toggleRegistryModal(true)}>Login</Button>
+        );
     } else {
         userBlock = `logged in as: ${app.user.email}`;
     }
@@ -24,12 +27,9 @@ export const UserBlock: React.FC<Props> = observer(() => {
     return (
         <Styled.UserBlock>
             {userBlock}
-            <Styled.UserMenu>
-                <button onClick={() => ui.toggleRegistryModal(true)}>
-                    login
-                </button>
+            {/*   <Styled.UserMenu>
                 <button onClick={onClickLogout}>logout</button>
-            </Styled.UserMenu>
+            </Styled.UserMenu>*/}
         </Styled.UserBlock>
     );
 });
