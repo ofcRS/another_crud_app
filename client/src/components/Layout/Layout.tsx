@@ -8,14 +8,16 @@ import { Header } from './Header';
 
 import { Styled } from './Layout.styles';
 
-export const Layout: React.FC = ({ children }) => (
-    <>
-        <AuthModal />
-        <Header />
-        <Styled.Layout>
-            <Sidebar />
-            <Styled.MainArea>{children}</Styled.MainArea>
-            <UserBlock />
-        </Styled.Layout>
-    </>
-);
+export const Layout: React.FC = ({ children }) => {
+    return (
+        <>
+            <AuthModal />
+            <Header />
+            <Styled.Layout>
+                <Sidebar />
+                <Styled.MainArea>{children}</Styled.MainArea>
+                <UserBlock />
+            </Styled.Layout>
+        </>
+    );
+};

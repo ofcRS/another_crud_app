@@ -17,10 +17,11 @@ const Sidebar = styled.nav`
     background: ${({ theme }) => theme.colors.baseBackground};
 
     @media (min-width: ${medium}) {
-        position: static;
+        top: ${({ theme }) => theme.layout.headerHeight}px;
+        height: calc(100vh - ${({ theme }) => theme.layout.headerHeight}px);
+        position: sticky;
         border: 1px solid black;
         border-radius: 5px;
-        height: 100%;
     }
 `;
 
