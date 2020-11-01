@@ -15,27 +15,6 @@ export const List: React.FC = observer(() => {
             {data?.posts.map(post => (
                 <Post key={post.id} post={post} />
             ))}
-            {data?.posts.map(post => (
-                <Post key={post.id} post={post} />
-            ))}
-            {data?.posts.map(post => (
-                <Post key={post.id} post={post} />
-            ))}
-            {data?.posts.map(post => (
-                <Post key={post.id} post={post} />
-            ))}
-            {data?.posts.map(post => (
-                <Post key={post.id} post={post} />
-            ))}
-            {data?.posts.map(post => (
-                <Post key={post.id} post={post} />
-            ))}
-            {data?.posts.map(post => (
-                <Post key={post.id} post={post} />
-            ))}
-            {data?.posts.map(post => (
-                <Post key={post.id} post={post} />
-            ))}
         </FetchDataWrapper>
     );
 });

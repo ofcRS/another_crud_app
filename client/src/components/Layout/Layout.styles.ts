@@ -2,7 +2,6 @@ import styled from 'styled-components';
 
 const Layout = styled.div`
     display: flex;
-    flex-wrap: wrap;
     min-height: calc(100vh - ${({ theme }) => theme.layout.headerHeight}px);
 
     background: ${({ theme }) => theme.colors.baseBackground};
@@ -10,8 +9,9 @@ const Layout = styled.div`
 `;
 
 const MainArea = styled.main`
-    width: 50vw;
+    width: 70vw;
     margin: 0 auto;
+    padding: 16px;
 `;
 
 export const Styled = {

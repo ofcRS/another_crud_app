@@ -10,6 +10,7 @@ const Header = styled.header`
 
     height: ${({ theme }) => theme.layout.headerHeight}px;
     width: 100%;
+    padding-right: 16px;
 
     background: ${({ theme }) => theme.colors.primaryColor};
 
@@ -17,6 +18,10 @@ const Header = styled.header`
         path {
             fill: ${({ theme }) => theme.colors.secondaryColor};
         }
+    }
+
+    > :last-child {
+        margin-left: auto;
     }
 `;
 
