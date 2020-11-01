@@ -1,10 +1,4 @@
-import React, {
-    useCallback,
-    useEffect,
-    useReducer,
-    useRef,
-    useState,
-} from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 import { Styled } from './Callout.styles';
@@ -22,7 +16,14 @@ export const Callout: React.FC<Props> = ({
         y: 0,
     });
 
-    const calloutRef = useRef(null);
+    const calloutRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        window.addEventListener('resize', onDismiss);
+        return () => {
+            window.removeEventListener('resize', onDismiss);
+        };
+    }, [onDismiss]);
 
     const handleClickOutsideCallout = useCallback(
         (event: MouseEvent) => {
@@ -39,16 +40,24 @@ export const Callout: React.FC<Props> = ({
     );
 
     useEffect(() => {
-        if (target) {
+        const callout = calloutRef.current;
+        if (target && callout) {
             const yOffset = window.pageYOffset;
             const xOffset = window.pageXOffset;
 
             const targetWidth = target.offsetWidth;
             const targetHeight = target.offsetHeight;
 
-            const y =
-                yOffset + target.getBoundingClientRect().top + targetHeight;
-            const x = xOffset + target.getBoundingClientRect().left;
+            const targetBounding = target.getBoundingClientRect();
+            const calloutBounding = callout.getBoundingClientRect();
+
+            const y = yOffset + targetBounding.top + targetHeight;
+            let x = xOffset + targetBounding.left;
+
+            // Если слева от таргета нет места рендерим справа
+            if (calloutBounding.width + x > window.innerWidth) {
+                x -= calloutBounding.width;
+            }
 
             setPosition({ y, x });
         }
