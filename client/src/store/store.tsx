@@ -1,12 +1,14 @@
-import { types, flow } from 'mobx-state-tree';
+import { types, flow, getRoot } from 'mobx-state-tree';
 
 import { client } from 'apolloClient';
 
-import { inMemoryToken, refreshToken, getCurrentUser } from 'utils/auth';
 import { UserModel } from 'models';
 import { LoginMutation } from 'graphql/generated';
+
+import { RootStore } from './RootStore';
+import { inMemoryToken, refreshToken, getCurrentUser } from 'utils/auth';
 import { request } from 'utils/request';
-import { asyncFnToGenerator } from '../utils/typeCasting';
+import { asyncFnToGenerator } from 'utils/typeCasting';
 
 export const AppStoreModel = types
     .model({
@@ -33,6 +35,9 @@ export const AppStoreModel = types
                 } = response;
                 inMemoryToken.accessToken = accessToken;
                 self.user = UserModel.create(user);
+                const { ui } = getRoot<typeof RootStore>(self);
+                ui.afterAuthCallback?.();
+                ui.toggleRegistryModal(false);
             }
         },
         logout: flow(function*() {

@@ -9,8 +9,6 @@ const Sidebar = styled.nav`
     top: 0;
     z-index: 2;
 
-    transition: transform 100ms;
-
     width: 80%;
     max-width: 300px;
     height: 100%;
@@ -19,6 +17,7 @@ const Sidebar = styled.nav`
     background: ${({ theme }) => theme.colors.baseBackground};
 
     @media (min-width: ${medium}) {
+        position: sticky;
         top: ${({ theme }) => theme.layout.headerHeight}px;
         height: calc(100vh - ${({ theme }) => theme.layout.headerHeight}px);
         border: 1px solid black;
