@@ -13,18 +13,11 @@ import { Styled } from './Header.styles';
 import { useStore } from 'store';
 
 export const Header = observer<React.FC<Props>>(() => {
-    const { ui, app } = useStore();
+    const { app } = useStore();
     const history = useHistory();
 
-    const navigateToNewPost = () => history.push('/users');
-
-    const onClickNewPostButton = () => {
-        if (!app.user) {
-            ui.toggleRegistryModal(true, navigateToNewPost);
-        } else {
-            navigateToNewPost();
-        }
-    };
+    const onClickNewPostButton = () =>
+        app.checkAuthBefore(() => history.push('/new-post'));
 
     return (
         <Styled.Header>

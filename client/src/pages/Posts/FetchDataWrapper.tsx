@@ -4,35 +4,14 @@ import { postsContext } from './context';
 import {
     PostDocument,
     PostQuery,
-    useAddPostMutation,
     useDeletePostMutation,
 } from 'graphql/generated';
 
-import { OnAddPost, OnDeletePost } from './Posts.types';
+import { OnDeletePost } from './Posts.types';
+import { List } from './List';
 
-export const FetchDataWrapper: React.FC = ({ children }) => {
-    const [addPost, { client }] = useAddPostMutation();
-    const [deletePost] = useDeletePostMutation();
-
-    const onAddPost = useCallback<OnAddPost>(
-        async (values, helpers) => {
-            const { data } = await addPost({ variables: values });
-            const current = client?.readQuery<PostQuery>({
-                query: PostDocument,
-            });
-            if (current?.posts && data?.addPost) {
-                const updatedPosts = [data.addPost, ...current?.posts];
-                client?.writeQuery<PostQuery>({
-                    query: PostDocument,
-                    data: {
-                        posts: updatedPosts,
-                    },
-                });
-                helpers.resetForm();
-            }
-        },
-        [addPost, client]
-    );
+export const FetchDataWrapper: React.FC = () => {
+    const [deletePost, { client }] = useDeletePostMutation();
 
     const onDeletePost = useCallback<OnDeletePost>(
         async targetId => {
@@ -61,10 +40,9 @@ export const FetchDataWrapper: React.FC = ({ children }) => {
         <postsContext.Provider
             value={{
                 onDeletePost,
-                onAddPost,
             }}
         >
-            {children}
+            <List />
         </postsContext.Provider>
     );
 };

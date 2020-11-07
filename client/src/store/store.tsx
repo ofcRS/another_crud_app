@@ -52,4 +52,12 @@ export const AppStoreModel = types
                 self.user = null;
             }
         }),
+        checkAuthBefore: (callback: () => void) => {
+            if (!self.user) {
+                const { ui } = getRoot<typeof RootStore>(self);
+                ui.toggleRegistryModal(true, callback);
+            } else {
+                callback();
+            }
+        },
     }));

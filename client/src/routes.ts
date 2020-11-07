@@ -10,13 +10,19 @@ export type TabRoute = Route & {
     label: string;
 };
 
-export const routes: Route[] = [];
+export const routes: Route[] = [
+    {
+        component: lazy(() => import('pages/PostCreating')),
+        path: '/new-post',
+    },
+];
 
+// роуты которые отредарятся в основное меню приложения
 export const mainMenuRoutes: TabRoute[] = [
     {
         name: 'Posts',
         component: lazy(() => import('pages/Posts')),
-        path: '/list',
+        path: '/posts',
         label: 'Posts',
     },
     {

@@ -4,7 +4,7 @@ import { Redirect, Route, Router, Switch } from 'react-router';
 import { createBrowserHistory } from 'history';
 import { ThemeProvider } from 'styled-components';
 
-import { Layout } from 'components/Layout';
+import { Layout } from 'pages/Layout';
 
 import { allRoutes } from 'routes';
 
