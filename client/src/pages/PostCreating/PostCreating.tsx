@@ -7,6 +7,7 @@ import { postCreatingContext } from './context';
 import { AddPostMutationVariables } from 'graphql/generated';
 
 import { Styled } from './PostCreating.styles';
+import { TextEditor } from './TextEditor';
 
 export const PostCreating = observer(() => {
     const { onAddPost } = useContext(postCreatingContext);
@@ -22,7 +23,7 @@ export const PostCreating = observer(() => {
             <Form>
                 <Styled.CreatePost>
                     <Field component={Styled.Title} tabIndex={1} name="title" />
-                    <Field tabIndex={2} component={Styled.Body} name="body" />
+                    <TextEditor />
                 </Styled.CreatePost>
             </Form>
         </Formik>

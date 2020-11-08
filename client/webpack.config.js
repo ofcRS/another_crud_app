@@ -44,6 +44,10 @@ module.exports = () => {
         module: {
             rules: [
                 {
+                    test: /\.css$/i,
+                    use: ['style-loader', 'css-loader']
+                },
+                {
                     test: /\.tsx?$/,
                     exclude: /(node_modules|bower_components)/,
                     loader: 'babel-loader',
