@@ -17,3 +17,6 @@ export const throttle = (fn: (...args: any[]) => void, delay: number) => {
         }
     };
 };
+
+export const delay = (ms: number) =>
+    new Promise(resolve => setTimeout(() => resolve(), ms));

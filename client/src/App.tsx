@@ -38,7 +38,7 @@ const App: React.FC = observer(() => {
                                     component={component}
                                 />
                             ))}
-                            <Redirect to={'/list'} />
+                            <Redirect to={'/posts'} />
                         </Switch>
                     </Suspense>
                 </Layout>
