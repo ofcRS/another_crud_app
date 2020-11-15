@@ -1,11 +1,13 @@
 import { Query, Resolver, Mutation, Arg, UseMiddleware } from 'type-graphql';
 
+import { BaseResolver } from './BaseResolver';
+
 import { Post } from 'entities';
-import { ApiResponse } from 'utils/ApiHandler';
 import { checkAuth } from 'middlewares/checkJwt';
+import { ApiResponse } from 'utils/ApiHandler';
 
 @Resolver()
-export class PostResolver {
+export class PostResolver extends BaseResolver {
     @Query(() => [Post])
     posts() {
         return Post.find();

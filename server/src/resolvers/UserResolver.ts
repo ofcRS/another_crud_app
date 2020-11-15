@@ -17,6 +17,7 @@ import {
     createRefreshToken,
     sendRefreshToken,
 } from '../services/auth';
+import { BaseResolver } from './BaseResolver';
 
 @ObjectType()
 class LoginResponse {
@@ -28,7 +29,7 @@ class LoginResponse {
 }
 
 @Resolver()
-export class UserResolver {
+export class UserResolver extends BaseResolver {
     @Query(() => String)
     hello(): string {
         return 'hi!';
@@ -69,6 +70,9 @@ export class UserResolver {
         }
 
         sendRefreshToken(res, createRefreshToken(user));
+
+        const eventManager = this.eventManager.getEventManager();
+        eventManager.emit('USER_HAS_REGISTERED', { user });
 
         return {
             accessToken: createAccessToken(user),
