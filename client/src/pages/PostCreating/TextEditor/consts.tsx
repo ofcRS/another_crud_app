@@ -9,20 +9,19 @@ export const inlineStylesControls: InlineStyleControl[] = [
         inlineStyle: 'ITALIC',
         label: 'Italic',
     },
-    { inlineStyle: 'CODE', label: 'Code' },
 ];
 
 export const blockTypeControls: BlockTypeControl[] = [
     {
-        label: 'h1',
+        label: 'H1',
         type: 'header-one',
     },
     {
-        label: 'h2',
+        label: 'H2',
         type: 'header-two',
     },
     {
-        label: 'h3',
+        label: 'H3',
         type: 'header-three',
     },
 ];

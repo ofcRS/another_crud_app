@@ -11,7 +11,6 @@ const Layout = styled.div`
 const MainArea = styled.main`
     width: 70vw;
     margin: 0 auto;
-    padding: 16px;
 `;
 
 export const Styled = {

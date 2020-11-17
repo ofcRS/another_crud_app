@@ -8,6 +8,7 @@ export const theme = {
         baseBackground: '#1F2223',
         neutral: '#edf2f4',
         active: '#ef233c',
+        dark: '#181a1b',
 
         pastel: ['#f25f5c', '#ffe066', '#247ba0', '#70c1b3'],
     },

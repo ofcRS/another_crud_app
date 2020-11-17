@@ -12,7 +12,7 @@ export type InlineStyleControl = {
     inlineStyle: DraftInlineStyleType;
 };
 
-type BlockType =
+export type BlockType =
     | 'header-one'
     | 'header-two'
     | 'header-three'

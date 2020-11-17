@@ -10,7 +10,7 @@ import {
     convertToRaw,
 } from 'draft-js';
 
-import { Props } from './TextEditor.types';
+import { BlockType, Props } from './TextEditor.types';
 import { Styled } from './TextEditor.styles';
 import { getEntityStrategy } from './utils';
 import { inlineStylesControls, blockTypeControls } from './consts';
@@ -92,21 +92,33 @@ export const TextEditor: React.FC<Props> = () => {
         // getEntity();
     };
 
+    const isTypeSelected = (type: BlockType) => {
+        const anchorKey = editorState.getSelection().getAnchorKey();
+        const currentBlock = editorState
+            .getCurrentContent()
+            .getBlockForKey(anchorKey);
+        return currentBlock.getType() === type;
+    };
+
     return (
         <Styled.TextEditor>
             <Styled.ControlsWrapper>
+                {blockTypeControls.map(({ label, type }) => (
+                    <Styled.ControlButton
+                        selected={isTypeSelected(type)}
+                        onClick={() => toggleBlockType(type)}
+                        key={type}
+                    >
+                        {label}
+                    </Styled.ControlButton>
+                ))}
                 {inlineStylesControls.map(({ inlineStyle, label }) => (
-                    <button
+                    <Styled.ControlButton
                         key={inlineStyle}
                         onClick={() => toggleInlineStyle(inlineStyle)}
                     >
                         {label}
-                    </button>
-                ))}
-                {blockTypeControls.map(({ label, type }) => (
-                    <button onClick={() => toggleBlockType(type)} key={type}>
-                        {label}
-                    </button>
+                    </Styled.ControlButton>
                 ))}
                 <button onClick={applyLink}>Link</button>
                 <button onClick={logContent}>Log</button>

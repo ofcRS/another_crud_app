@@ -7,12 +7,27 @@ const TextEditor = styled.div`
 
     .DraftEditor-root {
         height: 100%;
-        border: 1px solid ${({ theme }) => theme.colors.neutral};
     }
 `;
 
 const ControlsWrapper = styled.div`
     display: flex;
+
+    margin-bottom: 16px;
+`;
+
+const ControlButton = styled.button<{ selected?: boolean }>`
+    background: ${({ theme, selected }) =>
+        selected ? theme.colors.neutral : 'none'};
+    color: ${({ theme, selected }) =>
+        selected ? theme.colors.baseBackground : theme.colors.neutral};
+    padding: 8px;
+    border: 1px solid ${({ theme }) => theme.colors.neutral};
+    border-radius: 4px;
+
+    :not(:last-child) {
+        margin-right: 4px;
+    }
 `;
 
 const Token = styled.span`
@@ -30,4 +45,5 @@ export const Styled = {
     ControlsWrapper,
     Token,
     lineStyleMap,
+    ControlButton,
 };

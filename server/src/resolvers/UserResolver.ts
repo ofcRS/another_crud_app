@@ -72,7 +72,7 @@ export class UserResolver extends BaseResolver {
         sendRefreshToken(res, createRefreshToken(user));
 
         const eventManager = this.eventManager.getEventManager();
-        eventManager.emit('USER_HAS_REGISTERED', { user });
+        eventManager.emit('USER_HAS_LOGGED_IN', { user });
 
         return {
             accessToken: createAccessToken(user),
@@ -103,6 +103,8 @@ export class UserResolver extends BaseResolver {
             user.password = hashedPassword;
             user.email = email;
             await user.save();
+            const eventManager = this.eventManager.getEventManager();
+            eventManager.emit('USER_HAS_REGISTERED', { user });
             return true;
         } catch (error) {
             throw error;

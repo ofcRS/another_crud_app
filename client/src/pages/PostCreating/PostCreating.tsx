@@ -22,7 +22,12 @@ export const PostCreating = observer(() => {
         >
             <Form>
                 <Styled.CreatePost>
-                    <Field component={Styled.Title} tabIndex={1} name="title" />
+                    <Field
+                        component={Styled.Title}
+                        tabIndex={1}
+                        name="title"
+                        placeholder="Title"
+                    />
                     <TextEditor />
                 </Styled.CreatePost>
             </Form>

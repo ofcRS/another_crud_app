@@ -29,9 +29,6 @@ export class EventManager {
 
     private initListeners = () => {
         const manager = this.getEventManager();
-        manager.on('USER_HAS_REGISTERED', (...args) => {
-            console.log(...args);
-        });
     };
 
     getEventManager = () => {
