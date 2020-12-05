@@ -5,7 +5,9 @@ import {
     DraftInlineStyleType,
 } from 'draft-js';
 
-export type Props = {};
+export type Props = {
+    name: string;
+};
 
 export type InlineStyleControl = {
     label: string;
@@ -26,7 +28,7 @@ export type BlockTypeControl = {
 };
 
 export type GetEntityStrategy = (
-    mutabily: DraftEntityMutability
+    mutability: DraftEntityMutability
 ) => (
     block: ContentBlock,
     callback: (start: number, end: number) => void,

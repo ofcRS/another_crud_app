@@ -4,12 +4,13 @@ import { Styled as BaseButton } from '../Button.styles';
 
 const MoreButton = styled(BaseButton.Button)`
     position: relative;
-    width: 15px;
-    height: 25px;
     background: none;
+
     border: none;
+    padding: 0;
 
     svg {
+        height: 24px;
         fill: ${({ theme }) => theme.colors.neutral};
     }
 `;

@@ -31,7 +31,7 @@ const ControlButton = styled.button<{ selected?: boolean }>`
 `;
 
 const Token = styled.span`
-    color: ${({ theme }) => theme.colors.pastel[1]};
+    color: ${({ theme }) => theme.colors.pastel[0]};
 `;
 
 const lineStyleMap: DraftStyleMap = {

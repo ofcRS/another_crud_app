@@ -6,52 +6,67 @@ import {
     RichUtils,
     DraftInlineStyleType,
     Modifier,
-    CompositeDecorator,
     convertToRaw,
+    CompositeDecorator,
 } from 'draft-js';
+import { useField } from 'formik';
 
 import { BlockType, Props } from './TextEditor.types';
 import { Styled } from './TextEditor.styles';
-import { getEntityStrategy } from './utils';
+
 import { inlineStylesControls, blockTypeControls } from './consts';
 
 import 'draft-js/dist/Draft.css';
-import { Token } from './Token';
 
-export const TextEditor: React.FC<Props> = () => {
+import { Token } from './Token';
+import { getEntityStrategy } from './utils';
+import { LinkModal } from './LinkModal';
+
+import { useEffectOnce } from 'hooks/useEffectOnce';
+
+export const TextEditor: React.FC<Props> = ({ name }) => {
+    const [_, { value: editorState }, { setValue: setEditorState }] = useField<
+        EditorState
+    >(name);
     const editorRef = useRef<Editor>(null);
-    const [editorState, setEditorState] = useState<EditorState>(() => {
+
+    const [linkModalCallback, setLinkModalCallback] = useState<
+        ((url: string) => void) | null
+    >(null);
+
+    useEffectOnce(() => {
         const decorator = new CompositeDecorator([
             {
                 component: Token,
-
                 strategy: getEntityStrategy('IMMUTABLE'),
             },
         ]);
-        return EditorState.createEmpty(decorator);
+        setEditorState(EditorState.set(editorState, { decorator }));
     });
 
     const applyLink = () => {
-        const contentState = editorState.getCurrentContent();
-        const selectionState = editorState.getSelection();
-        const contentStateWithEntity = contentState.createEntity(
-            'LINK',
-            'IMMUTABLE',
-            {
-                url: 'http://www.ozon.com',
-            }
-        );
-        const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
+        setLinkModalCallback(() => (url: string) => {
+            const contentState = editorState.getCurrentContent();
+            const selectionState = editorState.getSelection();
+            const contentStateWithEntity = contentState.createEntity(
+                'LINK',
+                'IMMUTABLE',
+                {
+                    url,
+                }
+            );
+            const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
 
-        const contentStateWithLink = Modifier.applyEntity(
-            contentStateWithEntity,
-            selectionState,
-            entityKey
-        );
-        const newEditorState = EditorState.set(editorState, {
-            currentContent: contentStateWithLink,
+            const contentStateWithLink = Modifier.applyEntity(
+                contentStateWithEntity,
+                selectionState,
+                entityKey
+            );
+            const newEditorState = EditorState.set(editorState, {
+                currentContent: contentStateWithLink,
+            });
+            setEditorState(newEditorState);
         });
-        setEditorState(newEditorState);
     };
 
     const getEntity = () => {
@@ -76,19 +91,14 @@ export const TextEditor: React.FC<Props> = () => {
         []
     );
 
-    const toggleInlineStyle = (style: DraftInlineStyleType) => {
-        setEditorState(prevState =>
-            RichUtils.toggleInlineStyle(prevState, style)
-        );
-    };
+    const toggleInlineStyle = (style: DraftInlineStyleType) =>
+        setEditorState(RichUtils.toggleInlineStyle(editorState, style));
 
-    const toggleBlockType = (type: string) => {
-        setEditorState(prevState => RichUtils.toggleBlockType(prevState, type));
-    };
+    const toggleBlockType = (type: string) =>
+        setEditorState(RichUtils.toggleBlockType(editorState, type));
 
     const logContent = () => {
         console.log(convertToRaw(editorState.getCurrentContent()));
-
         // getEntity();
     };
 
@@ -102,6 +112,11 @@ export const TextEditor: React.FC<Props> = () => {
 
     return (
         <Styled.TextEditor>
+            <LinkModal
+                onSubmit={url => linkModalCallback?.(url)}
+                open={!!linkModalCallback}
+                onClose={() => setLinkModalCallback(null)}
+            />
             <Styled.ControlsWrapper>
                 {blockTypeControls.map(({ label, type }) => (
                     <Styled.ControlButton
@@ -120,12 +135,16 @@ export const TextEditor: React.FC<Props> = () => {
                         {label}
                     </Styled.ControlButton>
                 ))}
-                <button onClick={applyLink}>Link</button>
-                <button onClick={logContent}>Log</button>
+                <Styled.ControlButton onClick={applyLink}>
+                    Link
+                </Styled.ControlButton>
+                <Styled.ControlButton onClick={logContent}>
+                    Log
+                </Styled.ControlButton>
             </Styled.ControlsWrapper>
             <Editor
                 ref={editorRef}
-                tabIndex={2}
+                tabIndex={3}
                 editorState={editorState}
                 handleKeyCommand={handleKeyCommand}
                 onChange={setEditorState}

@@ -1,36 +1,45 @@
 import React, { useContext } from 'react';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Field } from 'formik';
 import { observer } from 'mobx-react';
 
 import { postCreatingContext } from './context';
 
-import { AddPostMutationVariables } from 'graphql/generated';
-
 import { Styled } from './PostCreating.styles';
 import { TextEditor } from './TextEditor';
+import { FormValues } from './PostCreating.types';
+import { convertToRaw, EditorState } from 'draft-js';
 
 export const PostCreating = observer(() => {
     const { onAddPost } = useContext(postCreatingContext);
 
+    const handleSubmit = ({ body, title }: FormValues) => {
+        console.log({ title, body: convertToRaw(body.getCurrentContent()) });
+    };
+
     return (
-        <Formik<AddPostMutationVariables>
-            onSubmit={onAddPost}
+        <Formik<FormValues>
+            onSubmit={handleSubmit}
             initialValues={{
                 title: '',
-                body: '',
+                body: EditorState.createEmpty(),
             }}
         >
-            <Form>
+            {({ submitForm }) => (
                 <Styled.CreatePost>
-                    <Field
-                        component={Styled.Title}
-                        tabIndex={1}
-                        name="title"
-                        placeholder="Title"
-                    />
-                    <TextEditor />
+                    <Styled.TitleWrapper>
+                        <Field
+                            as={Styled.Title}
+                            tabIndex={1}
+                            name="title"
+                            placeholder="Title"
+                        />
+                        <Styled.SubmitButton tabIndex={2} onClick={submitForm}>
+                            Save
+                        </Styled.SubmitButton>
+                    </Styled.TitleWrapper>
+                    <TextEditor name="body" />
                 </Styled.CreatePost>
-            </Form>
+            )}
         </Formik>
     );
 });

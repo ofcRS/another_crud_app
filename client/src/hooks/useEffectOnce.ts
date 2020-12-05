@@ -7,5 +7,5 @@ export const useEffectOnce = (effect: (...args: unknown[]) => void) => {
             effect();
         }
         setFired(true);
-    }, [effect, fired]);
+    }, [fired]);
 };

@@ -1,20 +1,23 @@
 import styled from 'styled-components';
+import { ButtonStyles } from 'components/Button';
 
 const CreatePost = styled.div`
-    width: 50vw;
-    margin: 0 auto;
     display: flex;
     flex-wrap: wrap;
+
+    width: 50vw;
+    margin: 0 auto;
+    padding: 16px;
 
     background: ${({ theme }) => theme.colors.dark};
 `;
 
 const Title = styled.input`
     width: 100%;
+    height: 48px;
     border: none;
     padding: 8px;
-    height: 48px;
-    margin-bottom: 8px;
+    margin-right: 8px;
 
     background: transparent;
 
@@ -31,7 +34,36 @@ const Title = styled.input`
     }
 `;
 
+const TitleWrapper = styled.div`
+    display: flex;
+
+    margin-bottom: 16px;
+    width: 100%;
+`;
+
+const SubmitButton = styled(ButtonStyles.Button)`
+    display: flex;
+    justify-content: center;
+
+    background: ${({ theme }) => theme.colors.active};
+
+    width: 30%;
+    border: 2px solid ${({ theme }) => theme.colors.neutral};
+
+    font-size: 16px;
+    text-align: center;
+    font-weight: bolder;
+
+    :focus,
+    :active {
+        outline: none;
+        border-width: 3px;
+    }
+`;
+
 export const Styled = {
     CreatePost,
     Title,
+    SubmitButton,
+    TitleWrapper,
 };
