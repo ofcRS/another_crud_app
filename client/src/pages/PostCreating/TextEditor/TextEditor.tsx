@@ -38,7 +38,7 @@ export const TextEditor: React.FC<Props> = ({ name }) => {
         const decorator = new CompositeDecorator([
             {
                 component: Token,
-                strategy: getEntityStrategy('IMMUTABLE'),
+                strategy: getEntityStrategy('LINK'),
             },
         ]);
         setEditorState(EditorState.set(editorState, { decorator }));
@@ -50,7 +50,7 @@ export const TextEditor: React.FC<Props> = ({ name }) => {
             const selectionState = editorState.getSelection();
             const contentStateWithEntity = contentState.createEntity(
                 'LINK',
-                'IMMUTABLE',
+                'MUTABLE',
                 {
                     url,
                 }
@@ -88,7 +88,7 @@ export const TextEditor: React.FC<Props> = ({ name }) => {
 
             return 'not-handled';
         },
-        []
+        [setEditorState]
     );
 
     const toggleInlineStyle = (style: DraftInlineStyleType) =>
@@ -110,10 +110,15 @@ export const TextEditor: React.FC<Props> = ({ name }) => {
         return currentBlock.getType() === type;
     };
 
+    const onSubmitLinkModal = (url: string) => {
+        linkModalCallback?.(url);
+        setLinkModalCallback(null);
+    };
+
     return (
         <Styled.TextEditor>
             <LinkModal
-                onSubmit={url => linkModalCallback?.(url)}
+                onSubmit={onSubmitLinkModal}
                 open={!!linkModalCallback}
                 onClose={() => setLinkModalCallback(null)}
             />

@@ -1,7 +1,7 @@
 import {
     ContentBlock,
     ContentState,
-    DraftEntityMutability,
+    DraftEntityType,
     DraftInlineStyleType,
 } from 'draft-js';
 
@@ -28,7 +28,7 @@ export type BlockTypeControl = {
 };
 
 export type GetEntityStrategy = (
-    mutability: DraftEntityMutability
+    type: DraftEntityType
 ) => (
     block: ContentBlock,
     callback: (start: number, end: number) => void,

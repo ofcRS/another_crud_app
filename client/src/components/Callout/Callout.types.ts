@@ -13,4 +13,5 @@ export type Position = {
 
 export type StyledCalloutProps = {
     show: boolean;
+    animate?: boolean;
 };

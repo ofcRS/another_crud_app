@@ -1,15 +1,28 @@
 import React from 'react';
+import { Formik, Form } from 'formik';
 
 import { Modal } from 'components/Modal';
+import { TextField } from 'components/TextField';
+import { Button } from 'components/Button';
 
 import { Styled } from './LinkModal.styles';
-import { Props } from './LinkModal.types';
+import { Props, FormValues } from './LinkModal.types';
 
-const LinkModalBody: React.FC<Props> = () => {
+const LinkModalBody: React.FC<Props> = ({ onSubmit }) => {
     return (
-        <Styled.LinkModalBody>
-            <input />
-        </Styled.LinkModalBody>
+        <Formik<FormValues>
+            onSubmit={({ url }) => onSubmit(url)}
+            initialValues={{ url: '' }}
+        >
+            {({ submitForm }) => (
+                <Form>
+                    <Styled.LinkModalBody>
+                        <TextField name="url" />
+                        <Button onClick={submitForm}>Apply</Button>
+                    </Styled.LinkModalBody>
+                </Form>
+            )}
+        </Formik>
     );
 };
 

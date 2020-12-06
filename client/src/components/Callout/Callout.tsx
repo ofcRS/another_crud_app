@@ -9,7 +9,7 @@ export const Callout: React.FC<Props> = ({
     children,
     target,
     onDismiss,
-    show,
+    ...props
 }: Props) => {
     const [position, setPosition] = useState<Position>({
         x: 0,
@@ -70,7 +70,7 @@ export const Callout: React.FC<Props> = ({
     }, [handleClickOutsideCallout]);
 
     return createPortal(
-        <Styled.Callout show={show} ref={calloutRef} {...position}>
+        <Styled.Callout ref={calloutRef} {...position} {...props}>
             {children}
         </Styled.Callout>,
         body

@@ -31,7 +31,15 @@ const ControlButton = styled.button<{ selected?: boolean }>`
 `;
 
 const Token = styled.span`
+    text-decoration: underline;
     color: ${({ theme }) => theme.colors.pastel[0]};
+
+    cursor: pointer;
+
+    svg {
+        width: 16px;
+        fill: ${({ theme }) => theme.colors.pastel[0]};
+    }
 `;
 
 const lineStyleMap: DraftStyleMap = {
