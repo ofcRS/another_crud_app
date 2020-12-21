@@ -1,44 +1,40 @@
-import React, { useRef, useState } from 'react';
+import React, { useContext } from 'react';
 
-import { Callout } from 'components/Callout';
 import { Icon } from 'components/Icon';
 
 import { Styled } from './TextEditor.styles';
 import { TokenProps } from './TextEditor.types';
-import { useDelayUnmount } from '../../../hooks/useDelayUnmount';
-import { smoothTime } from '../../../consts/animation';
+import { textEditorContext } from './context';
 
 export const Token: React.FC<TokenProps> = ({
     offsetKey,
     children,
     ...props
 }) => {
-    const [showCallout, setShowCallout] = useState(false);
-    const tokenRef = useRef<HTMLSpanElement>(null);
+    const { setLinkModalState, editorState } = useContext(textEditorContext);
 
-    const shouldRender = useDelayUnmount({
-        mounted: !showCallout,
-        delay: smoothTime.int,
-    });
+    const onSelectLink = () => {
+        const data = editorState
+            ?.getCurrentContent()
+            ?.getEntity(props.entityKey)
+            ?.getData();
 
-    console.log({ props, showCallout });
+        if (data) {
+            setLinkModalState({
+                selectedUrl: data.url,
+                callback: url =>
+                    editorState
+                        .getCurrentContent()
+                        .replaceEntityData(props.entityKey, {
+                            url,
+                        }),
+            });
+        }
+    };
 
     return (
-        <Styled.Token
-            ref={tokenRef}
-            onClick={() => setShowCallout(true)}
-            data-offset-key={offsetKey}
-        >
-            {shouldRender && (
-                <Callout
-                    target={tokenRef.current}
-                    onDismiss={() => setShowCallout(false)}
-                    show={showCallout}
-                >
-                    <div>123</div>
-                </Callout>
-            )}
-            <Icon iconName="attach" />
+        <Styled.Token data-offset-key={offsetKey}>
+            <Icon iconName="attach" onClick={onSelectLink} />
             {children}
         </Styled.Token>
     );

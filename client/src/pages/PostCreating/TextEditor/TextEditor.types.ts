@@ -3,7 +3,9 @@ import {
     ContentState,
     DraftEntityType,
     DraftInlineStyleType,
+    EditorState,
 } from 'draft-js';
+import { Dispatch, SetStateAction } from 'react';
 
 export type Props = {
     name: string;
@@ -37,4 +39,16 @@ export type GetEntityStrategy = (
 
 export type TokenProps = {
     offsetKey: string;
+    entityKey: string;
+};
+
+export type LinkModalState = {
+    callback: (url: string) => void;
+    selectedUrl: string;
+} | null;
+
+export type TextEditorContext = {
+    linkModalState: LinkModalState;
+    setLinkModalState: Dispatch<SetStateAction<LinkModalState>>;
+    editorState: EditorState;
 };

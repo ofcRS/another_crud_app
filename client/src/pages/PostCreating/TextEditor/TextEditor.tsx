@@ -11,7 +11,7 @@ import {
 } from 'draft-js';
 import { useField } from 'formik';
 
-import { BlockType, Props } from './TextEditor.types';
+import { BlockType, LinkModalState, Props } from './TextEditor.types';
 import { Styled } from './TextEditor.styles';
 
 import { inlineStylesControls, blockTypeControls } from './consts';
@@ -23,6 +23,7 @@ import { getEntityStrategy } from './utils';
 import { LinkModal } from './LinkModal';
 
 import { useEffectOnce } from 'hooks/useEffectOnce';
+import { textEditorContext } from './context';
 
 export const TextEditor: React.FC<Props> = ({ name }) => {
     const [_, { value: editorState }, { setValue: setEditorState }] = useField<
@@ -30,9 +31,7 @@ export const TextEditor: React.FC<Props> = ({ name }) => {
     >(name);
     const editorRef = useRef<Editor>(null);
 
-    const [linkModalCallback, setLinkModalCallback] = useState<
-        ((url: string) => void) | null
-    >(null);
+    const [linkModalState, setLinkModalState] = useState<LinkModalState>(null);
 
     useEffectOnce(() => {
         const decorator = new CompositeDecorator([
@@ -45,7 +44,7 @@ export const TextEditor: React.FC<Props> = ({ name }) => {
     });
 
     const applyLink = () => {
-        setLinkModalCallback(() => (url: string) => {
+        const callback = (url: string) => {
             const contentState = editorState.getCurrentContent();
             const selectionState = editorState.getSelection();
             const contentStateWithEntity = contentState.createEntity(
@@ -66,6 +65,10 @@ export const TextEditor: React.FC<Props> = ({ name }) => {
                 currentContent: contentStateWithLink,
             });
             setEditorState(newEditorState);
+        };
+        setLinkModalState({
+            callback,
+            selectedUrl: '',
         });
     };
 
@@ -111,50 +114,61 @@ export const TextEditor: React.FC<Props> = ({ name }) => {
     };
 
     const onSubmitLinkModal = (url: string) => {
-        linkModalCallback?.(url);
-        setLinkModalCallback(null);
+        linkModalState?.callback(url);
+        setLinkModalState(null);
     };
 
     return (
-        <Styled.TextEditor>
-            <LinkModal
-                onSubmit={onSubmitLinkModal}
-                open={!!linkModalCallback}
-                onClose={() => setLinkModalCallback(null)}
-            />
-            <Styled.ControlsWrapper>
-                {blockTypeControls.map(({ label, type }) => (
-                    <Styled.ControlButton
-                        selected={isTypeSelected(type)}
-                        onClick={() => toggleBlockType(type)}
-                        key={type}
-                    >
-                        {label}
+        <textEditorContext.Provider
+            value={{
+                linkModalState,
+                setLinkModalState,
+                editorState,
+            }}
+        >
+            <Styled.TextEditor>
+                <LinkModal
+                    initialValues={{
+                        url: linkModalState?.selectedUrl || '',
+                    }}
+                    onSubmit={onSubmitLinkModal}
+                    open={linkModalState !== null}
+                    onClose={() => setLinkModalState(null)}
+                />
+                <Styled.ControlsWrapper>
+                    {blockTypeControls.map(({ label, type }) => (
+                        <Styled.ControlButton
+                            selected={isTypeSelected(type)}
+                            onClick={() => toggleBlockType(type)}
+                            key={type}
+                        >
+                            {label}
+                        </Styled.ControlButton>
+                    ))}
+                    {inlineStylesControls.map(({ inlineStyle, label }) => (
+                        <Styled.ControlButton
+                            key={inlineStyle}
+                            onClick={() => toggleInlineStyle(inlineStyle)}
+                        >
+                            {label}
+                        </Styled.ControlButton>
+                    ))}
+                    <Styled.ControlButton onClick={applyLink}>
+                        Link
                     </Styled.ControlButton>
-                ))}
-                {inlineStylesControls.map(({ inlineStyle, label }) => (
-                    <Styled.ControlButton
-                        key={inlineStyle}
-                        onClick={() => toggleInlineStyle(inlineStyle)}
-                    >
-                        {label}
+                    <Styled.ControlButton onClick={logContent}>
+                        Log
                     </Styled.ControlButton>
-                ))}
-                <Styled.ControlButton onClick={applyLink}>
-                    Link
-                </Styled.ControlButton>
-                <Styled.ControlButton onClick={logContent}>
-                    Log
-                </Styled.ControlButton>
-            </Styled.ControlsWrapper>
-            <Editor
-                ref={editorRef}
-                tabIndex={3}
-                editorState={editorState}
-                handleKeyCommand={handleKeyCommand}
-                onChange={setEditorState}
-                customStyleMap={Styled.lineStyleMap}
-            />
-        </Styled.TextEditor>
+                </Styled.ControlsWrapper>
+                <Editor
+                    ref={editorRef}
+                    tabIndex={3}
+                    editorState={editorState}
+                    handleKeyCommand={handleKeyCommand}
+                    onChange={setEditorState}
+                    customStyleMap={Styled.lineStyleMap}
+                />
+            </Styled.TextEditor>
+        </textEditorContext.Provider>
     );
 };

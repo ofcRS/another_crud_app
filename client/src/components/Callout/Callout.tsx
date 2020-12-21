@@ -19,7 +19,7 @@ export const Callout: React.FC<Props> = ({
     const calloutRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        window.addEventListener('resize', onDismiss);
+        window.addEventListener('resize', () => onDismiss());
         return () => {
             window.removeEventListener('resize', onDismiss);
         };
