@@ -29,6 +29,14 @@ export type BlockTypeControl = {
     type: BlockType;
 };
 
+export type EmbedType = 'image';
+
+export type EmbedTypeControl = {
+    label: string;
+    type: EmbedType;
+    icon?: string;
+};
+
 export type GetEntityStrategy = (
     type: DraftEntityType
 ) => (
@@ -48,7 +56,7 @@ export type LinkModalState = {
 } | null;
 
 export type TextEditorContext = {
-    linkModalState: LinkModalState;
-    setLinkModalState: Dispatch<SetStateAction<LinkModalState>>;
+    urlModalState: LinkModalState;
+    setUrlModalState: Dispatch<SetStateAction<LinkModalState>>;
     editorState: EditorState;
 };

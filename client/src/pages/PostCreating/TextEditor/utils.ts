@@ -1,5 +1,6 @@
 import { GetEntityStrategy } from './TextEditor.types';
-import { DraftEntityType } from 'draft-js';
+import { ContentBlock, DraftEntityType } from 'draft-js';
+import { Image } from './Image';
 
 export const getEntityStrategy: GetEntityStrategy = (type: DraftEntityType) => (
     block,
@@ -12,3 +13,14 @@ export const getEntityStrategy: GetEntityStrategy = (type: DraftEntityType) => (
         // Для каждой сущности проверяем удовлетворяет ли она условию
         return contentState.getEntity(entityKey).getType() === type;
     }, callback);
+
+export const blockRenderer = (contentBlock: ContentBlock) => {
+    const type = contentBlock.getType();
+    console.log(contentBlock.getType());
+    if (type === 'image') {
+        return {
+            component: Image,
+            editable: false,
+        };
+    }
+};

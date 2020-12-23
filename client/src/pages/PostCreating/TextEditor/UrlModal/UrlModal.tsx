@@ -8,7 +8,7 @@ import { Button } from 'components/Button';
 import { Styled } from './LinkModal.styles';
 import { Props, FormValues } from './LinkModal.types';
 
-const LinkModalBody: React.FC<Props> = ({ onSubmit, initialValues }) => {
+const UrlModalBody: React.FC<Props> = ({ onSubmit, initialValues }) => {
     return (
         <Formik<FormValues>
             onSubmit={({ url }) => onSubmit(url)}
@@ -16,20 +16,20 @@ const LinkModalBody: React.FC<Props> = ({ onSubmit, initialValues }) => {
         >
             {({ submitForm }) => (
                 <Form>
-                    <Styled.LinkModalBody>
+                    <Styled.UrlModalBody>
                         <TextField name="url" />
                         <Button onClick={submitForm}>Apply</Button>
-                    </Styled.LinkModalBody>
+                    </Styled.UrlModalBody>
                 </Form>
             )}
         </Formik>
     );
 };
 
-export const LinkModal: React.FC<Props> = props => {
+export const UrlModal: React.FC<Props> = props => {
     return (
         <Modal {...props}>
-            <LinkModalBody {...props} />
+            <UrlModalBody {...props} />
         </Modal>
     );
 };

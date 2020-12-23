@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 
-const LinkModalBody = styled.div`
+const UrlModalBody = styled.div`
     padding: 16px;
 `;
 
 export const Styled = {
-    LinkModalBody,
+    UrlModalBody,
 };

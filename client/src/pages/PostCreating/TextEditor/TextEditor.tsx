@@ -1,14 +1,16 @@
 import React, { useCallback, useRef, useState } from 'react';
 import {
     EditorState,
-    Editor,
     DraftHandleValue,
     RichUtils,
     DraftInlineStyleType,
     Modifier,
     convertToRaw,
     CompositeDecorator,
+    AtomicBlockUtils,
 } from 'draft-js';
+import Editor from 'draft-js-plugins-editor';
+import createImagePlugin from 'draft-js-image-plugin';
 import { useField } from 'formik';
 
 import { BlockType, LinkModalState, Props } from './TextEditor.types';
@@ -20,10 +22,13 @@ import 'draft-js/dist/Draft.css';
 
 import { Token } from './Token';
 import { getEntityStrategy } from './utils';
-import { LinkModal } from './LinkModal';
+import { UrlModal } from './UrlModal';
 
 import { useEffectOnce } from 'hooks/useEffectOnce';
 import { textEditorContext } from './context';
+import { Icon } from 'components/Icon';
+
+const imagePlugin = createImagePlugin();
 
 export const TextEditor: React.FC<Props> = ({ name }) => {
     const [_, { value: editorState }, { setValue: setEditorState }] = useField<
@@ -31,7 +36,7 @@ export const TextEditor: React.FC<Props> = ({ name }) => {
     >(name);
     const editorRef = useRef<Editor>(null);
 
-    const [linkModalState, setLinkModalState] = useState<LinkModalState>(null);
+    const [urlModalState, setUrlModalState] = useState<LinkModalState>(null);
 
     useEffectOnce(() => {
         const decorator = new CompositeDecorator([
@@ -66,18 +71,10 @@ export const TextEditor: React.FC<Props> = ({ name }) => {
             });
             setEditorState(newEditorState);
         };
-        setLinkModalState({
+        setUrlModalState({
             callback,
             selectedUrl: '',
         });
-    };
-
-    const getEntity = () => {
-        const contentState = editorState.getCurrentContent();
-        const blockWithLinkAtBeginning = contentState.getFirstBlock();
-        const linkKey = blockWithLinkAtBeginning.getEntityAt(0);
-        const linkInstance = contentState.getEntity(linkKey);
-        const { url } = linkInstance.getData();
     };
 
     const handleKeyCommand = useCallback(
@@ -114,26 +111,51 @@ export const TextEditor: React.FC<Props> = ({ name }) => {
     };
 
     const onSubmitLinkModal = (url: string) => {
-        linkModalState?.callback(url);
-        setLinkModalState(null);
+        urlModalState?.callback(url);
+        setUrlModalState(null);
+    };
+
+    const handleClickImageIcon = () => {
+        setUrlModalState({
+            selectedUrl: '',
+            callback: url => {
+                const contentState = editorState.getCurrentContent();
+                const contentStateWithEntity = contentState.createEntity(
+                    'IMAGE',
+                    'IMMUTABLE',
+                    { src: url }
+                );
+                const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
+                const newEditorState = EditorState.set(editorState, {
+                    currentContent: contentStateWithEntity,
+                });
+                setEditorState(
+                    AtomicBlockUtils.insertAtomicBlock(
+                        newEditorState,
+                        entityKey,
+                        ' '
+                    )
+                );
+            },
+        });
     };
 
     return (
         <textEditorContext.Provider
             value={{
-                linkModalState,
-                setLinkModalState,
+                urlModalState,
+                setUrlModalState,
                 editorState,
             }}
         >
             <Styled.TextEditor>
-                <LinkModal
+                <UrlModal
                     initialValues={{
-                        url: linkModalState?.selectedUrl || '',
+                        url: urlModalState?.selectedUrl || '',
                     }}
                     onSubmit={onSubmitLinkModal}
-                    open={linkModalState !== null}
-                    onClose={() => setLinkModalState(null)}
+                    open={urlModalState !== null}
+                    onClose={() => setUrlModalState(null)}
                 />
                 <Styled.ControlsWrapper>
                     {blockTypeControls.map(({ label, type }) => (
@@ -159,6 +181,9 @@ export const TextEditor: React.FC<Props> = ({ name }) => {
                     <Styled.ControlButton onClick={logContent}>
                         Log
                     </Styled.ControlButton>
+                    <Styled.ControlButton onClick={handleClickImageIcon}>
+                        <Icon iconName="gallery" />
+                    </Styled.ControlButton>
                 </Styled.ControlsWrapper>
                 <Editor
                     ref={editorRef}
@@ -167,6 +192,7 @@ export const TextEditor: React.FC<Props> = ({ name }) => {
                     handleKeyCommand={handleKeyCommand}
                     onChange={setEditorState}
                     customStyleMap={Styled.lineStyleMap}
+                    plugins={[imagePlugin]}
                 />
             </Styled.TextEditor>
         </textEditorContext.Provider>

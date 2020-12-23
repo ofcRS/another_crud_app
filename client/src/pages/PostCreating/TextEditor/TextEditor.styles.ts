@@ -5,8 +5,14 @@ const TextEditor = styled.div`
     width: 100%;
     min-height: calc(100vh - 200px);
 
-    .DraftEditor-root {
-        height: 100%;
+    .public-DraftEditor-content {
+        min-height: 300px;
+    }
+
+    img {
+        display: block;
+        max-width: 100%;
+        margin: 0 auto;
     }
 `;
 
@@ -27,6 +33,11 @@ const ControlButton = styled.button<{ selected?: boolean }>`
 
     :not(:last-child) {
         margin-right: 4px;
+    }
+
+    svg {
+        width: 20px;
+        fill: ${({ theme }) => theme.colors.neutral};
     }
 `;
 

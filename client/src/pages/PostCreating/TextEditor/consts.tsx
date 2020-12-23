@@ -1,4 +1,8 @@
-import { InlineStyleControl, BlockTypeControl } from './TextEditor.types';
+import {
+    InlineStyleControl,
+    BlockTypeControl,
+    EmbedTypeControl,
+} from './TextEditor.types';
 
 export const inlineStylesControls: InlineStyleControl[] = [
     {
@@ -23,5 +27,13 @@ export const blockTypeControls: BlockTypeControl[] = [
     {
         label: 'H3',
         type: 'header-three',
+    },
+];
+
+export const embedTypeControls: EmbedTypeControl[] = [
+    {
+        label: '',
+        type: 'image',
+        icon: 'gallery',
     },
 ];

@@ -11,7 +11,7 @@ export const Token: React.FC<TokenProps> = ({
     children,
     ...props
 }) => {
-    const { setLinkModalState, editorState } = useContext(textEditorContext);
+    const { setUrlModalState, editorState } = useContext(textEditorContext);
 
     const onSelectLink = () => {
         const data = editorState
@@ -20,7 +20,7 @@ export const Token: React.FC<TokenProps> = ({
             ?.getData();
 
         if (data) {
-            setLinkModalState({
+            setUrlModalState({
                 selectedUrl: data.url,
                 callback: url =>
                     editorState
