@@ -11,7 +11,7 @@ const TextEditor = styled.div`
 
     img {
         display: block;
-        max-width: 100%;
+        max-width: 50%;
         margin: 0 auto;
     }
 `;

@@ -17,10 +17,6 @@ export const inlineStylesControls: InlineStyleControl[] = [
 
 export const blockTypeControls: BlockTypeControl[] = [
     {
-        label: 'H1',
-        type: 'header-one',
-    },
-    {
         label: 'H2',
         type: 'header-two',
     },

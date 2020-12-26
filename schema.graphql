@@ -5,9 +5,36 @@ schema {
     mutation: Mutation
 }
 
+union EntityData = ImageData | LinkData
+
 type ApiResponse {
     error: String!
     ok: Boolean!
+}
+
+type ContentBlock {
+    depth: Float!
+    entityRanges: [String!]!
+    inlineStyleRanges: [String!]!
+    key: String!
+    text: String!
+    type: String!
+}
+
+type EntityMap {
+    data: EntityData!
+    entity: entityType!
+    mutability: Mutability!
+}
+
+type ImageData {
+    type: entityType!
+    url: String!
+}
+
+type LinkData {
+    type: entityType!
+    url: String!
 }
 
 type LoginResponse {
@@ -24,9 +51,14 @@ type Mutation {
 }
 
 type Post {
-    body: String!
+    body: PostBody!
     id: Int!
     title: String!
+}
+
+type PostBody {
+    blocks: [ContentBlock!]!
+    entityMap: [EntityMap!]!
 }
 
 type Query {
@@ -39,4 +71,15 @@ type Query {
 type User {
     email: String!
     id: Int!
+}
+
+enum Mutability {
+    IMMUTABLE
+    MUTABLE
+    SEGMENTED
+}
+
+enum entityType {
+    IMAGE
+    LINK
 }
