@@ -1,10 +1,9 @@
-import { AddPostMutationVariables } from 'graphql/generated';
 import { FormikHelpers } from 'formik';
 import { EditorState } from 'draft-js';
 
 export type OnAddPost = (
-    post: AddPostMutationVariables,
-    helpers: FormikHelpers<AddPostMutationVariables>
+    post: FormValues,
+    helpers: FormikHelpers<FormValues>
 ) => void;
 
 export type Context = {

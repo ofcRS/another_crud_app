@@ -4,12 +4,20 @@ import { PostDocument, PostQuery, useAddPostMutation } from 'graphql/generated';
 import { postCreatingContext } from './context';
 import { OnAddPost } from './PostCreating.types';
 import { PostCreating } from './PostCreating';
+import { convertToRaw } from 'draft-js';
 
 export const FetchDataWrapper: React.FC = () => {
     const [addPost, { client }] = useAddPostMutation();
     const onAddPost = useCallback<OnAddPost>(
-        async (values, helpers) => {
-            const { data } = await addPost({ variables: values });
+        async ({ body, title }, helpers) => {
+            const { data } = await addPost({
+                variables: {
+                    title: title,
+                    body: JSON.stringify(
+                        convertToRaw(body.getCurrentContent())
+                    ),
+                },
+            });
             const current = client?.readQuery<PostQuery>({
                 query: PostDocument,
             });

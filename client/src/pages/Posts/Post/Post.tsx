@@ -3,8 +3,10 @@ import React, { useContext } from 'react';
 import { Props } from './Post.types';
 import { Styled } from './Post.styles';
 import { postsContext } from '../context';
+import { useStore } from '../../../store';
 
 export const Post: React.FC<Props> = ({ post }: Props) => {
+    const { post: postStore } = useStore();
     const { onDeletePost } = useContext(postsContext);
 
     return (
@@ -19,7 +21,7 @@ export const Post: React.FC<Props> = ({ post }: Props) => {
                 ]}
             />
             <h3>{post.title}</h3>
-            <p>{post.body}</p>
+            {postStore.getPreview(post)}
         </Styled.Post>
     );
 };

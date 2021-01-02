@@ -10,7 +10,7 @@ const MoreButton = styled(BaseButton.Button)`
     padding: 0;
 
     svg {
-        height: 24px;
+        width: 15px;
         fill: ${({ theme }) => theme.colors.neutral};
     }
 `;

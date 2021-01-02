@@ -1,5 +1,6 @@
 import React, { Suspense, useEffect } from 'react';
 import { observer } from 'mobx-react';
+
 import { Redirect, Route, Router, Switch } from 'react-router';
 import { createBrowserHistory } from 'history';
 import { ThemeProvider } from 'styled-components';
@@ -16,7 +17,9 @@ import { useStore } from 'store';
 export const history = createBrowserHistory();
 
 const App: React.FC = observer(() => {
-    const { app } = useStore();
+    const { app, post } = useStore();
+
+    // post.items.forEach(post => post.log());
 
     useEffect(() => {
         app.initApp();

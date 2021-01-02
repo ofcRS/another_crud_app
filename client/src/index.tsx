@@ -11,10 +11,6 @@ import { RootStoreProvider } from 'store/RootStore';
 
 import 'mobx-react-lite/batchingForReactDom';
 
-/*const rootStore = RootStore.create(undefined, {
-    gqlHttpClient: apolloLink,
-});*/
-
 render(
     <RootStoreProvider>
         <ApolloProvider client={client}>
@@ -23,5 +19,3 @@ render(
     </RootStoreProvider>,
     root
 );
-
-// (window as any).store = rootStore;

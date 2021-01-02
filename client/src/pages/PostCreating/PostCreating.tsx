@@ -7,18 +7,14 @@ import { postCreatingContext } from './context';
 import { Styled } from './PostCreating.styles';
 import { TextEditor } from './TextEditor';
 import { FormValues } from './PostCreating.types';
-import { convertToRaw, EditorState } from 'draft-js';
+import { EditorState } from 'draft-js';
 
 export const PostCreating = observer(() => {
     const { onAddPost } = useContext(postCreatingContext);
 
-    const handleSubmit = ({ body, title }: FormValues) => {
-        console.log({ title, body: convertToRaw(body.getCurrentContent()) });
-    };
-
     return (
         <Formik<FormValues>
-            onSubmit={handleSubmit}
+            onSubmit={onAddPost}
             initialValues={{
                 title: '',
                 body: EditorState.createEmpty(),
