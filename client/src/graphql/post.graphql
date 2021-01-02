@@ -1,14 +1,44 @@
+fragment body on postBody {
+    blocks {
+        depth,
+        key,
+        text,
+        type,
+        entityRanges {
+            key,
+            length,
+            offset
+        },
+        inlineStyleRanges {
+            length,
+            offset,
+            style
+        }
+    }
+    entityMap {
+        data {
+            src
+        },
+        mutability,
+        type,
+    }
+}
+
 query Post {
     posts {
         title,
-        body,
+        body {
+            ...body
+        },
         id
     }
 }
 
-mutation AddPost($title: String!, $body: String!) {
+mutation AddPost($title: String!, $body: postBodyInput!) {
     addPost(title: $title, body: $body) {
-        body,
+        body {
+            ...body
+        },
         id,
         title,
     }

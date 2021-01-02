@@ -1,20 +1,17 @@
 import React, { ReactNode } from 'react';
-import { RawDraftContentState } from 'draft-js';
+
 import { types } from 'mobx-state-tree';
-import { PostModel, PostModelType } from 'models';
-import { PostQuery, Post } from '../graphql/generated';
-import { PostImage } from '../components/PostImage';
+import { PostModel } from 'models';
+import { Post } from '../graphql/generated';
+import { PostImage } from 'components/PostImage';
 
 export const PostStoreModel = types
     .model({
         items: types.array(PostModel),
     })
     .actions(self => ({
-        setItems: (response: PostQuery) => {
-            return self.items.replace(response.posts as PostModelType[]);
-        },
         getPreview: (post: Post): ReactNode => {
-            const parsedBody: RawDraftContentState = JSON.parse(post.body);
+            const parsedBody = post.body;
 
             let previewImage: ReactNode = null;
 
@@ -24,7 +21,9 @@ export const PostStoreModel = types
             if (atomicType) {
                 const [{ key }] = atomicType.entityRanges;
                 const { src } = parsedBody.entityMap[key].data;
-                previewImage = <PostImage src={src} />;
+                if (src) {
+                    previewImage = <PostImage src={src} />;
+                }
             }
 
             return (

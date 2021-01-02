@@ -56,7 +56,7 @@ export const TextEditor: React.FC<Props> = ({ name }) => {
                 'LINK',
                 'MUTABLE',
                 {
-                    url,
+                    src: url,
                 }
             );
             const entityKey = contentStateWithEntity.getLastCreatedEntityKey();

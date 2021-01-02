@@ -2,7 +2,7 @@ import { Query, Resolver, Mutation, Arg, UseMiddleware } from 'type-graphql';
 
 import { BaseResolver } from './BaseResolver';
 
-import { Post } from 'entities';
+import { Post, PostBody } from 'entities';
 import { checkAuth } from 'middlewares/checkJwt';
 import { ApiResponse } from 'utils/ApiHandler';
 
@@ -17,7 +17,7 @@ export class PostResolver extends BaseResolver {
     @UseMiddleware(checkAuth)
     async addPost(
         @Arg('title') title: string,
-        @Arg('body') body: string
+        @Arg('body') body: PostBody
     ): Promise<Post> {
         const newPost = new Post();
         newPost.title = title;

@@ -16,7 +16,7 @@ type LoginResponse {
 }
 
 type Mutation {
-    addPost(body: String!, title: String!): Post!
+    addPost(body: postBodyInput!, title: String!): Post!
     deletePost(id: Float!): ApiResponse!
     login(email: String!, password: String!): LoginResponse!
     register(email: String!, password: String!): Boolean!
@@ -24,7 +24,7 @@ type Mutation {
 }
 
 type Post {
-    body: String!
+    body: postBody!
     id: Int!
     title: String!
 }
@@ -39,4 +39,87 @@ type Query {
 type User {
     email: String!
     id: Int!
+}
+
+type contentBlock {
+    depth: Float!
+    entityRanges: [entityRange!]!
+    inlineStyleRanges: [inlineStyleRange!]!
+    key: String!
+    text: String!
+    type: String!
+}
+
+type entityData {
+    src: String
+}
+
+type entityMap {
+    data: entityData!
+    mutability: Mutability!
+    type: entityType!
+}
+
+type entityRange {
+    key: Float!
+    length: Float!
+    offset: Float!
+}
+
+type inlineStyleRange {
+    length: Float!
+    offset: Float!
+    style: String!
+}
+
+type postBody {
+    blocks: [contentBlock!]!
+    entityMap: [entityMap!]!
+}
+
+enum Mutability {
+    IMMUTABLE
+    MUTABLE
+    SEGMENTED
+}
+
+enum entityType {
+    IMAGE
+    LINK
+}
+
+input contentBlockInput {
+    depth: Float!
+    entityRanges: [entityRangeInput!]!
+    inlineStyleRanges: [inlineStyleRangeInput!]!
+    key: String!
+    text: String!
+    type: String!
+}
+
+input entityDataInput {
+    src: String
+}
+
+input entityMapInput {
+    data: entityDataInput!
+    mutability: Mutability!
+    type: entityType!
+}
+
+input entityRangeInput {
+    key: Float!
+    length: Float!
+    offset: Float!
+}
+
+input inlineStyleRangeInput {
+    length: Float!
+    offset: Float!
+    style: String!
+}
+
+input postBodyInput {
+    blocks: [contentBlockInput!]!
+    entityMap: [entityMapInput!]!
 }

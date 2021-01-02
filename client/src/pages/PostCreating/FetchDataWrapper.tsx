@@ -1,23 +1,41 @@
 import React, { useCallback } from 'react';
-import { PostDocument, PostQuery, useAddPostMutation } from 'graphql/generated';
+import {
+    PostDocument,
+    PostQuery,
+    useAddPostMutation,
+    PostBodyInput,
+    EntityMapInput,
+} from 'graphql/generated';
+import { convertToRaw } from 'draft-js';
+import { useHistory } from 'react-router';
 
 import { postCreatingContext } from './context';
 import { OnAddPost } from './PostCreating.types';
 import { PostCreating } from './PostCreating';
-import { convertToRaw } from 'draft-js';
 
 export const FetchDataWrapper: React.FC = () => {
     const [addPost, { client }] = useAddPostMutation();
+    const history = useHistory();
+
     const onAddPost = useCallback<OnAddPost>(
         async ({ body, title }, helpers) => {
+            const rawBody = convertToRaw(body.getCurrentContent());
+            const formattedBody: PostBodyInput = {
+                blocks: rawBody.blocks.map(({ data, ...block }) => block),
+                entityMap: Object.keys(rawBody.entityMap).map<EntityMapInput>(
+                    key => {
+                        return rawBody.entityMap[key] as EntityMapInput;
+                    }
+                ),
+            };
+
             const { data } = await addPost({
                 variables: {
                     title: title,
-                    body: JSON.stringify(
-                        convertToRaw(body.getCurrentContent())
-                    ),
+                    body: formattedBody,
                 },
             });
+
             const current = client?.readQuery<PostQuery>({
                 query: PostDocument,
             });
@@ -29,10 +47,10 @@ export const FetchDataWrapper: React.FC = () => {
                         posts: updatedPosts,
                     },
                 });
-                helpers.resetForm();
             }
+            history.push('/posts');
         },
-        [addPost, client]
+        [addPost, client, history]
     );
 
     return (
