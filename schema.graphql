@@ -30,6 +30,7 @@ type Post {
 }
 
 type Query {
+    getPost(id: Int!): Post
     hello: String!
     me: User
     posts: [Post!]!

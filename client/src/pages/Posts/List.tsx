@@ -1,18 +1,19 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 
-import { Post } from './Post';
+import { PostPreview } from '../../components/PostPreview';
 
-import { usePostQuery } from 'graphql/generated';
+import { usePostsQuery } from 'graphql/generated';
+import { Styled } from './Posts.styles';
 
 export const List: React.FC = observer(() => {
-    const { data } = usePostQuery();
+    const { data } = usePostsQuery();
 
     return (
-        <>
+        <Styled.Posts>
             {data?.posts.map(post => (
-                <Post key={post.id} post={post} />
+                <PostPreview key={post.id} post={post} />
             ))}
-        </>
+        </Styled.Posts>
     );
 });

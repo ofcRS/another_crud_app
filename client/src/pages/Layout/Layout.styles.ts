@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { medium } from 'styles/breakpoints';
 
 const Layout = styled.div`
     display: flex;
@@ -9,8 +10,12 @@ const Layout = styled.div`
 `;
 
 const MainArea = styled.main`
-    width: 70vw;
+    width: 100vw;
     margin: 0 auto;
+
+    @media (min-width: ${medium}) {
+        width: 70vw;
+    }
 `;
 
 export const Styled = {

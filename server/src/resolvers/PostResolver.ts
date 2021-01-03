@@ -1,7 +1,12 @@
-import { Query, Resolver, Mutation, Arg, UseMiddleware } from 'type-graphql';
-
+import {
+    Query,
+    Resolver,
+    Mutation,
+    Arg,
+    UseMiddleware,
+    Int,
+} from 'type-graphql';
 import { BaseResolver } from './BaseResolver';
-
 import { Post, PostBody } from 'entities';
 import { checkAuth } from 'middlewares/checkJwt';
 import { ApiResponse } from 'utils/ApiHandler';
@@ -10,7 +15,20 @@ import { ApiResponse } from 'utils/ApiHandler';
 export class PostResolver extends BaseResolver {
     @Query(() => [Post])
     posts() {
-        return Post.find();
+        return Post.find({
+            order: {
+                id: 'DESC',
+            },
+        });
+    }
+
+    @Query(() => Post, {
+        nullable: true,
+    })
+    getPost(@Arg('id', () => Int) id: number) {
+        return Post.findOne({
+            id,
+        });
     }
 
     @Mutation(() => Post)

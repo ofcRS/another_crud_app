@@ -6,7 +6,10 @@ const ImageWrapper = styled.figure`
     justify-content: center;
 
     img {
-        max-width: 50%;
+        //max-width: 50vw;
+        width: 100%;
+        object-fit: contain;
+        max-height: 600px;
     }
 `;
 

@@ -15,6 +15,10 @@ export const routes: Route[] = [
         component: lazy(() => import('pages/PostCreating')),
         path: '/new-post',
     },
+    {
+        component: lazy(() => import('pages/ViewPost')),
+        path: '/posts/:id',
+    },
 ];
 
 // роуты которые отредарятся в основное меню приложения

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { MoreButton as MoreButtonBase } from 'components';
+import { MoreButton as MoreButtonBase } from 'components/index';
 
 const Post = styled.section`
     position: relative;
@@ -8,6 +8,7 @@ const Post = styled.section`
     min-width: 250px;
     min-height: 80px;
     border: 1px solid #f4f4f4;
+    cursor: pointer;
 
     p {
         white-space: pre-line;

@@ -24,7 +24,17 @@ fragment body on postBody {
     }
 }
 
-query Post {
+query Post($id: Int!) {
+    getPost(id: $id) {
+        id,
+        title,
+        body {
+            ...body
+        }
+    }
+}
+
+query Posts {
     posts {
         title,
         body {
