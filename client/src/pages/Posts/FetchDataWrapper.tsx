@@ -2,8 +2,8 @@ import React, { useCallback } from 'react';
 
 import { postsContext } from './context';
 import {
-    PostDocument,
-    PostQuery,
+    PostsDocument,
+    PostsQuery,
     useDeletePostMutation,
 } from 'graphql/generated';
 
@@ -20,15 +20,15 @@ export const FetchDataWrapper: React.FC = () => {
                     id: targetId,
                 },
             });
-            const current = client?.readQuery<PostQuery>({
-                query: PostDocument,
+            const current = client?.readQuery<PostsQuery>({
+                query: PostsDocument,
             });
             if (current?.posts) {
                 const updatedList = current.posts.filter(
                     ({ id }) => id !== targetId
                 );
-                client?.writeQuery<PostQuery>({
-                    query: PostDocument,
+                client?.writeQuery<PostsQuery>({
+                    query: PostsDocument,
                     data: { posts: updatedList },
                 });
             }

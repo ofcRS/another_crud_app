@@ -6,6 +6,8 @@ import { postsContext } from '../../pages/Posts/context';
 
 import { PostImage } from 'components/PostImage';
 import { useHistory } from 'react-router';
+import { ApplyInlineStyles } from '../ApplyInlineStyles';
+import { RawDraftInlineStyleRange } from 'draft-js';
 
 export const PostPreview: React.FC<Props> = ({ post }: Props) => {
     const { onDeletePost } = useContext(postsContext);
@@ -26,8 +28,16 @@ export const PostPreview: React.FC<Props> = ({ post }: Props) => {
         const resultParagraphs: ReactNodeArray = [];
         let totalCharactersInPreview = 0;
 
-        for (const { text, key } of body.blocks) {
-            resultParagraphs.push(<p key={key}>{text}</p>);
+        for (const { text, key, inlineStyleRanges } of body.blocks) {
+            resultParagraphs.push(
+                <p key={key}>
+                    <ApplyInlineStyles
+                        styles={inlineStyleRanges as RawDraftInlineStyleRange[]}
+                    >
+                        {text}
+                    </ApplyInlineStyles>
+                </p>
+            );
             totalCharactersInPreview += text.length;
             if (totalCharactersInPreview >= 300) break;
         }
@@ -43,7 +53,7 @@ export const PostPreview: React.FC<Props> = ({ post }: Props) => {
     const history = useHistory();
 
     return (
-        <Styled.Post onClick={() => history.push(`/posts/${post.id}`)}>
+        <Styled.Post>
             <Styled.MoreButton
                 calloutItems={[
                     {
@@ -53,8 +63,10 @@ export const PostPreview: React.FC<Props> = ({ post }: Props) => {
                     },
                 ]}
             />
-            <h2>{post.title}</h2>
-            {postBody}
+            <div onClick={() => history.push(`/posts/${post.id}`)}>
+                <h2>{post.title}</h2>
+                {postBody}
+            </div>
         </Styled.Post>
     );
 };

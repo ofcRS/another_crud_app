@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import {
-    PostDocument,
-    PostQuery,
+    PostsDocument,
+    PostsQuery,
     useAddPostMutation,
     PostBodyInput,
     EntityMapInput,
@@ -36,19 +36,19 @@ export const FetchDataWrapper: React.FC = () => {
                 },
             });
 
-            const current = client?.readQuery<PostQuery>({
-                query: PostDocument,
+            const current = client?.readQuery<PostsQuery>({
+                query: PostsDocument,
             });
             if (current?.posts && data?.addPost) {
                 const updatedPosts = [data.addPost, ...current?.posts];
-                client?.writeQuery<PostQuery>({
-                    query: PostDocument,
+                client?.writeQuery<PostsQuery>({
+                    query: PostsDocument,
                     data: {
                         posts: updatedPosts,
                     },
                 });
             }
-            history.push('/posts');
+            // history.push('/posts');
         },
         [addPost, client, history]
     );
