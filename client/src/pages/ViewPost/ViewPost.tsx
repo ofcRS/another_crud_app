@@ -1,48 +1,67 @@
-import React, { ReactNode, useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouteMatch, Redirect } from 'react-router';
-import { usePostQuery } from 'graphql/generated';
+import Editor from 'draft-js-plugins-editor';
+import { EditorState, convertFromRaw, RawDraftContentState } from 'draft-js';
+import createImagePlugin from 'draft-js-image-plugin';
+
+import { usePostLazyQuery } from 'graphql/generated';
 
 import { Styled } from './ViewPost.styles';
 import { Props } from './ViewPost.types';
-import { PostImage } from '../../components/PostImage';
+
+const imagePlugin = createImagePlugin();
 
 export const ViewPost: React.FC<Props> = () => {
     const { params } = useRouteMatch<{ id: string }>();
-    const { data, error } = usePostQuery({
-        variables: {
-            id: parseInt(params.id),
-        },
-    });
+    const [getPostInfo, { data, error }] = usePostLazyQuery();
 
-    const body = useMemo<ReactNode>(() => {
-        const post = data?.getPost;
-        if (post) {
-            const {
-                body: { blocks, entityMap },
-            } = post;
+    const [editorState, setEditorState] = useState<EditorState>(
+        EditorState.createEmpty()
+    );
 
-            return blocks.map(({ key, text, type, entityRanges }) => {
-                if (type === 'atomic') {
-                    const [{ key }] = entityRanges;
-                    const { src } = entityMap[key].data;
-                    if (src) {
-                        return <PostImage key={key} src={src} />;
-                    }
-                }
-                return <p key={key}>{text}</p>;
-            });
+    useEffect(() => {
+        getPostInfo({
+            variables: {
+                id: parseInt(params.id),
+            },
+        });
+    }, [getPostInfo, params.id]);
+
+    useEffect(() => {
+        if (data?.getPost?.body) {
+            const { body } = data?.getPost;
+            setEditorState(prev =>
+                EditorState.set(prev, {
+                    currentContent: convertFromRaw({
+                        ...body,
+                        entityMap: body.entityMap.reduce(
+                            (res, cur, index) => ({
+                                ...res,
+                                [index]: cur,
+                            }),
+                            {}
+                        ),
+                    } as RawDraftContentState),
+                })
+            );
         }
-        return null;
-    }, [data?.getPost]);
+    }, [data]);
 
-    if (!params.id || Number.isNaN(parseInt(params.id)) || error) {
+    if (!params.id || Number.isNaN(parseInt(params.id))) {
         return <Redirect to="/posts" />;
     }
 
     return (
         <Styled.ViewPost>
             <h1>{data?.getPost?.title}</h1>
-            <div>{body}</div>
+            <div>
+                <Editor
+                    readOnly={true}
+                    onChange={() => {}}
+                    editorState={editorState}
+                    plugins={[imagePlugin]}
+                />
+            </div>
         </Styled.ViewPost>
     );
 };

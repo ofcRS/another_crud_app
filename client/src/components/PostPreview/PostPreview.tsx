@@ -2,12 +2,12 @@ import React, { ReactNode, ReactNodeArray, useContext, useMemo } from 'react';
 
 import { Props } from './PostPreview.types';
 import { Styled } from './PostPreview.styles';
-import { postsContext } from '../../pages/Posts/context';
+import { postsContext } from 'pages/Posts/context';
 
 import { PostImage } from 'components/PostImage';
 import { useHistory } from 'react-router';
-import { ApplyInlineStyles } from '../ApplyInlineStyles';
-import { RawDraftInlineStyleRange } from 'draft-js';
+
+import { Link } from 'react-router-dom';
 
 export const PostPreview: React.FC<Props> = ({ post }: Props) => {
     const { onDeletePost } = useContext(postsContext);
@@ -28,16 +28,8 @@ export const PostPreview: React.FC<Props> = ({ post }: Props) => {
         const resultParagraphs: ReactNodeArray = [];
         let totalCharactersInPreview = 0;
 
-        for (const { text, key, inlineStyleRanges } of body.blocks) {
-            resultParagraphs.push(
-                <p key={key}>
-                    <ApplyInlineStyles
-                        styles={inlineStyleRanges as RawDraftInlineStyleRange[]}
-                    >
-                        {text}
-                    </ApplyInlineStyles>
-                </p>
-            );
+        for (const { text, key } of body.blocks) {
+            resultParagraphs.push(<p key={key}>{text}</p>);
             totalCharactersInPreview += text.length;
             if (totalCharactersInPreview >= 300) break;
         }
@@ -63,10 +55,13 @@ export const PostPreview: React.FC<Props> = ({ post }: Props) => {
                     },
                 ]}
             />
-            <div onClick={() => history.push(`/posts/${post.id}`)}>
+            <Link
+                to={`/posts/${post.id}`}
+                // onClick={() => history.push(`/posts/${post.id}`)}
+            >
                 <h2>{post.title}</h2>
                 {postBody}
-            </div>
+            </Link>
         </Styled.Post>
     );
 };

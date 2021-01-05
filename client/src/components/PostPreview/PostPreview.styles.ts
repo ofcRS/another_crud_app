@@ -17,6 +17,11 @@ const Post = styled.section`
     :not(:last-child) {
         margin-bottom: 32px;
     }
+
+    a {
+        text-decoration: none;
+        color: inherit;
+    }
 `;
 const MoreButton = styled(MoreButtonBase)`
     position: absolute;
