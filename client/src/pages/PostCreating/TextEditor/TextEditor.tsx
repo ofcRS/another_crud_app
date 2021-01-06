@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
     EditorState,
     DraftHandleValue,
@@ -6,47 +6,30 @@ import {
     DraftInlineStyleType,
     Modifier,
     convertToRaw,
-    CompositeDecorator,
     AtomicBlockUtils,
 } from 'draft-js';
-import Editor from 'draft-js-plugins-editor';
-import createImagePlugin from 'draft-js-image-plugin';
+
 import { useField } from 'formik';
+
+import { TextEditor as CommonTextEditor } from 'components/TextEditor';
 
 import { BlockType, LinkModalState, Props } from './TextEditor.types';
 import { Styled } from './TextEditor.styles';
 
 import { inlineStylesControls, blockTypeControls } from './consts';
 
-import 'draft-js/dist/Draft.css';
-
-import { Token } from './Token';
-import { getEntityStrategy } from './utils';
 import { UrlModal } from './UrlModal';
 
-import { useEffectOnce } from 'hooks/useEffectOnce';
-import { textEditorContext } from './context';
 import { Icon } from 'components/Icon';
 
-const imagePlugin = createImagePlugin();
+import 'draft-js/dist/Draft.css';
 
 export const TextEditor: React.FC<Props> = ({ name }) => {
     const [_, { value: editorState }, { setValue: setEditorState }] = useField<
         EditorState
     >(name);
-    const editorRef = useRef<Editor>(null);
 
     const [urlModalState, setUrlModalState] = useState<LinkModalState>(null);
-
-    useEffectOnce(() => {
-        const decorator = new CompositeDecorator([
-            {
-                component: Token,
-                strategy: getEntityStrategy('LINK'),
-            },
-        ]);
-        setEditorState(EditorState.set(editorState, { decorator }));
-    });
 
     const applyLink = () => {
         const callback = (url: string) => {
@@ -141,60 +124,52 @@ export const TextEditor: React.FC<Props> = ({ name }) => {
     };
 
     return (
-        <textEditorContext.Provider
-            value={{
-                urlModalState,
-                setUrlModalState,
-                editorState,
-            }}
-        >
-            <Styled.TextEditor>
-                <UrlModal
-                    initialValues={{
-                        url: urlModalState?.selectedUrl || '',
-                    }}
-                    onSubmit={onSubmitLinkModal}
-                    open={urlModalState !== null}
-                    onClose={() => setUrlModalState(null)}
-                />
-                <Styled.ControlsWrapper>
-                    {blockTypeControls.map(({ label, type }) => (
-                        <Styled.ControlButton
-                            selected={isTypeSelected(type)}
-                            onClick={() => toggleBlockType(type)}
-                            key={type}
-                        >
-                            {label}
-                        </Styled.ControlButton>
-                    ))}
-                    {inlineStylesControls.map(({ inlineStyle, label }) => (
-                        <Styled.ControlButton
-                            key={inlineStyle}
-                            onClick={() => toggleInlineStyle(inlineStyle)}
-                        >
-                            {label}
-                        </Styled.ControlButton>
-                    ))}
-                    <Styled.ControlButton onClick={applyLink}>
-                        Link
+        <Styled.TextEditor>
+            <UrlModal
+                initialValues={{
+                    url: urlModalState?.selectedUrl || '',
+                }}
+                onSubmit={onSubmitLinkModal}
+                open={urlModalState !== null}
+                onClose={() => setUrlModalState(null)}
+            />
+            <Styled.ControlsWrapper>
+                {blockTypeControls.map(({ label, type }) => (
+                    <Styled.ControlButton
+                        selected={isTypeSelected(type)}
+                        onClick={() => toggleBlockType(type)}
+                        key={type}
+                    >
+                        {label}
                     </Styled.ControlButton>
-                    <Styled.ControlButton onClick={logContent}>
-                        Log
+                ))}
+                {inlineStylesControls.map(({ inlineStyle, label }) => (
+                    <Styled.ControlButton
+                        key={inlineStyle}
+                        onClick={() => toggleInlineStyle(inlineStyle)}
+                    >
+                        {label}
                     </Styled.ControlButton>
-                    <Styled.ControlButton onClick={handleClickImageIcon}>
-                        <Icon iconName="gallery" />
-                    </Styled.ControlButton>
-                </Styled.ControlsWrapper>
-                <Editor
-                    ref={editorRef}
-                    tabIndex={3}
-                    editorState={editorState}
-                    handleKeyCommand={handleKeyCommand}
-                    onChange={setEditorState}
-                    customStyleMap={Styled.lineStyleMap}
-                    plugins={[imagePlugin]}
-                />
-            </Styled.TextEditor>
-        </textEditorContext.Provider>
+                ))}
+                <Styled.ControlButton onClick={applyLink}>
+                    Link
+                </Styled.ControlButton>
+                <Styled.ControlButton onClick={logContent}>
+                    Log
+                </Styled.ControlButton>
+                <Styled.ControlButton onClick={handleClickImageIcon}>
+                    <Icon iconName="gallery" />
+                </Styled.ControlButton>
+            </Styled.ControlsWrapper>
+            <CommonTextEditor
+                setEditorState={setEditorState}
+                editorState={editorState}
+                handleKeyCommand={handleKeyCommand}
+                urlModalState={urlModalState}
+                setUrlModalState={setUrlModalState}
+                customStyleMap={Styled.lineStyleMap}
+                tabIndex={3}
+            />
+        </Styled.TextEditor>
     );
 };

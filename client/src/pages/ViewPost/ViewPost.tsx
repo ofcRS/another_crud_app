@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useRouteMatch, Redirect } from 'react-router';
-import Editor from 'draft-js-plugins-editor';
 import { EditorState, convertFromRaw, RawDraftContentState } from 'draft-js';
-import createImagePlugin from 'draft-js-image-plugin';
 
+import { TextEditor } from 'components/TextEditor';
 import { usePostLazyQuery } from 'graphql/generated';
 
 import { Styled } from './ViewPost.styles';
 import { Props } from './ViewPost.types';
-
-const imagePlugin = createImagePlugin();
 
 export const ViewPost: React.FC<Props> = () => {
     const { params } = useRouteMatch<{ id: string }>();
@@ -30,19 +27,21 @@ export const ViewPost: React.FC<Props> = () => {
     useEffect(() => {
         if (data?.getPost?.body) {
             const { body } = data?.getPost;
+            const contentState = convertFromRaw({
+                ...body,
+                entityMap: body.entityMap.reduce(
+                    (res, cur, index) => ({
+                        ...res,
+                        [index]: cur,
+                    }),
+                    {}
+                ),
+            } as RawDraftContentState);
             setEditorState(prev =>
-                EditorState.set(prev, {
-                    currentContent: convertFromRaw({
-                        ...body,
-                        entityMap: body.entityMap.reduce(
-                            (res, cur, index) => ({
-                                ...res,
-                                [index]: cur,
-                            }),
-                            {}
-                        ),
-                    } as RawDraftContentState),
-                })
+                EditorState.set(
+                    EditorState.push(prev, contentState, 'adjust-depth'),
+                    {}
+                )
             );
         }
     }, [data]);
@@ -55,11 +54,10 @@ export const ViewPost: React.FC<Props> = () => {
         <Styled.ViewPost>
             <h1>{data?.getPost?.title}</h1>
             <div>
-                <Editor
+                <TextEditor
+                    setEditorState={setEditorState}
                     readOnly={true}
-                    onChange={() => {}}
                     editorState={editorState}
-                    plugins={[imagePlugin]}
                 />
             </div>
         </Styled.ViewPost>

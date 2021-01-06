@@ -2,30 +2,27 @@ import React, { useContext } from 'react';
 
 import { Icon } from 'components/Icon';
 
-import { Styled } from './TextEditor.styles';
-import { TokenProps } from './TextEditor.types';
-import { textEditorContext } from './context';
+import { Props } from './Link.types';
+import { Styled } from './Link.styles';
 
-export const Token: React.FC<TokenProps> = ({
-    offsetKey,
-    children,
-    ...props
-}) => {
+import { textEditorContext } from '../context';
+
+export const Link: React.FC<Props> = ({ entityKey, ...props }) => {
     const { setUrlModalState, editorState } = useContext(textEditorContext);
 
     const onSelectLink = () => {
         const data = editorState
             ?.getCurrentContent()
-            ?.getEntity(props.entityKey)
+            ?.getEntity(entityKey)
             ?.getData();
 
         if (data) {
-            setUrlModalState({
+            setUrlModalState?.({
                 selectedUrl: data.url,
                 callback: url =>
                     editorState
                         .getCurrentContent()
-                        .replaceEntityData(props.entityKey, {
+                        .replaceEntityData(entityKey, {
                             url,
                         }),
             });
@@ -33,9 +30,9 @@ export const Token: React.FC<TokenProps> = ({
     };
 
     return (
-        <Styled.Token data-offset-key={offsetKey}>
+        <Styled.Link>
             <Icon iconName="attach" onClick={onSelectLink} />
-            {children}
-        </Styled.Token>
+            {props.children}
+        </Styled.Link>
     );
 };
