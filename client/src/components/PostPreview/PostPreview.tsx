@@ -5,13 +5,14 @@ import { Styled } from './PostPreview.styles';
 import { postsContext } from 'pages/Posts/context';
 
 import { PostImage } from 'components/PostImage';
-import { useHistory } from 'react-router';
 
 import { Link } from 'react-router-dom';
 
 export const PostPreview: React.FC<Props> = ({ post }: Props) => {
     const { onDeletePost } = useContext(postsContext);
-    const postBody = useMemo(() => {
+    const [textPreview, imagePreview] = useMemo<
+        readonly [ReactNodeArray, ReactNode]
+    >(() => {
         const { body } = post;
 
         let previewImage: ReactNode = null;
@@ -34,15 +35,8 @@ export const PostPreview: React.FC<Props> = ({ post }: Props) => {
             if (totalCharactersInPreview >= 300) break;
         }
 
-        return (
-            <>
-                {previewImage}
-                {resultParagraphs}
-            </>
-        );
+        return [resultParagraphs, previewImage] as const;
     }, [post]);
-
-    const history = useHistory();
 
     return (
         <Styled.Post>
@@ -59,8 +53,9 @@ export const PostPreview: React.FC<Props> = ({ post }: Props) => {
                 to={`/posts/${post.id}`}
                 // onClick={() => history.push(`/posts/${post.id}`)}
             >
-                <h2>{post.title}</h2>
-                {postBody}
+                <Styled.PostTitle>{post.title}</Styled.PostTitle>
+                {imagePreview}
+                <Styled.TextPreview>{textPreview}</Styled.TextPreview>
             </Link>
         </Styled.Post>
     );

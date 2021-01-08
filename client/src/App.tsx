@@ -17,9 +17,7 @@ import { useStore } from 'store';
 export const history = createBrowserHistory();
 
 const App: React.FC = observer(() => {
-    const { app, post } = useStore();
-
-    // post.items.forEach(post => post.log());
+    const { app } = useStore();
 
     useEffect(() => {
         app.initApp();

@@ -48,7 +48,7 @@ export const FetchDataWrapper: React.FC = () => {
                     },
                 });
             }
-            // history.push('/posts');
+            history.push('/posts');
         },
         [addPost, client, history]
     );

@@ -29,7 +29,7 @@ export const PostCreating = observer(() => {
                             name="title"
                             placeholder="Title"
                         />
-                        <Styled.SubmitButton tabIndex={2} onClick={submitForm}>
+                        <Styled.SubmitButton tabIndex={3} onClick={submitForm}>
                             Save
                         </Styled.SubmitButton>
                     </Styled.TitleWrapper>

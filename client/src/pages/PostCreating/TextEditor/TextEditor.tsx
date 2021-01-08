@@ -168,7 +168,7 @@ export const TextEditor: React.FC<Props> = ({ name }) => {
                 urlModalState={urlModalState}
                 setUrlModalState={setUrlModalState}
                 customStyleMap={Styled.lineStyleMap}
-                tabIndex={3}
+                tabIndex={2}
             />
         </Styled.TextEditor>
     );

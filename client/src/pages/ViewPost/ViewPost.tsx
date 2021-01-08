@@ -10,7 +10,7 @@ import { Props } from './ViewPost.types';
 
 export const ViewPost: React.FC<Props> = () => {
     const { params } = useRouteMatch<{ id: string }>();
-    const [getPostInfo, { data, error }] = usePostLazyQuery();
+    const [getPostInfo, { data }] = usePostLazyQuery();
 
     const [editorState, setEditorState] = useState<EditorState>(
         EditorState.createEmpty()
@@ -52,7 +52,7 @@ export const ViewPost: React.FC<Props> = () => {
 
     return (
         <Styled.ViewPost>
-            <h1>{data?.getPost?.title}</h1>
+            <Styled.PostHeader>{data?.getPost?.title}</Styled.PostHeader>
             <div>
                 <TextEditor
                     setEditorState={setEditorState}
