@@ -1,0 +1,45 @@
+version: "3.9"
+services:
+        server:
+                depends_on:
+                        - pg
+                image: node:12-alpine
+                command: sh -c "yarn && yarn dev"
+                ports:
+                        - 3001:3001
+                working_dir: /server
+                volumes:
+                        - ./server/:/server
+                environment:
+                        PORT: 3001
+                        JWT_SECRET: 4jdfjwidsiojdfsjoaisfjfj934fi
+                        REFRESH_JWT_SECRET: ewkifpodfjer34ui89krfe
+                        PG_HOST: pg
+                        PG_USERNAME: postgres
+                        PG_PASSWORD: secret
+                        PG_DATABASE: postgres
+
+        client:
+                depends_on:
+                        - server
+                image: node:12-alpine
+                command: sh -c "yarn && yarn gen && yarn dev"
+                ports:
+                        - 3000:3000
+                working_dir: /client
+                volumes:
+                        - ./client/:/client
+                          #   enviroment:
+                          #     API_URL: http://192.168.1.170:3001/api
+                          #     GRAPHQL_URL: http://192.168.1.170:3001/graphql
+
+        pg:
+                image: postgres:13-alpine
+                volumes:
+                        - postgres:/var/lib/postgresql
+                environment:
+                        POSTGRES_PASSWORD: secret
+                        POSTGRES_USER: postgres
+                        POSTGRES_DB: postgres
+volumes:
+        postgres:

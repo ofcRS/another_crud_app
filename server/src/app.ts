@@ -61,8 +61,13 @@ export class App {
         });
     }
 
-    private static initializeDatabase() {
-        return createConnection();
+    private static async initializeDatabase() {
+	    try {
+	        const { name } = await createConnection();
+		console.log('was succesfully connected to "' + name + '"');
+	    } catch (error) {
+		    console.log('error occured while trying to connect db');
+	    }
     }
 
     private async initializeApollo() {
@@ -87,7 +92,8 @@ export class App {
 
     public listen() {
         this.app.listen(this.port, () => {
-            this.logger.info(`app started on port: ${this.port}`);
+		console.log('started on: ', this.port)
         });
+
     }
 }
