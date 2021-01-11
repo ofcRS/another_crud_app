@@ -29,9 +29,11 @@ services:
                 working_dir: /client
                 volumes:
                         - ./client/:/client
-                          #   enviroment:
-                          #     API_URL: http://192.168.1.170:3001/api
-                          #     GRAPHQL_URL: http://192.168.1.170:3001/graphql
+                environment:
+                        GRAPHQL_HOST: server
+                        GRAPHQL_PORT: 3001
+                        API_HOST: server
+                        API_PORT: 3001
 
         pg:
                 image: postgres:13-alpine

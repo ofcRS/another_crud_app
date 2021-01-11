@@ -42,7 +42,7 @@ export const request = async <
     if (params) {
         urlWithParams += `?${stringifySearchParams(params)}`;
     }
-    let formattedUrl = `${process.env.API_URL!}`;
+    let formattedUrl = `http://${process.env.API_HOST}:${process.env.API_PORT}/api`;
     if (urlWithParams[0] === '/') {
         formattedUrl += urlWithParams;
     } else {
