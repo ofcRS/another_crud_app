@@ -23,6 +23,9 @@ const validateResponse = async (response: Response) => {
     return data.data;
 };
 
+export const getApiUrl = () =>
+    `http://${process.env.API_HOST}:${process.env.API_PORT}`;
+
 export const request = async <
     Response = unknown,
     Body = undefined,
@@ -42,7 +45,7 @@ export const request = async <
     if (params) {
         urlWithParams += `?${stringifySearchParams(params)}`;
     }
-    let formattedUrl = `http://${process.env.API_HOST}:${process.env.API_PORT}/api`;
+    let formattedUrl = `${getApiUrl()}/api`;
     if (urlWithParams[0] === '/') {
         formattedUrl += urlWithParams;
     } else {
@@ -56,3 +59,4 @@ export const request = async <
     });
     return await validateResponse(result);
 };
+

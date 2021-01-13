@@ -1,4 +1,3 @@
-webpack.config.js
 dist
 src/graphql/generated
 src/models/

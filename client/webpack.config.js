@@ -1,6 +1,5 @@
 const webpack = require('webpack');
 const path = require('path');
-const dotenv = require('dotenv');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
@@ -8,7 +7,11 @@ const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = () => {
-    const env = dotenv.config().parsed;
+    const { env } = process;
+
+    console.log('IMPORTANT!!!');
+    console.log(env.GRAPHQL_HOST, env.GRAPHQL_PORT, env.API_HOST, env.API_PORT);
+    console.log('IMPORTANT!!!');
 
     const mode = env.production ? 'production' : 'development';
     const isProd = mode === 'production';
@@ -18,7 +21,7 @@ module.exports = () => {
         return prev;
     }, {});
 
-    return ({
+    return {
         mode,
         target: 'web',
         optimization: {
@@ -45,7 +48,7 @@ module.exports = () => {
             rules: [
                 {
                     test: /\.css$/i,
-                    use: ['style-loader', 'css-loader']
+                    use: ['style-loader', 'css-loader'],
                 },
                 {
                     test: /\.tsx?$/,
@@ -68,8 +71,8 @@ module.exports = () => {
                 {
                     test: /\.mjs$/,
                     include: /node_modules/,
-                    type: "javascript/auto",
-                }
+                    type: 'javascript/auto',
+                },
             ],
         },
         devServer: {
@@ -78,7 +81,7 @@ module.exports = () => {
             writeToDisk: false,
             historyApiFallback: true,
             port: 3000,
-            host: '0.0.0.0'
+            host: '0.0.0.0',
         },
         resolve: {
             extensions: ['.ts', '.js', '.tsx', '.mjs'],
@@ -89,5 +92,5 @@ module.exports = () => {
             publicPath: '/',
             path: path.resolve(__dirname, 'dist'),
         },
-    });
+    };
 };

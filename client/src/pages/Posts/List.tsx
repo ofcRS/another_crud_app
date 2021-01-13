@@ -7,7 +7,7 @@ import { usePostsQuery } from 'graphql/generated';
 import { Styled } from './Posts.styles';
 
 export const List: React.FC = observer(() => {
-    const { data } = usePostsQuery();
+    const { data, error } = usePostsQuery();
 
     return (
         <Styled.Posts>

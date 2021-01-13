@@ -39,12 +39,15 @@ export class App {
         this.initializeApollo();
     }
 
+    private static getClientUrl = () =>
+        `http://${process.env.HOST}:${process.env.CLIENT_PORT}`;
+
     private initializeMiddlewares() {
         this.app.use(bodyParser.json());
         this.app.use(cookieParser());
         this.app.use((req, res, next) => {
             res.set({
-                'Access-Control-Allow-Origin': 'http://192.168.1.170:3000',
+                'Access-Control-Allow-Origin': App.getClientUrl(),
                 'Access-Control-Allow-Methods': '*, DELETE',
                 'Access-Control-Allow-Headers':
                     'Origin, X-Requested-With, Content-Type, Accept, Authorization',
@@ -62,12 +65,14 @@ export class App {
     }
 
     private static async initializeDatabase() {
-	    try {
-	        const { name } = await createConnection();
-		console.log('was succesfully connected to "' + name + '"');
-	    } catch (error) {
-		    console.log('error occured while trying to connect db');
-	    }
+        try {
+            const { name } = await createConnection();
+            console.log('was succesfully connected to "' + name + '"');
+        } catch (error) {
+            console.log(
+                'error occured while trying to connect db: ' + error?.message
+            );
+        }
     }
 
     private async initializeApollo() {
@@ -85,15 +90,14 @@ export class App {
             app: this.app,
             cors: {
                 credentials: true,
-                origin: 'http://192.168.1.170:3000',
+                origin: App.getClientUrl(),
             },
         });
     }
 
     public listen() {
         this.app.listen(this.port, () => {
-		console.log('started on: ', this.port)
+            console.log('started on: ', this.port);
         });
-
     }
 }

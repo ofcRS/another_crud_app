@@ -1,47 +1,46 @@
 version: "3.9"
 services:
-        server:
-                depends_on:
-                        - pg
-                image: node:12-alpine
-                command: sh -c "yarn && yarn dev"
-                ports:
-                        - 3001:3001
-                working_dir: /server
-                volumes:
-                        - ./server/:/server
-                environment:
-                        PORT: 3001
-                        JWT_SECRET: 4jdfjwidsiojdfsjoaisfjfj934fi
-                        REFRESH_JWT_SECRET: ewkifpodfjer34ui89krfe
-                        PG_HOST: pg
-                        PG_USERNAME: postgres
-                        PG_PASSWORD: secret
-                        PG_DATABASE: postgres
+  server:
+    depends_on:
+      - pg
+    image: node:12-alpine
+    command: sh -c "yarn && yarn dev"
+    ports:
+      - 3001:3001
+    working_dir: /server
+    volumes:
+      - ./server/:/server
+    environment:
+      HOST: localhost
+      CLIENT_PORT: 3000
+      PORT: 3001
+      JWT_SECRET: 4jdfjwidsiojdfsjoaisfjfj934fi
+      REFRESH_JWT_SECRET: ewkifpodfjer34ui89krfe
+      PG_HOST: pg
+      PG_USERNAME: postgres
+      PG_PASSWORD: secret
+      PG_DATABASE: postgres
 
-        client:
-                depends_on:
-                        - server
-                image: node:12-alpine
-                command: sh -c "yarn && yarn gen && yarn dev"
-                ports:
-                        - 3000:3000
-                working_dir: /client
-                volumes:
-                        - ./client/:/client
-                environment:
-                        GRAPHQL_HOST: server
-                        GRAPHQL_PORT: 3001
-                        API_HOST: server
-                        API_PORT: 3001
+  client:
+    build:
+      context: ./client
+    depends_on:
+      - server
+    ports:
+      - 3000:3000
+    volumes:
+      - ./client/:/client
+    environment:
+      API_HOST: localhost
+      API_PORT: 3001
+  pg:
+    image: postgres:13-alpine
+    volumes:
+      - postgres:/var/lib/postgresql
+    environment:
+      POSTGRES_PASSWORD: secret
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
 
-        pg:
-                image: postgres:13-alpine
-                volumes:
-                        - postgres:/var/lib/postgresql
-                environment:
-                        POSTGRES_PASSWORD: secret
-                        POSTGRES_USER: postgres
-                        POSTGRES_DB: postgres
 volumes:
-        postgres:
+  postgres:

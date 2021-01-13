@@ -7,17 +7,16 @@ import {
     Query,
     Resolver,
 } from 'type-graphql';
-import { compare, hash } from 'bcrypt';
+import { compare, hash } from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
 import { User } from 'entities/user';
-import { getConnection, getManager } from 'typeorm';
+import { getConnection } from 'typeorm';
 import { Context, ContextPayload } from '../types/services/context';
 import {
     createAccessToken,
     createRefreshToken,
     sendRefreshToken,
 } from '../services/auth';
-import { BaseResolver } from './BaseResolver';
 
 @ObjectType()
 class LoginResponse {
@@ -29,7 +28,7 @@ class LoginResponse {
 }
 
 @Resolver()
-export class UserResolver extends BaseResolver {
+export class UserResolver {
     @Query(() => String)
     hello(): string {
         return 'hi!';
@@ -53,6 +52,7 @@ export class UserResolver extends BaseResolver {
         @Arg('password') password: string,
         @Ctx() { res }: Context
     ): Promise<LoginResponse> {
+        new User();
         const user = await User.findOne({
             where: {
                 email,
@@ -71,9 +71,6 @@ export class UserResolver extends BaseResolver {
 
         sendRefreshToken(res, createRefreshToken(user));
 
-        const eventManager = this.eventManager.getEventManager();
-        eventManager.emit('USER_HAS_LOGGED_IN', { user });
-
         return {
             accessToken: createAccessToken(user),
             user,
@@ -86,9 +83,7 @@ export class UserResolver extends BaseResolver {
         @Arg('password') password: string
     ): Promise<boolean> {
         try {
-            const userRepository = getManager().getRepository(User);
-
-            const userWithSameEmail = await userRepository.findOne({
+            const userWithSameEmail = await User.findOne({
                 where: {
                     email,
                 },
@@ -103,10 +98,9 @@ export class UserResolver extends BaseResolver {
             user.password = hashedPassword;
             user.email = email;
             await user.save();
-            const eventManager = this.eventManager.getEventManager();
-            eventManager.emit('USER_HAS_REGISTERED', { user });
             return true;
         } catch (error) {
+            console.log(123);
             throw error;
         }
     }
