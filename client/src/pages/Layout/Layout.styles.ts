@@ -10,6 +10,7 @@ const Layout = styled.div`
 `;
 
 const MainArea = styled.main`
+    position: relative;
     width: 100vw;
     margin: 0 auto;
 

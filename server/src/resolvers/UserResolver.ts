@@ -100,7 +100,6 @@ export class UserResolver {
             await user.save();
             return true;
         } catch (error) {
-            console.log(123);
             throw error;
         }
     }

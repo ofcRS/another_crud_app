@@ -1,54 +1,19 @@
 import styled from 'styled-components';
 
-import { MoreButton as MoreButtonBase } from 'components/index';
+import { Props } from './PostPreview.types';
 
-const Post = styled.section`
-    position: relative;
+import { smoothTime } from 'consts/animation';
 
-    display: flex;
+const PostPreview = styled.div<Props>`
+    position: fixed;
+    z-index: 1;
 
     width: 100%;
-    min-width: 250px;
-    min-height: 80px;
-    border: 1px solid #f4f4f4;
+    transform: translate(${({ show }) => (show ? '0' : '100%')});
 
-    cursor: pointer;
-
-    p {
-        white-space: pre-line;
-    }
-
-    :not(:last-child) {
-        margin-bottom: 32px;
-    }
-
-    a {
-        text-decoration: none;
-        color: inherit;
-        width: 100%;
-        height: auto;
-    }
-`;
-
-const MoreButton = styled(MoreButtonBase)`
-    position: absolute;
-    right: 5px;
-    top: 5px;
-`;
-
-const PostTitle = styled.h2`
-    font-size: 32px;
-    line-height: 48px;
-    padding: 0 8px;
-`;
-
-const TextPreview = styled.div`
-    padding: 8px;
+    transition: all ${smoothTime.ms} linear;
 `;
 
 export const Styled = {
-    Post,
-    MoreButton,
-    PostTitle,
-    TextPreview,
+    PostPreview,
 };

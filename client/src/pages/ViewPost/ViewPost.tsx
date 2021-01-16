@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useRouteMatch, Redirect } from 'react-router';
 import { EditorState, convertFromRaw, RawDraftContentState } from 'draft-js';
 
+import { PostTitle } from 'components/PostTitle';
 import { TextEditor } from 'components/TextEditor';
 import { usePostLazyQuery } from 'graphql/generated';
 
@@ -52,7 +53,7 @@ export const ViewPost: React.FC<Props> = () => {
 
     return (
         <Styled.ViewPost>
-            <Styled.PostHeader>{data?.getPost?.title}</Styled.PostHeader>
+            <PostTitle>{data?.getPost?.title}</PostTitle>
             <div>
                 <TextEditor
                     setEditorState={setEditorState}

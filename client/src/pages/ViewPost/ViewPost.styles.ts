@@ -1,11 +1,5 @@
 import styled from 'styled-components';
 
-const PostHeader = styled.h1`
-    font-size: 48px;
-    line-height: 64px;
-    margin-bottom: 16px;
-`;
-
 const ViewPost = styled.div`
     img {
         width: 100%;
@@ -20,5 +14,4 @@ const ViewPost = styled.div`
 
 export const Styled = {
     ViewPost,
-    PostHeader,
 };

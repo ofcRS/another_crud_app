@@ -1,5 +1,6 @@
 version: "3.9"
 services:
+
   server:
     depends_on:
       - pg
@@ -22,17 +23,19 @@ services:
       PG_DATABASE: postgres
 
   client:
-    build:
-      context: ./client
+    image: node:12-alpine
+    command: sh -c "yarn && yarn dev"
     depends_on:
       - server
     ports:
       - 3000:3000
+    working_dir: /client
     volumes:
       - ./client/:/client
     environment:
       API_HOST: localhost
       API_PORT: 3001
+
   pg:
     image: postgres:13-alpine
     volumes:

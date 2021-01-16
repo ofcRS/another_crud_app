@@ -6,14 +6,18 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
-module.exports = () => {
+module.exports = ({ production }) => {
     const { env } = process;
 
     console.log('IMPORTANT!!!');
-    console.log(env.GRAPHQL_HOST, env.GRAPHQL_PORT, env.API_HOST, env.API_PORT);
+    console.log({
+        env: {
+            production,
+        },
+    });
     console.log('IMPORTANT!!!');
 
-    const mode = env.production ? 'production' : 'development';
+    const mode = production ? 'production' : 'development';
     const isProd = mode === 'production';
 
     const envKeys = Object.keys(env).reduce((prev, next) => {

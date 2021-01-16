@@ -1,0 +1,1 @@
+export { PostMiniature } from './PostMiniature';
