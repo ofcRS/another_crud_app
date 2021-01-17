@@ -23,18 +23,17 @@ services:
       PG_DATABASE: postgres
 
   client:
-    image: node:12-alpine
-    command: sh -c "yarn && yarn dev"
+    build:
+      context: ./client
+      args:
+        - API_HOST=localhost
+        - API_PORT=3001
     depends_on:
       - server
     ports:
       - 3000:3000
-    working_dir: /client
-    volumes:
-      - ./client/:/client
-    environment:
-      API_HOST: localhost
-      API_PORT: 3001
+#    volumes:
+#      - ./client/:/client
 
   pg:
     image: postgres:13-alpine

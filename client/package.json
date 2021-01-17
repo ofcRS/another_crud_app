@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "dev": "webpack-dev-server --open --env.development",
-    "build": "eslint src/**/*.ts* && tsc && webpack --env.production",
+    "buildtemp": "eslint src/**/*.ts* && tsc && webpack --env.production",
+    "build": "webpack --env.production",
     "serve": "serve -s dist -l 3000",
     "check-types": "tsc",
     "gen": "graphql-codegen --config codegen.yml",
