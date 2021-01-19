@@ -28,12 +28,17 @@ services:
       args:
         - API_HOST=localhost
         - API_PORT=3001
+#    image: node:12-alpine
+#    working_dir: /client
     depends_on:
       - server
     ports:
       - 3000:3000
 #    volumes:
 #      - ./client/:/client
+#    environment:
+#      API_HOST: localhost
+#      API_PORT: 3001
 
   pg:
     image: postgres:13-alpine

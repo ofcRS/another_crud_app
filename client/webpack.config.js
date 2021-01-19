@@ -13,6 +13,9 @@ module.exports = ({ production }) => {
     console.log({
         env: {
             production,
+            API_PORT: env.API_PORT,
+            API_HOST: env.API_HOST,
+            test: 123,
         },
     });
     console.log('IMPORTANT!!!');
