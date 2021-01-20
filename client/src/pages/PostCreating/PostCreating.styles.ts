@@ -1,15 +1,21 @@
 import styled from 'styled-components';
 import { ButtonStyles } from 'components/Button';
+import { medium } from '../../styles/breakpoints';
 
 const CreatePost = styled.div`
     display: flex;
     flex-wrap: wrap;
 
-    width: 50vw;
+    position: relative;
+
     margin: 0 auto;
     padding: 16px;
 
     background: ${({ theme }) => theme.colors.dark};
+
+    @media (min-width: ${medium}px) {
+        width: 50vw;
+    }
 `;
 
 const Title = styled.input`

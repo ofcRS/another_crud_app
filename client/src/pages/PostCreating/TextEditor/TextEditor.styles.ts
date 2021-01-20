@@ -4,6 +4,7 @@ import { DraftStyleMap } from 'draft-js';
 const TextEditor = styled.div`
     width: 100%;
     min-height: calc(100vh - 200px);
+    position: relative;
 
     .public-DraftEditor-content {
         min-height: 300px;
@@ -14,12 +15,6 @@ const TextEditor = styled.div`
         max-width: 50%;
         margin: 0 auto;
     }
-`;
-
-const ControlsWrapper = styled.div`
-    display: flex;
-
-    margin-bottom: 16px;
 `;
 
 const ControlButton = styled.button<{ selected?: boolean }>`
@@ -39,6 +34,33 @@ const ControlButton = styled.button<{ selected?: boolean }>`
         width: 20px;
         fill: ${({ theme }) => theme.colors.neutral};
     }
+`;
+
+const ControlsWrapper = styled.div<{ float?: boolean }>`
+    position: sticky;
+
+    display: flex;
+
+    margin-bottom: 16px;
+
+    background: ${({ theme }) => theme.colors.dark};
+
+    ${({ float, theme: { layout } }) => {
+        if (float) {
+            return `
+                position: fixed;
+                right: 16px;
+                top: ${layout.headerHeight + 8}px;
+                z-index: 2;
+                
+                flex-direction: column;
+                
+                > ${ControlButton} {
+                    margin-right: 0;
+                }
+            `;
+        }
+    }}
 `;
 
 const Token = styled.span`

@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
     EditorState,
     DraftHandleValue,
@@ -23,8 +23,10 @@ import { UrlModal } from './UrlModal';
 import { Icon } from 'components/Icon';
 
 import 'draft-js/dist/Draft.css';
+import { theme } from '../../../styles/theme';
 
 export const TextEditor: React.FC<Props> = ({ name }) => {
+    const [isControlsVisible, setIsControlsVisible] = useState(false);
     const [_, { value: editorState }, { setValue: setEditorState }] = useField<
         EditorState
     >(name);
@@ -123,8 +125,64 @@ export const TextEditor: React.FC<Props> = ({ name }) => {
         });
     };
 
+    const controlsWrapperRef = useRef<HTMLDivElement>(null);
+    const wrapperRef = useRef<HTMLDivElement>(null);
+
+    const observeControls = () => {
+        const container = controlsWrapperRef.current;
+        const observer = new IntersectionObserver(
+            ([record]) => {
+                setIsControlsVisible(record.intersectionRatio > 0);
+            },
+            {
+                threshold: [0, 1],
+                rootMargin: `-${theme.layout.headerHeight}px 0px 0px 0px`,
+            }
+        );
+        if (container) {
+            observer.observe(container);
+        }
+    };
+
+    useEffect(() => {
+        observeControls();
+    }, []);
+
+    const controls = (
+        <>
+            {blockTypeControls.map(({ label, type }) => (
+                <Styled.ControlButton
+                    selected={isTypeSelected(type)}
+                    onClick={() => toggleBlockType(type)}
+                    key={type}
+                >
+                    {label}
+                </Styled.ControlButton>
+            ))}
+            {inlineStylesControls.map(({ inlineStyle, label }) => (
+                <Styled.ControlButton
+                    key={inlineStyle}
+                    onClick={() => toggleInlineStyle(inlineStyle)}
+                >
+                    {label}
+                </Styled.ControlButton>
+            ))}
+            <Styled.ControlButton onClick={applyLink}>
+                Link
+            </Styled.ControlButton>
+            <Styled.ControlButton onClick={logContent}>
+                Log
+            </Styled.ControlButton>
+            <Styled.ControlButton onClick={handleClickImageIcon}>
+                <Icon iconName="gallery" />
+            </Styled.ControlButton>
+        </>
+    );
+
+    console.log(isControlsVisible);
+
     return (
-        <Styled.TextEditor>
+        <Styled.TextEditor ref={wrapperRef}>
             <UrlModal
                 initialValues={{
                     url: urlModalState?.selectedUrl || '',
@@ -133,34 +191,14 @@ export const TextEditor: React.FC<Props> = ({ name }) => {
                 open={urlModalState !== null}
                 onClose={() => setUrlModalState(null)}
             />
-            <Styled.ControlsWrapper>
-                {blockTypeControls.map(({ label, type }) => (
-                    <Styled.ControlButton
-                        selected={isTypeSelected(type)}
-                        onClick={() => toggleBlockType(type)}
-                        key={type}
-                    >
-                        {label}
-                    </Styled.ControlButton>
-                ))}
-                {inlineStylesControls.map(({ inlineStyle, label }) => (
-                    <Styled.ControlButton
-                        key={inlineStyle}
-                        onClick={() => toggleInlineStyle(inlineStyle)}
-                    >
-                        {label}
-                    </Styled.ControlButton>
-                ))}
-                <Styled.ControlButton onClick={applyLink}>
-                    Link
-                </Styled.ControlButton>
-                <Styled.ControlButton onClick={logContent}>
-                    Log
-                </Styled.ControlButton>
-                <Styled.ControlButton onClick={handleClickImageIcon}>
-                    <Icon iconName="gallery" />
-                </Styled.ControlButton>
+            <Styled.ControlsWrapper ref={controlsWrapperRef}>
+                {controls}
             </Styled.ControlsWrapper>
+            {!isControlsVisible && (
+                <Styled.ControlsWrapper float={true}>
+                    {controls}
+                </Styled.ControlsWrapper>
+            )}
             <CommonTextEditor
                 setEditorState={setEditorState}
                 editorState={editorState}
