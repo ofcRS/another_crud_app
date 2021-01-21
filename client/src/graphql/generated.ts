@@ -98,7 +98,7 @@ export type Mutation = {
   deletePost: ApiResponse;
   revokeRefreshTokens: Scalars['Boolean'];
   login: LoginResponse;
-  register: Scalars['Boolean'];
+  register: LoginResponse;
 };
 
 
@@ -278,7 +278,14 @@ export type RegisterMutationVariables = Exact<{
 
 export type RegisterMutation = (
   { __typename?: 'Mutation' }
-  & Pick<Mutation, 'register'>
+  & { register: (
+    { __typename?: 'LoginResponse' }
+    & Pick<LoginResponse, 'accessToken'>
+    & { user: (
+      { __typename?: 'User' }
+      & Pick<User, 'email' | 'id'>
+    ) }
+  ) }
 );
 
 export type LoginMutationVariables = Exact<{
@@ -511,7 +518,13 @@ export type DeletePostMutationResult = ApolloReactCommon.MutationResult<DeletePo
 export type DeletePostMutationOptions = ApolloReactCommon.BaseMutationOptions<DeletePostMutation, DeletePostMutationVariables>;
 export const RegisterDocument = gql`
     mutation Register($email: String!, $password: String!) {
-  register(email: $email, password: $password)
+  register(email: $email, password: $password) {
+    accessToken
+    user {
+      email
+      id
+    }
+  }
 }
     `;
 export type RegisterMutationFn = ApolloReactCommon.MutationFunction<RegisterMutation, RegisterMutationVariables>;

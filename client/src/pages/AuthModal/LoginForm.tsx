@@ -14,7 +14,7 @@ export const LoginForm = observer<React.FC<LoginFormProps>>(({ onSignIn }) => {
 
     const [login, { error }] = useLoginMutation({
         errorPolicy: 'all',
-        onCompleted: app.login,
+        onCompleted: ({ login }) => app.login(login),
         update: (store, { data }) => {
             if (!data) return;
             store.writeQuery<MeQuery>({
@@ -51,12 +51,14 @@ export const LoginForm = observer<React.FC<LoginFormProps>>(({ onSignIn }) => {
                         <Styled.Label htmlFor="password">password</Styled.Label>
                         <Field id="password" type="password" name="password" />
                     </Styled.InputWrapper>
-                    <button type="submit" disabled={isSubmitting}>
-                        Submit
-                    </button>
-                    <StyledButton.LinkButton onClick={() => onSignIn()}>
-                        Sign In
-                    </StyledButton.LinkButton>
+                    <Styled.ButtonsWrapper>
+                        <button type="submit" disabled={isSubmitting}>
+                            Submit
+                        </button>
+                        <StyledButton.LinkButton onClick={() => onSignIn()}>
+                            Sign In
+                        </StyledButton.LinkButton>
+                    </Styled.ButtonsWrapper>
                 </Form>
             )}
         </Formik>

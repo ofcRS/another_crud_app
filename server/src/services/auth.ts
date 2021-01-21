@@ -3,7 +3,7 @@ import { sign } from 'jsonwebtoken';
 import { User } from 'entities';
 import { AUTH_COOKIES_PATH } from '../config/network';
 
-export const createAccessToken = (user: User) =>
+export const createAccessToken = (user: User): string =>
     sign(
         {
             id: user.id,
@@ -15,7 +15,7 @@ export const createAccessToken = (user: User) =>
         }
     );
 
-export const createRefreshToken = (user: User) =>
+export const createRefreshToken = (user: User): string =>
     sign(
         {
             id: user.id,

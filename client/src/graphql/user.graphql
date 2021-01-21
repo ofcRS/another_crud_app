@@ -1,7 +1,13 @@
 
 
 mutation Register($email: String!, $password: String!) {
-    register(email: $email, password: $password)
+    register(email: $email, password: $password) {
+        accessToken,
+        user {
+            email,
+            id
+        }
+    }
 }
 
 mutation Login($email: String!, $password: String!) {

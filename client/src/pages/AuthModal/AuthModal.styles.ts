@@ -1,20 +1,35 @@
 import styled from 'styled-components';
 
-export const Styled = {
-    FormWrapper: styled.div`
-        padding: 16px;
-    `,
-    InputWrapper: styled.div`
-        display: flex;
-        justify-content: space-between;
-        width: 100%;
-        padding-bottom: 16px;
-    `,
-    Label: styled.label`
+const FormWrapper = styled.div`
+    padding: 16px;
+`;
+
+const InputWrapper = styled.div`
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding-bottom: 16px;
+`;
+
+const Label = styled.label`
+    margin-right: 8px;
+`;
+
+const Title = styled.h2`
+    width: 100%;
+    padding-bottom: 16px;
+`;
+
+const ButtonsWrapper = styled.div`
+    > :first-child {
         margin-right: 8px;
-    `,
-    Title: styled.h2`
-        width: 100%;
-        padding-bottom: 16px;
-    `,
+    }
+`;
+
+export const Styled = {
+    FormWrapper,
+    InputWrapper,
+    Label,
+    Title,
+    ButtonsWrapper,
 };

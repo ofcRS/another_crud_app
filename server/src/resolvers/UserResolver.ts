@@ -77,11 +77,12 @@ export class UserResolver {
         };
     }
 
-    @Mutation(() => Boolean)
+    @Mutation(() => LoginResponse)
     async register(
         @Arg('email') email: string,
-        @Arg('password') password: string
-    ): Promise<boolean> {
+        @Arg('password') password: string,
+        @Ctx() { res }: Context
+    ): Promise<LoginResponse> {
         try {
             const userWithSameEmail = await User.findOne({
                 where: {
@@ -95,10 +96,13 @@ export class UserResolver {
             const hashedPassword = await hash(password, 10);
 
             const user = new User();
+
             user.password = hashedPassword;
             user.email = email;
             await user.save();
-            return true;
+
+            sendRefreshToken(res, createRefreshToken(user));
+            return { accessToken: createAccessToken(user), user };
         } catch (error) {
             throw error;
         }
