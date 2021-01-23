@@ -54,7 +54,7 @@ export const FetchDataWrapper: React.FC = () => {
         setSelectedPost(post);
 
         // искусственная задержка, чтобы показать анимацию :)
-        await delay(1000);
+        await delay(4000);
 
         if (post !== null) {
             getPost({

@@ -9,6 +9,7 @@ export const theme = {
         neutral: '#edf2f4',
         active: '#ef233c',
         dark: '#181a1b',
+        white: '#ffffff',
 
         pastel: ['#f25f5c', '#ffe066', '#247ba0', '#70c1b3'],
     },

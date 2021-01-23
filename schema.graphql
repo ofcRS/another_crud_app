@@ -19,7 +19,7 @@ type Mutation {
     addPost(body: postBodyInput!, title: String!): Post!
     deletePost(id: Float!): ApiResponse!
     login(email: String!, password: String!): LoginResponse!
-    register(email: String!, password: String!): Boolean!
+    register(email: String!, password: String!): LoginResponse!
     revokeRefreshTokens(id: Float!): Boolean!
 }
 
