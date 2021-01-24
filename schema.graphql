@@ -29,11 +29,19 @@ type Post {
     title: String!
 }
 
+type PostPreview {
+    bodyPreview: String!
+    id: Float!
+    imageSrc: String
+    title: String!
+}
+
 type Query {
     getPost(id: Int!): Post
     hello: String!
     me: User
     posts: [Post!]!
+    postsPreview: [PostPreview!]!
     users: [User!]!
 }
 

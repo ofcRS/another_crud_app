@@ -1,6 +1,6 @@
-import { Post } from 'graphql/generated';
+import { PostPreview } from 'graphql/generated';
 
-export type SelectedPost = Post | null;
+export type SelectedPost = PostPreview | null;
 
 export type OnDeletePost = (id: number) => void;
 export type OnSelectPost = (post: SelectedPost) => void;

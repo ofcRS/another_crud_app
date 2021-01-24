@@ -44,6 +44,15 @@ query Posts {
     }
 }
 
+query PostsPreviews {
+    postsPreview {
+        bodyPreview,
+        imageSrc,
+        title,
+        id
+    }
+}
+
 mutation AddPost($title: String!, $body: postBodyInput!) {
     addPost(title: $title, body: $body) {
         body {

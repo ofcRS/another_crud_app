@@ -1,5 +1,5 @@
-import { Post } from 'graphql/generated';
+import { PostPreview } from 'graphql/generated';
 
 export type Props = {
-    post: Post;
+    post: PostPreview;
 };

@@ -16,6 +16,7 @@ export type Query = {
   __typename?: 'Query';
   posts: Array<Post>;
   getPost?: Maybe<Post>;
+  postsPreview: Array<PostPreview>;
   hello: Scalars['String'];
   users: Array<User>;
   me?: Maybe<User>;
@@ -84,6 +85,14 @@ export enum EntityType {
 export type EntityData = {
   __typename?: 'entityData';
   src?: Maybe<Scalars['String']>;
+};
+
+export type PostPreview = {
+  __typename?: 'PostPreview';
+  id: Scalars['Float'];
+  title: Scalars['String'];
+  bodyPreview: Scalars['String'];
+  imageSrc?: Maybe<Scalars['String']>;
 };
 
 export type User = {
@@ -236,6 +245,17 @@ export type PostsQuery = (
       { __typename?: 'postBody' }
       & BodyFragment
     ) }
+  )> }
+);
+
+export type PostsPreviewsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type PostsPreviewsQuery = (
+  { __typename?: 'Query' }
+  & { postsPreview: Array<(
+    { __typename?: 'PostPreview' }
+    & Pick<PostPreview, 'bodyPreview' | 'imageSrc' | 'title' | 'id'>
   )> }
 );
 
@@ -447,6 +467,41 @@ export function usePostsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOp
 export type PostsQueryHookResult = ReturnType<typeof usePostsQuery>;
 export type PostsLazyQueryHookResult = ReturnType<typeof usePostsLazyQuery>;
 export type PostsQueryResult = ApolloReactCommon.QueryResult<PostsQuery, PostsQueryVariables>;
+export const PostsPreviewsDocument = gql`
+    query PostsPreviews {
+  postsPreview {
+    bodyPreview
+    imageSrc
+    title
+    id
+  }
+}
+    `;
+
+/**
+ * __usePostsPreviewsQuery__
+ *
+ * To run a query within a React component, call `usePostsPreviewsQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePostsPreviewsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = usePostsPreviewsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function usePostsPreviewsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<PostsPreviewsQuery, PostsPreviewsQueryVariables>) {
+        return ApolloReactHooks.useQuery<PostsPreviewsQuery, PostsPreviewsQueryVariables>(PostsPreviewsDocument, baseOptions);
+      }
+export function usePostsPreviewsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<PostsPreviewsQuery, PostsPreviewsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<PostsPreviewsQuery, PostsPreviewsQueryVariables>(PostsPreviewsDocument, baseOptions);
+        }
+export type PostsPreviewsQueryHookResult = ReturnType<typeof usePostsPreviewsQuery>;
+export type PostsPreviewsLazyQueryHookResult = ReturnType<typeof usePostsPreviewsLazyQuery>;
+export type PostsPreviewsQueryResult = ApolloReactCommon.QueryResult<PostsPreviewsQuery, PostsPreviewsQueryVariables>;
 export const AddPostDocument = gql`
     mutation AddPost($title: String!, $body: postBodyInput!) {
   addPost(title: $title, body: $body) {

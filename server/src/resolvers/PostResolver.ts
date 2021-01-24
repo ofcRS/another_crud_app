@@ -7,9 +7,11 @@ import {
     Int,
 } from 'type-graphql';
 import { BaseResolver } from './BaseResolver';
+
 import { Post, PostBody } from 'entities';
 import { checkAuth } from 'middlewares/checkJwt';
 import { ApiResponse } from 'utils/ApiHandler';
+import { PostPreview } from 'entities/post';
 
 @Resolver()
 export class PostResolver extends BaseResolver {
@@ -52,5 +54,31 @@ export class PostResolver extends BaseResolver {
             data: id,
             ok: true,
         };
+    }
+
+    getPostPreview({ body, title, id }: Post): PostPreview {
+        const atomicType = body.blocks.find(({ type }) => type === 'atomic');
+
+        let previewImage: null | string = null;
+
+        if (atomicType) {
+            const [{ key }] = atomicType.entityRanges;
+            const { src } = body.entityMap[key].data;
+            previewImage = src;
+        }
+
+        return {
+            title,
+            bodyPreview: body.blocks?.[0].text,
+            imageSrc: previewImage,
+            id,
+        };
+    }
+
+    @Query(() => [PostPreview])
+    async postsPreview(): Promise<PostPreview[]> {
+        const posts = await Post.find();
+
+        return posts.map(this.getPostPreview);
     }
 }

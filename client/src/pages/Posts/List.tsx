@@ -4,14 +4,14 @@ import { observer } from 'mobx-react';
 import { PostMiniature } from 'components/PostMiniature';
 import { PostPreview } from 'components/PostPreview';
 
-import { usePostsQuery } from 'graphql/generated';
+import { usePostsPreviewsQuery } from 'graphql/generated';
 import { Styled } from './Posts.styles';
 
 import { postsContext } from './context';
 
 export const List: React.FC = observer(() => {
     const { selectedPost } = useContext(postsContext);
-    const { data } = usePostsQuery();
+    const { data } = usePostsPreviewsQuery();
 
     const showPostPreview = selectedPost !== null;
 
@@ -19,7 +19,7 @@ export const List: React.FC = observer(() => {
         <>
             <PostPreview show={showPostPreview} />
             <Styled.Posts showPostPreview={showPostPreview}>
-                {data?.posts.map(post => (
+                {data?.postsPreview.map(post => (
                     <PostMiniature key={post.id} post={post} />
                 ))}
             </Styled.Posts>

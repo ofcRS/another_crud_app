@@ -156,3 +156,20 @@ export class Post extends BaseEntity {
     )
     tags: Tag[];
 }
+
+@ObjectType()
+export class PostPreview {
+    @Field()
+    id: number;
+
+    @Field()
+    title: string;
+
+    @Field()
+    bodyPreview: string;
+
+    @Field(() => String, {
+        nullable: true,
+    })
+    imageSrc: string | null;
+}
