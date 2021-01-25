@@ -57,7 +57,10 @@ export class PostResolver extends BaseResolver {
     }
 
     getPostPreview({ body, title, id }: Post): PostPreview {
-        const atomicType = body.blocks.find(({ type }) => type === 'atomic');
+        const atomicType = body.blocks.find(
+            ({ type, entityRanges }) =>
+                type === 'atomic' && entityRanges.length === 1
+        );
 
         let previewImage: null | string = null;
 
@@ -76,9 +79,20 @@ export class PostResolver extends BaseResolver {
     }
 
     @Query(() => [PostPreview])
-    async postsPreview(): Promise<PostPreview[]> {
-        const posts = await Post.find();
+    async postsPreview(
+        @Arg('skip', () => Int) skip: number,
+        @Arg('take', () => Int) take: number
+    ): Promise<PostPreview[]> {
+        const posts = await Post.find({
+            skip,
+            take,
+        });
 
         return posts.map(this.getPostPreview);
+    }
+
+    @Query(() => Int)
+    getAmountOfPosts(): Promise<number> {
+        return Post.count();
     }
 }

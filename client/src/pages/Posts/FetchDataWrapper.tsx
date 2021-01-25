@@ -2,10 +2,12 @@ import React, { useCallback, useEffect, useState } from 'react';
 
 import { postsContext } from './context';
 import {
+    PostPreview,
     PostsDocument,
     PostsQuery,
     useDeletePostMutation,
     usePostLazyQuery,
+    usePostsPreviewsLazyQuery,
 } from 'graphql/generated';
 
 import { OnDeletePost, OnSelectPost, SelectedPost } from './Posts.types';
@@ -13,10 +15,35 @@ import { List } from './List';
 import { useHistory } from 'react-router';
 import { delay } from 'utils/throttle';
 
+export const ITEMS_ON_PAGE = 1;
+
 export const FetchDataWrapper: React.FC = () => {
+    const [currentPage, setCurrentPage] = useState(1);
+
     const [selectedPost, setSelectedPost] = useState<SelectedPost>(null);
     const [deletePost, { client }] = useDeletePostMutation();
     const [getPost, { data }] = usePostLazyQuery();
+
+    const [postsPreviews, setPostsPreview] = useState<PostPreview[]>([]);
+    const [
+        getPostsPreviews,
+        { data: postsPreviewsData },
+    ] = usePostsPreviewsLazyQuery();
+
+    useEffect(() => {
+        getPostsPreviews({
+            variables: {
+                skip: (currentPage - 1) * ITEMS_ON_PAGE,
+                take: ITEMS_ON_PAGE,
+            },
+        });
+    }, [currentPage, getPostsPreviews]);
+    useEffect(() => {
+        setPostsPreview(prev => [
+            ...prev,
+            ...(postsPreviewsData?.postsPreview || []),
+        ]);
+    }, [postsPreviewsData?.postsPreview]);
 
     const onDeletePost = useCallback<OnDeletePost>(
         async targetId => {
@@ -71,6 +98,10 @@ export const FetchDataWrapper: React.FC = () => {
                 onDeletePost,
                 selectedPost,
                 onSelectPost,
+                currentPage,
+                setCurrentPage,
+                postsPreviews,
+                totalItems: postsPreviewsData?.totalItems || 0,
             }}
         >
             <List />

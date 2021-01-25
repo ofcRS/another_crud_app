@@ -37,11 +37,12 @@ type PostPreview {
 }
 
 type Query {
+    getAmountOfPosts: Int!
     getPost(id: Int!): Post
     hello: String!
     me: User
     posts: [Post!]!
-    postsPreview: [PostPreview!]!
+    postsPreview(skip: Int!, take: Int!): [PostPreview!]!
     users: [User!]!
 }
 

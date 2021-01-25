@@ -17,6 +17,7 @@ export type Query = {
   posts: Array<Post>;
   getPost?: Maybe<Post>;
   postsPreview: Array<PostPreview>;
+  getAmountOfPosts: Scalars['Int'];
   hello: Scalars['String'];
   users: Array<User>;
   me?: Maybe<User>;
@@ -25,6 +26,12 @@ export type Query = {
 
 export type QueryGetPostArgs = {
   id: Scalars['Int'];
+};
+
+
+export type QueryPostsPreviewArgs = {
+  take: Scalars['Int'];
+  skip: Scalars['Int'];
 };
 
 export type Post = {
@@ -248,11 +255,15 @@ export type PostsQuery = (
   )> }
 );
 
-export type PostsPreviewsQueryVariables = Exact<{ [key: string]: never; }>;
+export type PostsPreviewsQueryVariables = Exact<{
+  skip: Scalars['Int'];
+  take: Scalars['Int'];
+}>;
 
 
 export type PostsPreviewsQuery = (
   { __typename?: 'Query' }
+  & { totalItems: Query['getAmountOfPosts'] }
   & { postsPreview: Array<(
     { __typename?: 'PostPreview' }
     & Pick<PostPreview, 'bodyPreview' | 'imageSrc' | 'title' | 'id'>
@@ -468,8 +479,9 @@ export type PostsQueryHookResult = ReturnType<typeof usePostsQuery>;
 export type PostsLazyQueryHookResult = ReturnType<typeof usePostsLazyQuery>;
 export type PostsQueryResult = ApolloReactCommon.QueryResult<PostsQuery, PostsQueryVariables>;
 export const PostsPreviewsDocument = gql`
-    query PostsPreviews {
-  postsPreview {
+    query PostsPreviews($skip: Int!, $take: Int!) {
+  totalItems: getAmountOfPosts
+  postsPreview(skip: $skip, take: $take) {
     bodyPreview
     imageSrc
     title
@@ -490,6 +502,8 @@ export const PostsPreviewsDocument = gql`
  * @example
  * const { data, loading, error } = usePostsPreviewsQuery({
  *   variables: {
+ *      skip: // value for 'skip'
+ *      take: // value for 'take'
  *   },
  * });
  */

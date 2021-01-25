@@ -44,8 +44,9 @@ query Posts {
     }
 }
 
-query PostsPreviews {
-    postsPreview {
+query PostsPreviews($skip: Int!, $take: Int!) {
+    totalItems: getAmountOfPosts,
+    postsPreview(skip: $skip, take: $take) {
         bodyPreview,
         imageSrc,
         title,

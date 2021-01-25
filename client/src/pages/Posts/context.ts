@@ -5,4 +5,8 @@ export const postsContext = createContext<PostsContext>({
     onDeletePost: () => null,
     onSelectPost: () => null,
     selectedPost: null,
+    currentPage: 0,
+    setCurrentPage: () => null,
+    postsPreviews: [],
+    totalItems: 0,
 });

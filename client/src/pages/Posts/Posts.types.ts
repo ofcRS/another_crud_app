@@ -9,4 +9,8 @@ export type PostsContext = {
     onDeletePost: OnDeletePost;
     onSelectPost: OnSelectPost;
     selectedPost: SelectedPost;
+    currentPage: number;
+    setCurrentPage: (page: number) => void;
+    postsPreviews: PostPreview[];
+    totalItems: number;
 };
