@@ -1,7 +1,5 @@
 import React, { useCallback } from 'react';
 import {
-    PostsDocument,
-    PostsQuery,
     useAddPostMutation,
     PostBodyInput,
     EntityMapInput,
@@ -29,28 +27,17 @@ export const FetchDataWrapper: React.FC = () => {
                 ),
             };
 
-            const { data } = await addPost({
-                variables: {
-                    title: title,
-                    body: formattedBody,
-                },
-            });
-
-            const current = client?.readQuery<PostsQuery>({
-                query: PostsDocument,
-            });
-            if (current?.posts && data?.addPost) {
-                const updatedPosts = [data.addPost, ...current?.posts];
-                client?.writeQuery<PostsQuery>({
-                    query: PostsDocument,
-                    data: {
-                        posts: updatedPosts,
+            for (let i = 0; i < 10; i++) {
+                await addPost({
+                    variables: {
+                        title: title + ' ' + i,
+                        body: formattedBody,
                     },
                 });
             }
             history.push('/posts');
         },
-        [addPost, client, history]
+        [addPost, history]
     );
 
     return (

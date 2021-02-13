@@ -13,7 +13,7 @@ import {
 } from './utils/auth';
 
 import { GraphQLRequest } from '@apollo/client/link/core/types';
-import { getApiUrl } from "./utils/request";
+import { getApiUrl } from './utils/request';
 
 const requestLink = new ApolloLink(
     (operation, forward) =>
@@ -70,7 +70,27 @@ export const client = new ApolloClient({
             credentials: 'include',
         }),
     ]),
-    cache: new InMemoryCache(),
+    cache: new InMemoryCache({
+        typePolicies: {
+            Query: {
+                fields: {
+                    postsPreview: {
+                        keyArgs: false,
+                        merge: (
+                            existing = [],
+                            incoming,
+                            { variables, ...options }
+                        ) => {
+                            const merged = [...existing, ...incoming];
+                            // Ставим флаг rewrite, например при
+                            // удалении элемента, когда нам не нужен мёрдж
+                            return variables?.rewrite ? incoming : merged;
+                        },
+                    },
+                },
+            },
+        },
+    }),
 });
 
 export const makePromise = <T>(operation: GraphQLRequest) =>

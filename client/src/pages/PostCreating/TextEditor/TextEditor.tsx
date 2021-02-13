@@ -179,8 +179,6 @@ export const TextEditor: React.FC<Props> = ({ name }) => {
         </>
     );
 
-    console.log(isControlsVisible);
-
     return (
         <Styled.TextEditor ref={wrapperRef}>
             <UrlModal

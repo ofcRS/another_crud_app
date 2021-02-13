@@ -11,6 +11,10 @@ import { RootStoreProvider } from 'store/RootStore';
 
 import 'mobx-react-lite/batchingForReactDom';
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+// @ts-ignore
+window.client = client;
+
 render(
     <RootStoreProvider>
         <ApolloProvider client={client}>

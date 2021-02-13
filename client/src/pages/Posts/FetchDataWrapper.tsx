@@ -2,9 +2,8 @@ import React, { useCallback, useEffect, useState } from 'react';
 
 import { postsContext } from './context';
 import {
-    PostPreview,
-    PostsDocument,
-    PostsQuery,
+    PostsPreviewsDocument,
+    PostsPreviewsQuery,
     useDeletePostMutation,
     usePostLazyQuery,
     usePostsPreviewsLazyQuery,
@@ -15,7 +14,7 @@ import { List } from './List';
 import { useHistory } from 'react-router';
 import { delay } from 'utils/throttle';
 
-export const ITEMS_ON_PAGE = 1;
+export const ITEMS_ON_PAGE = 2;
 
 export const FetchDataWrapper: React.FC = () => {
     const [currentPage, setCurrentPage] = useState(1);
@@ -24,26 +23,35 @@ export const FetchDataWrapper: React.FC = () => {
     const [deletePost, { client }] = useDeletePostMutation();
     const [getPost, { data }] = usePostLazyQuery();
 
-    const [postsPreviews, setPostsPreview] = useState<PostPreview[]>([]);
+    const skip = (currentPage - 1) * ITEMS_ON_PAGE;
+    const take = ITEMS_ON_PAGE;
+
     const [
         getPostsPreviews,
-        { data: postsPreviewsData },
+        { data: postsPreviewsData, fetchMore },
     ] = usePostsPreviewsLazyQuery();
 
     useEffect(() => {
-        getPostsPreviews({
+        const options = {
             variables: {
-                skip: (currentPage - 1) * ITEMS_ON_PAGE,
-                take: ITEMS_ON_PAGE,
+                skip,
+                take,
             },
-        });
-    }, [currentPage, getPostsPreviews]);
-    useEffect(() => {
-        setPostsPreview(prev => [
-            ...prev,
-            ...(postsPreviewsData?.postsPreview || []),
-        ]);
-    }, [postsPreviewsData?.postsPreview]);
+        };
+
+        // fetchMore не будет работать, если предварительно не вызвать getPostsPreviews,
+        // ыпоэтому вызываю его для первой страницы
+        if (skip === 0) {
+            getPostsPreviews(options);
+        } else {
+            fetchMore?.({
+                variables: {
+                    skip,
+                    take,
+                },
+            });
+        }
+    }, [fetchMore, getPostsPreviews, skip, take]);
 
     const onDeletePost = useCallback<OnDeletePost>(
         async targetId => {
@@ -52,16 +60,20 @@ export const FetchDataWrapper: React.FC = () => {
                     id: targetId,
                 },
             });
-            const current = client?.readQuery<PostsQuery>({
-                query: PostsDocument,
+            const current = client?.readQuery<PostsPreviewsQuery>({
+                query: PostsPreviewsDocument,
             });
-            if (current?.posts) {
-                const updatedList = current.posts.filter(
+            if (current?.postsPreview) {
+                const updatedList = current.postsPreview.filter(
                     ({ id }) => id !== targetId
                 );
-                client?.writeQuery<PostsQuery>({
-                    query: PostsDocument,
-                    data: { posts: updatedList },
+                client?.writeQuery<PostsPreviewsQuery>({
+                    query: PostsPreviewsDocument,
+                    data: {
+                        totalItems: current.totalItems - 1,
+                        postsPreview: updatedList,
+                    },
+                    variables: { rewrite: true },
                 });
             }
         },
@@ -81,7 +93,7 @@ export const FetchDataWrapper: React.FC = () => {
         setSelectedPost(post);
 
         // искусственная задержка, чтобы показать анимацию :)
-        await delay(4000);
+        await delay(2500);
 
         if (post !== null) {
             getPost({
@@ -100,7 +112,7 @@ export const FetchDataWrapper: React.FC = () => {
                 onSelectPost,
                 currentPage,
                 setCurrentPage,
-                postsPreviews,
+                postsPreviews: postsPreviewsData?.postsPreview || [],
                 totalItems: postsPreviewsData?.totalItems || 0,
             }}
         >
