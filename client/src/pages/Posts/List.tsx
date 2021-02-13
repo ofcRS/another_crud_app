@@ -12,13 +12,15 @@ import { ITEMS_ON_PAGE } from './FetchDataWrapper';
 export const List: React.FC = observer(() => {
     const {
         selectedPost,
-        currentPage,
-        setCurrentPage,
+        skip,
+        setSkip,
         postsPreviews,
         totalItems,
     } = useContext(postsContext);
 
     const showPostPreview = selectedPost !== null;
+
+    const isMoreButtonVisible = skip + ITEMS_ON_PAGE < totalItems;
 
     return (
         <>
@@ -27,9 +29,9 @@ export const List: React.FC = observer(() => {
                 {postsPreviews.map(post => (
                     <PostMiniature key={post.id} post={post} />
                 ))}
-                {!((currentPage - 1) * ITEMS_ON_PAGE >= totalItems) && (
+                {isMoreButtonVisible && (
                     <Styled.MoreButton
-                        onClick={() => setCurrentPage(currentPage + 1)}
+                        onClick={() => setSkip(prev => prev + ITEMS_ON_PAGE)}
                     >
                         Еще...
                     </Styled.MoreButton>

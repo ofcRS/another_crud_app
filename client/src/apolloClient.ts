@@ -76,15 +76,27 @@ export const client = new ApolloClient({
                 fields: {
                     postsPreview: {
                         keyArgs: false,
-                        merge: (
-                            existing = [],
-                            incoming,
-                            { variables, ...options }
-                        ) => {
-                            const merged = [...existing, ...incoming];
-                            // Ставим флаг rewrite, например при
-                            // удалении элемента, когда нам не нужен мёрдж
-                            return variables?.rewrite ? incoming : merged;
+                        merge: (existing = [], incoming, options) => {
+                            const { skip, take } = options.args as Record<
+                                string,
+                                number
+                            >;
+                            const { rewrite } = options.variables as {
+                                rewrite: boolean;
+                            };
+
+                            // передаем флаг rewrite, если хотим перезаписать текущий кэш, например,
+                            // при удалении элемента мы передаем новый список целиком
+                            if (rewrite) return incoming;
+                            const merged = [...existing];
+                            for (let i = 0; i < take; i++) {
+                                // ставим запись на соответствующее место в
+                                // кэше, в зависимости от параметра skip, например,
+                                // если мы перезапрашиваем одну и ту же страницу
+                                merged[skip + i] = incoming[i];
+                            }
+
+                            return merged.filter(value => value !== undefined);
                         },
                     },
                 },

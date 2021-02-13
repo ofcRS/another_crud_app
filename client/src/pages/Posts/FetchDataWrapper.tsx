@@ -9,33 +9,47 @@ import {
     usePostsPreviewsLazyQuery,
 } from 'graphql/generated';
 
-import { OnDeletePost, OnSelectPost, SelectedPost } from './Posts.types';
+import {
+    FetchMorePostsPreviews,
+    OnDeletePost,
+    OnSelectPost,
+    SelectedPost,
+} from './Posts.types';
 import { List } from './List';
 import { useHistory } from 'react-router';
 import { delay } from 'utils/throttle';
 
-export const ITEMS_ON_PAGE = 2;
+export const ITEMS_ON_PAGE = 3;
 
 export const FetchDataWrapper: React.FC = () => {
-    const [currentPage, setCurrentPage] = useState(1);
-
     const [selectedPost, setSelectedPost] = useState<SelectedPost>(null);
-    const [deletePost, { client }] = useDeletePostMutation();
+    const [deletePost] = useDeletePostMutation();
     const [getPost, { data }] = usePostLazyQuery();
 
-    const skip = (currentPage - 1) * ITEMS_ON_PAGE;
-    const take = ITEMS_ON_PAGE;
+    const [skip, setSkip] = useState(0);
 
     const [
         getPostsPreviews,
-        { data: postsPreviewsData, fetchMore },
+        { data: postsPreviewsData, fetchMore, client },
     ] = usePostsPreviewsLazyQuery();
+
+    const fetchMorePostsPreviews = useCallback<FetchMorePostsPreviews>(
+        (skip, take) => {
+            fetchMore?.({
+                variables: {
+                    skip,
+                    take,
+                },
+            });
+        },
+        [fetchMore]
+    );
 
     useEffect(() => {
         const options = {
             variables: {
                 skip,
-                take,
+                take: ITEMS_ON_PAGE,
             },
         };
 
@@ -44,14 +58,9 @@ export const FetchDataWrapper: React.FC = () => {
         if (skip === 0) {
             getPostsPreviews(options);
         } else {
-            fetchMore?.({
-                variables: {
-                    skip,
-                    take,
-                },
-            });
+            fetchMorePostsPreviews(skip, ITEMS_ON_PAGE);
         }
-    }, [fetchMore, getPostsPreviews, skip, take]);
+    }, [fetchMorePostsPreviews, getPostsPreviews, skip]);
 
     const onDeletePost = useCallback<OnDeletePost>(
         async targetId => {
@@ -63,21 +72,25 @@ export const FetchDataWrapper: React.FC = () => {
             const current = client?.readQuery<PostsPreviewsQuery>({
                 query: PostsPreviewsDocument,
             });
-            if (current?.postsPreview) {
-                const updatedList = current.postsPreview.filter(
+
+            if (current) {
+                const filtered = current.postsPreview.filter(
                     ({ id }) => id !== targetId
                 );
                 client?.writeQuery<PostsPreviewsQuery>({
                     query: PostsPreviewsDocument,
                     data: {
+                        postsPreview: filtered,
                         totalItems: current.totalItems - 1,
-                        postsPreview: updatedList,
                     },
-                    variables: { rewrite: true },
+                    variables: {
+                        rewrite: true,
+                    },
                 });
+                fetchMorePostsPreviews(Math.max(skip - 1, 0), ITEMS_ON_PAGE);
             }
         },
-        [client, deletePost]
+        [client, deletePost, fetchMorePostsPreviews, skip]
     );
 
     const history = useHistory();
@@ -110,8 +123,8 @@ export const FetchDataWrapper: React.FC = () => {
                 onDeletePost,
                 selectedPost,
                 onSelectPost,
-                currentPage,
-                setCurrentPage,
+                skip,
+                setSkip,
                 postsPreviews: postsPreviewsData?.postsPreview || [],
                 totalItems: postsPreviewsData?.totalItems || 0,
             }}
