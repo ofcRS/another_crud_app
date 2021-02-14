@@ -5,8 +5,10 @@ export type ContextPayload = {
     version: number;
 };
 
-export type Context = {
+export type Context<UserAuthorized extends boolean = false> = {
     res: Response;
     req: Request;
-    payload?: ContextPayload;
+    payload: UserAuthorized extends true
+        ? ContextPayload
+        : ContextPayload | undefined;
 };

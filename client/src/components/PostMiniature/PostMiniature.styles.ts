@@ -34,7 +34,7 @@ const Post = styled.section`
 const MoreButton = styled(MoreButtonBase)`
     position: absolute;
     right: 5px;
-    top: 5px;
+    top: 10px;
 `;
 
 const PostTitle = styled.h2`

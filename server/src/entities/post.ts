@@ -2,10 +2,9 @@ import {
     Entity,
     Column,
     PrimaryGeneratedColumn,
-    OneToOne,
     ManyToOne,
-    ManyToMany,
     BaseEntity,
+    OneToMany,
 } from 'typeorm';
 import {
     ObjectType,
@@ -15,9 +14,8 @@ import {
     InputType,
 } from 'type-graphql';
 
-import { PostMetaData } from './postmetadata';
 import { User } from './user';
-import { Tag } from './tag';
+import { Comment } from './comment';
 
 @InputType('inlineStyleRangeInput')
 @ObjectType('inlineStyleRange')
@@ -130,31 +128,21 @@ export class Post extends BaseEntity {
     @Column('json')
     body: PostBody;
 
-    @OneToOne(
-        () => PostMetaData,
-        meta => meta.post,
-        {
-            cascade: true,
-            onDelete: 'CASCADE',
-        }
-    )
-    metadata: PostMetaData;
-
     @ManyToOne(
-        type => User,
+        () => User,
         user => user.posts
     )
     user: User;
 
-    @ManyToMany(
-        type => Tag,
-        tag => tag.posts,
+    @OneToMany(
+        () => Comment,
+        comment => comment.post,
         {
             cascade: true,
-            onDelete: 'CASCADE',
         }
     )
-    tags: Tag[];
+    @Field(() => [Comment])
+    comments: Comment[];
 }
 
 @ObjectType()

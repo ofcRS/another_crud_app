@@ -8,6 +8,7 @@ import {
 import { Field, ObjectType, Int } from 'type-graphql';
 
 import { Post } from './post';
+import { Comment } from './comment';
 
 @ObjectType()
 @Entity()
@@ -31,4 +32,10 @@ export class User extends BaseEntity {
 
     @Column('int', { default: 0 })
     tokenVersion: number;
+
+    @OneToMany(
+        () => Comment,
+        comment => comment.user
+    )
+    comments: Comment[];
 }

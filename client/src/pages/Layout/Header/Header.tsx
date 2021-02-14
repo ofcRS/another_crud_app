@@ -22,7 +22,7 @@ export const Header = observer<React.FC<Props>>(() => {
     return (
         <Styled.Header>
             <Burger />
-            <input placeholder="поиск" />
+            <input placeholder="Search" />
             <Button
                 onClick={onClickNewPostButton}
                 iconProps={{

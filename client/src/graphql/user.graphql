@@ -26,3 +26,10 @@ query Me {
         id
     }
 }
+
+query Users {
+    users {
+        email,
+        id
+    }
+}

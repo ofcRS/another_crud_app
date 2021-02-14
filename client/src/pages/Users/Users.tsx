@@ -1,15 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-import { Icon } from 'components/Icon';
+import { User } from './User';
 
-export const Users: React.FC = () => {
-    const [show, setState] = useState(false);
+import { Props } from './Users.types';
 
-    if (!show) return <button onClick={() => setState(true)}>показать</button>;
+import { useUsersQuery } from 'graphql/generated';
+
+export const Users: React.FC<Props> = () => {
+    const { data } = useUsersQuery();
 
     return (
         <div>
-            <Icon iconName={'more'} />
+            {data?.users.map(user => (
+                <User key={user.id} user={user} />
+            ))}
         </div>
     );
 };

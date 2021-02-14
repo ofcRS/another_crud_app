@@ -10,6 +10,13 @@ type ApiResponse {
     ok: Boolean!
 }
 
+type Comment {
+    id: Float!
+    post: Post!
+    text: String!
+    user: User!
+}
+
 type LoginResponse {
     accessToken: String!
     user: User!
@@ -25,6 +32,7 @@ type Mutation {
 
 type Post {
     body: postBody!
+    comments: [Comment!]!
     id: Int!
     title: String!
 }

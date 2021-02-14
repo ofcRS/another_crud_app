@@ -12,11 +12,11 @@ import { OnAddPost } from './PostCreating.types';
 import { PostCreating } from './PostCreating';
 
 export const FetchDataWrapper: React.FC = () => {
-    const [addPost, { client }] = useAddPostMutation();
+    const [addPost] = useAddPostMutation();
     const history = useHistory();
 
     const onAddPost = useCallback<OnAddPost>(
-        async ({ body, title }, helpers) => {
+        async ({ body, title }) => {
             const rawBody = convertToRaw(body.getCurrentContent());
             const formattedBody: PostBodyInput = {
                 blocks: rawBody.blocks.map(({ data, ...block }) => block),
@@ -27,14 +27,13 @@ export const FetchDataWrapper: React.FC = () => {
                 ),
             };
 
-            for (let i = 0; i < 10; i++) {
-                await addPost({
-                    variables: {
-                        title: title + ' ' + i,
-                        body: formattedBody,
-                    },
-                });
-            }
+            await addPost({
+                variables: {
+                    title: title,
+                    body: formattedBody,
+                },
+            });
+
             history.push('/posts');
         },
         [addPost, history]

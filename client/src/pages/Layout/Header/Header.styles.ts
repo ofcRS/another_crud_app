@@ -24,6 +24,16 @@ const Header = styled.header`
 
     > input {
         margin-right: 16px;
+        padding: 6px;
+        color: ${({ theme }) => theme.colors.neutral};
+        background: none;
+
+        border: 1px solid ${({ theme }) => theme.colors.neutral};
+        border-radius: 3px;
+
+        ::placeholder {
+            color: ${({ theme }) => theme.colors.neutral};
+        }
     }
 
     > :last-child {

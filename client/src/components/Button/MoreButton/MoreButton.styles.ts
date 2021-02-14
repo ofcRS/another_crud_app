@@ -10,7 +10,7 @@ const MoreButton = styled(BaseButton.Button)`
     padding: 0;
 
     svg {
-        width: 15px;
+        width: 25px;
         fill: ${({ theme }) => theme.colors.neutral};
     }
 `;
@@ -18,6 +18,8 @@ const MoreButton = styled(BaseButton.Button)`
 const CalloutItem = styled.div`
     cursor: pointer;
     width: max-content;
+    padding: 8px;
+    font-size: 18px;
     border: 1px solid #000000;
 `;
 
