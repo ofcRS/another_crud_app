@@ -1,66 +1,39 @@
-import React, { useEffect, useState } from 'react';
-import { useRouteMatch, Redirect } from 'react-router';
-import { EditorState, convertFromRaw, RawDraftContentState } from 'draft-js';
+import React, { useContext } from 'react';
 
 import { PostTitle } from 'components/PostTitle';
 import { TextEditor } from 'components/TextEditor';
-import { usePostLazyQuery } from 'graphql/generated';
+
+import { PostComments } from './PostComments';
+import { NewComment } from './NewComment';
 
 import { Styled } from './ViewPost.styles';
 import { Props } from './ViewPost.types';
+import { viewPostContext } from './context';
 
 export const ViewPost: React.FC<Props> = () => {
-    const { params } = useRouteMatch<{ id: string }>();
-    const [getPostInfo, { data }] = usePostLazyQuery();
-
-    const [editorState, setEditorState] = useState<EditorState>(
-        EditorState.createEmpty()
-    );
-
-    useEffect(() => {
-        getPostInfo({
-            variables: {
-                id: parseInt(params.id),
-            },
-        });
-    }, [getPostInfo, params.id]);
-
-    useEffect(() => {
-        if (data?.getPost?.body) {
-            const { body } = data?.getPost;
-            const contentState = convertFromRaw({
-                ...body,
-                entityMap: body.entityMap.reduce(
-                    (res, cur, index) => ({
-                        ...res,
-                        [index]: cur,
-                    }),
-                    {}
-                ),
-            } as RawDraftContentState);
-            setEditorState(prev =>
-                EditorState.set(
-                    EditorState.push(prev, contentState, 'adjust-depth'),
-                    {}
-                )
-            );
-        }
-    }, [data]);
-
-    if (!params.id || Number.isNaN(parseInt(params.id))) {
-        return <Redirect to="/posts" />;
-    }
+    const {
+        post,
+        editorState,
+        setEditorState,
+        onLeaveComment,
+        postId,
+    } = useContext(viewPostContext);
 
     return (
-        <Styled.ViewPost>
-            <PostTitle>{data?.getPost?.title}</PostTitle>
-            <div>
-                <TextEditor
-                    setEditorState={setEditorState}
-                    readOnly={true}
-                    editorState={editorState}
-                />
-            </div>
-        </Styled.ViewPost>
+        <Styled.ViewPostWrapper>
+            <Styled.ViewPost>
+                <PostTitle>{post?.title}</PostTitle>
+                <Styled.EditorWrapper>
+                    <TextEditor
+                        setEditorState={setEditorState}
+                        readOnly={true}
+                        editorState={editorState}
+                    />
+                </Styled.EditorWrapper>
+                <h2>Comments - {post?.comments.length}</h2>
+                <NewComment onLeaveComment={onLeaveComment} postId={postId} />
+                <PostComments list={post?.comments || []} />
+            </Styled.ViewPost>
+        </Styled.ViewPostWrapper>
     );
 };

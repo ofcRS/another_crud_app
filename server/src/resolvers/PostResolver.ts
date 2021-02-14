@@ -9,11 +9,10 @@ import {
 } from 'type-graphql';
 import { BaseResolver } from './BaseResolver';
 
-import { Post, PostBody } from 'entities';
+import { Post, PostBody, PostPreview, Comment } from 'entities';
 import { checkAuth } from 'middlewares/checkJwt';
 import { ApiResponse } from 'utils/ApiHandler';
-import { PostPreview } from 'entities/post';
-import { Comment } from 'entities/comment';
+
 import { Context } from 'types/services/context';
 
 @Resolver()
@@ -49,15 +48,12 @@ export class PostResolver extends BaseResolver {
         @Arg('body') body: PostBody
     ): Promise<Post> {
         const newPost = new Post();
+
         newPost.title = title;
         newPost.body = body;
-        const comment = new Comment();
+        newPost.userId = payload.id;
 
-        comment.post = newPost;
-        comment.text = '123';
-        comment.userId = payload.id;
         await newPost.save();
-        await comment.save();
         return newPost;
     }
 
@@ -109,5 +105,24 @@ export class PostResolver extends BaseResolver {
     @Query(() => Int)
     getAmountOfPosts(): Promise<number> {
         return Post.count();
+    }
+
+    @Mutation(() => Comment, {
+        name: 'leaveComment',
+    })
+    @UseMiddleware(checkAuth)
+    async leaveComment(
+        @Ctx() { payload }: Context<true>,
+        @Arg('text') text: string,
+        @Arg('postId', () => Int) postId: number
+    ) {
+        const comment = new Comment();
+        comment.userId = payload.id;
+        comment.text = text;
+        comment.postId = postId;
+
+        const { id } = await comment.save();
+
+        return Comment.findOne(id);
     }
 }

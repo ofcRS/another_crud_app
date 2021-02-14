@@ -10,12 +10,22 @@ const PostPreview = styled.div<Props>`
 
     width: 100%;
     height: 100%;
+
+    background: ${({ theme }) => theme.colors.dark};
+
     left: ${({ show }) => (show ? '50%' : '100%')};
     transform: translateX(${({ show }) => (show ? '-50%' : '100%')});
 
     overflow: hidden;
 
     transition: all ${smoothTime.ms} linear;
+`;
+
+const Wrapper = styled.div`
+    max-width: 680px;
+    width: 50vw;
+
+    margin: 0 auto;
 `;
 
 const ImagePreview = styled.div`
@@ -26,4 +36,5 @@ const ImagePreview = styled.div`
 export const Styled = {
     PostPreview,
     ImagePreview,
+    Wrapper,
 };

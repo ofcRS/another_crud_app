@@ -10,6 +10,8 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  /** The javascript `Date` as string. Type represents date and time as the ISO Date string. */
+  DateTime: any;
 };
 
 export type Query = {
@@ -40,6 +42,8 @@ export type Post = {
   title: Scalars['String'];
   body: PostBody;
   comments: Array<Comment>;
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
 };
 
 export type PostBody = {
@@ -97,10 +101,12 @@ export type EntityData = {
 
 export type Comment = {
   __typename?: 'Comment';
-  id: Scalars['Float'];
+  id: Scalars['Int'];
   post: Post;
   user: User;
   text: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
 };
 
 export type User = {
@@ -108,6 +114,7 @@ export type User = {
   id: Scalars['Int'];
   email: Scalars['String'];
 };
+
 
 export type PostPreview = {
   __typename?: 'PostPreview';
@@ -121,6 +128,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   addPost: Post;
   deletePost: ApiResponse;
+  leaveComment: Comment;
   revokeRefreshTokens: Scalars['Boolean'];
   login: LoginResponse;
   register: LoginResponse;
@@ -135,6 +143,12 @@ export type MutationAddPostArgs = {
 
 export type MutationDeletePostArgs = {
   id: Scalars['Float'];
+};
+
+
+export type MutationLeaveCommentArgs = {
+  postId: Scalars['Int'];
+  text: Scalars['String'];
 };
 
 
@@ -232,6 +246,15 @@ export type BodyFragment = (
   )> }
 );
 
+export type PostCommentFragment = (
+  { __typename?: 'Comment' }
+  & Pick<Comment, 'id' | 'text' | 'createdAt'>
+  & { user: (
+    { __typename?: 'User' }
+    & Pick<User, 'email'>
+  ) }
+);
+
 export type PostQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
@@ -247,11 +270,7 @@ export type PostQuery = (
       & BodyFragment
     ), comments: Array<(
       { __typename?: 'Comment' }
-      & Pick<Comment, 'id' | 'text'>
-      & { user: (
-        { __typename?: 'User' }
-        & Pick<User, 'email' | 'id'>
-      ) }
+      & PostCommentFragment
     )> }
   )> }
 );
@@ -314,6 +333,20 @@ export type DeletePostMutation = (
   & { deletePost: (
     { __typename?: 'ApiResponse' }
     & Pick<ApiResponse, 'ok'>
+  ) }
+);
+
+export type LeaveCommentMutationVariables = Exact<{
+  postId: Scalars['Int'];
+  text: Scalars['String'];
+}>;
+
+
+export type LeaveCommentMutation = (
+  { __typename?: 'Mutation' }
+  & { leaveComment: (
+    { __typename?: 'Comment' }
+    & PostCommentFragment
   ) }
 );
 
@@ -402,6 +435,16 @@ export const BodyFragmentDoc = gql`
   }
 }
     `;
+export const PostCommentFragmentDoc = gql`
+    fragment postComment on Comment {
+  id
+  text
+  user {
+    email
+  }
+  createdAt
+}
+    `;
 export const HelloDocument = gql`
     query Hello {
   hello
@@ -441,16 +484,12 @@ export const PostDocument = gql`
       ...body
     }
     comments {
-      id
-      text
-      user {
-        email
-        id
-      }
+      ...postComment
     }
   }
 }
-    ${BodyFragmentDoc}`;
+    ${BodyFragmentDoc}
+${PostCommentFragmentDoc}`;
 
 /**
  * __usePostQuery__
@@ -620,6 +659,39 @@ export function useDeletePostMutation(baseOptions?: ApolloReactHooks.MutationHoo
 export type DeletePostMutationHookResult = ReturnType<typeof useDeletePostMutation>;
 export type DeletePostMutationResult = ApolloReactCommon.MutationResult<DeletePostMutation>;
 export type DeletePostMutationOptions = ApolloReactCommon.BaseMutationOptions<DeletePostMutation, DeletePostMutationVariables>;
+export const LeaveCommentDocument = gql`
+    mutation LeaveComment($postId: Int!, $text: String!) {
+  leaveComment(postId: $postId, text: $text) {
+    ...postComment
+  }
+}
+    ${PostCommentFragmentDoc}`;
+export type LeaveCommentMutationFn = ApolloReactCommon.MutationFunction<LeaveCommentMutation, LeaveCommentMutationVariables>;
+
+/**
+ * __useLeaveCommentMutation__
+ *
+ * To run a mutation, you first call `useLeaveCommentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useLeaveCommentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [leaveCommentMutation, { data, loading, error }] = useLeaveCommentMutation({
+ *   variables: {
+ *      postId: // value for 'postId'
+ *      text: // value for 'text'
+ *   },
+ * });
+ */
+export function useLeaveCommentMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<LeaveCommentMutation, LeaveCommentMutationVariables>) {
+        return ApolloReactHooks.useMutation<LeaveCommentMutation, LeaveCommentMutationVariables>(LeaveCommentDocument, baseOptions);
+      }
+export type LeaveCommentMutationHookResult = ReturnType<typeof useLeaveCommentMutation>;
+export type LeaveCommentMutationResult = ApolloReactCommon.MutationResult<LeaveCommentMutation>;
+export type LeaveCommentMutationOptions = ApolloReactCommon.BaseMutationOptions<LeaveCommentMutation, LeaveCommentMutationVariables>;
 export const RegisterDocument = gql`
     mutation Register($email: String!, $password: String!) {
   register(email: $email, password: $password) {

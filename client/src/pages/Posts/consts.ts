@@ -1,0 +1,3 @@
+export const ITEMS_ON_PAGE = 3;
+
+export const SHOW_POST_PREVIEW_KEY = 'SHOW_POST_PREVIEW_KEY';

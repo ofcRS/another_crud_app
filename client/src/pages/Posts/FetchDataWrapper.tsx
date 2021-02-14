@@ -16,10 +16,9 @@ import {
     SelectedPost,
 } from './Posts.types';
 import { List } from './List';
-import { useHistory } from 'react-router';
+import { useHistory, useLocation } from 'react-router';
 import { delay } from 'utils/throttle';
-
-export const ITEMS_ON_PAGE = 3;
+import { ITEMS_ON_PAGE, SHOW_POST_PREVIEW_KEY } from './consts';
 
 export const FetchDataWrapper: React.FC = () => {
     const [selectedPost, setSelectedPost] = useState<SelectedPost>(null);
@@ -94,18 +93,26 @@ export const FetchDataWrapper: React.FC = () => {
     );
 
     const history = useHistory();
+    const location = useLocation();
 
     useEffect(() => {
-        if (data?.getPost?.id) {
+        // проверяем не ушел ли пользователь со
+        // страницы не дождавшись загрузки поста целиком
+        const previewStillActive =
+            new URLSearchParams(location.search).get(SHOW_POST_PREVIEW_KEY) !==
+            null;
+
+        if (data?.getPost?.id && previewStillActive) {
             const { id } = data?.getPost;
-            history.push('/posts/' + id);
+            history.replace('/posts/' + id);
         }
-    }, [data, history]);
+    }, [data, history, location.search]);
 
     const onSelectPost: OnSelectPost = async post => {
+        history.push(`?${SHOW_POST_PREVIEW_KEY}=true`);
         setSelectedPost(post);
         // искусственная задержка, чтобы показать анимацию :)
-        await delay(2500);
+        await delay(1000);
 
         if (post !== null) {
             getPost({

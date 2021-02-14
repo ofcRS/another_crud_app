@@ -7,7 +7,8 @@ import { PostPreview } from 'components/PostPreview';
 import { Styled } from './Posts.styles';
 
 import { postsContext } from './context';
-import { ITEMS_ON_PAGE } from './FetchDataWrapper';
+import { useLocation } from 'react-router';
+import { ITEMS_ON_PAGE, SHOW_POST_PREVIEW_KEY } from './consts';
 
 export const List: React.FC = observer(() => {
     const {
@@ -18,7 +19,11 @@ export const List: React.FC = observer(() => {
         totalItems,
     } = useContext(postsContext);
 
-    const showPostPreview = selectedPost !== null;
+    const location = useLocation();
+
+    const showPostPreview =
+        new URLSearchParams(location.search).get(SHOW_POST_PREVIEW_KEY) !==
+        null;
 
     const isMoreButtonVisible = skip + ITEMS_ON_PAGE < totalItems;
 

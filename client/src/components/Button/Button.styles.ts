@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { ButtonVariant, Props } from './Button.types';
 
 const BaseButton = styled.button`
     background: none;
@@ -7,13 +8,33 @@ const BaseButton = styled.button`
     color: ${({ theme }) => theme.colors.neutral};
 `;
 
-const Button = styled(BaseButton)`
+const Button = styled(BaseButton)<Props>`
     display: flex;
     align-items: center;
 
     padding: 8px;
     border: 1px solid ${({ theme }) => theme.colors.neutral};
     border-radius: 3px;
+
+    font-weight: 600;
+    font-size: 16px;
+
+    ${({ variant, theme }) => {
+        switch (variant) {
+            case ButtonVariant.submit:
+                return `
+                    background: ${theme.colors.action};
+                    color: ${theme.colors.neutral};
+                    
+                    transition: background 0.3s;
+                    
+                    :hover {
+                        background: ${theme.colors.actionBrighter};                        
+                    }
+                `;
+        }
+        return '';
+    }}
 
     > svg {
         height: 12px;

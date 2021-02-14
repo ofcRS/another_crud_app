@@ -24,6 +24,15 @@ fragment body on postBody {
     }
 }
 
+fragment postComment on Comment {
+    id,
+    text,
+    user {
+        email
+    },
+    createdAt
+}
+
 query Post($id: Int!) {
     getPost(id: $id) {
         id,
@@ -32,12 +41,7 @@ query Post($id: Int!) {
             ...body
         },
         comments {
-            id,
-            text,
-            user {
-                email,
-                id
-            }
+            ...postComment
         }
     }
 }
@@ -75,5 +79,11 @@ mutation AddPost($title: String!, $body: postBodyInput!) {
 mutation DeletePost($id: Float!) {
     deletePost(id: $id) {
         ok
+    }
+}
+
+mutation LeaveComment($postId: Int!, $text: String!) {
+    leaveComment(postId: $postId, text: $text) {
+        ...postComment
     }
 }

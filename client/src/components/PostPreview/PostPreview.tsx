@@ -23,14 +23,16 @@ export const PostPreview: React.FC<Props> = props => {
 
     return (
         <Styled.PostPreview {...props}>
-            <PostTitle>{selectedPost?.title}</PostTitle>
-            {props.show && (
-                <>
-                    {getShimmers(4)}
-                    {imagePreviewShimmer}
-                    {getShimmers(8)}
-                </>
-            )}
+            <Styled.Wrapper>
+                <PostTitle>{selectedPost?.title}</PostTitle>
+                {props.show && (
+                    <>
+                        {getShimmers(4)}
+                        {imagePreviewShimmer}
+                        {getShimmers(8)}
+                    </>
+                )}
+            </Styled.Wrapper>
         </Styled.PostPreview>
     );
 };

@@ -5,6 +5,9 @@ import {
     ManyToOne,
     BaseEntity,
     OneToMany,
+    JoinColumn,
+    CreateDateColumn,
+    UpdateDateColumn,
 } from 'typeorm';
 import {
     ObjectType,
@@ -128,11 +131,14 @@ export class Post extends BaseEntity {
     @Column('json')
     body: PostBody;
 
+    @JoinColumn({ name: 'userId' })
     @ManyToOne(
         () => User,
         user => user.posts
     )
     user: User;
+    @Column()
+    userId: number;
 
     @OneToMany(
         () => Comment,
@@ -143,6 +149,14 @@ export class Post extends BaseEntity {
     )
     @Field(() => [Comment])
     comments: Comment[];
+
+    @Field()
+    @CreateDateColumn()
+    createdAt: Date;
+
+    @Field()
+    @UpdateDateColumn()
+    updatedAt: Date;
 }
 
 @ObjectType()
