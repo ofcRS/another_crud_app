@@ -7,6 +7,7 @@ import {
     JoinColumn,
     CreateDateColumn,
     UpdateDateColumn,
+    OneToMany,
 } from 'typeorm';
 import { Field, ObjectType, Int } from 'type-graphql';
 import { User } from './user';
@@ -48,6 +49,18 @@ export class Comment extends BaseEntity {
     @Column()
     @Field()
     text: string;
+
+    @Field({ nullable: true })
+    @Column({ nullable: true })
+    replayId: number;
+
+    @Field(() => [Comment], { nullable: true })
+    @ManyToOne(
+        () => Comment,
+        comment => comment.id
+    )
+    @JoinColumn({ name: 'replayId' })
+    replies: Comment[];
 
     @Field()
     @CreateDateColumn()

@@ -20,7 +20,7 @@ const Button = styled(BaseButton)<Props>`
     font-size: 16px;
 
     ${({ variant, theme }) => {
-        switch (variant) {
+        switch (variant as ButtonVariant) {
             case ButtonVariant.submit:
                 return `
                     background: ${theme.colors.action};
@@ -31,6 +31,12 @@ const Button = styled(BaseButton)<Props>`
                     :hover {
                         background: ${theme.colors.actionBrighter};                        
                     }
+                `;
+            case ButtonVariant.text:
+                return `
+                    background: none;
+                    border: none;
+                    text-decoration: underline;
                 `;
         }
         return '';

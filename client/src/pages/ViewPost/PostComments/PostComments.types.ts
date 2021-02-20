@@ -6,4 +6,6 @@ export type Props = {
 
 export type CommentProps = {
     comment: PostCommentFragment;
+    showReplay: boolean;
+    onReplay: () => void;
 };

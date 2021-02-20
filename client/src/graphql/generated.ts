@@ -105,6 +105,9 @@ export type Comment = {
   post: Post;
   user: User;
   text: Scalars['String'];
+  replay: Comment;
+  replayId?: Maybe<Scalars['Float']>;
+  replies: Array<Comment>;
   createdAt: Scalars['DateTime'];
   updatedAt: Scalars['DateTime'];
 };
@@ -147,6 +150,7 @@ export type MutationDeletePostArgs = {
 
 
 export type MutationLeaveCommentArgs = {
+  replayId?: Maybe<Scalars['Int']>;
   postId: Scalars['Int'];
   text: Scalars['String'];
 };
@@ -248,11 +252,14 @@ export type BodyFragment = (
 
 export type PostCommentFragment = (
   { __typename?: 'Comment' }
-  & Pick<Comment, 'id' | 'text' | 'createdAt'>
+  & Pick<Comment, 'id' | 'text' | 'createdAt' | 'replayId'>
   & { user: (
     { __typename?: 'User' }
     & Pick<User, 'email'>
-  ) }
+  ), replies: Array<(
+    { __typename?: 'Comment' }
+    & Pick<Comment, 'id'>
+  )> }
 );
 
 export type PostQueryVariables = Exact<{
@@ -339,6 +346,7 @@ export type DeletePostMutation = (
 export type LeaveCommentMutationVariables = Exact<{
   postId: Scalars['Int'];
   text: Scalars['String'];
+  replayId?: Maybe<Scalars['Int']>;
 }>;
 
 
@@ -443,6 +451,10 @@ export const PostCommentFragmentDoc = gql`
     email
   }
   createdAt
+  replies {
+    id
+  }
+  replayId
 }
     `;
 export const HelloDocument = gql`
@@ -660,8 +672,8 @@ export type DeletePostMutationHookResult = ReturnType<typeof useDeletePostMutati
 export type DeletePostMutationResult = ApolloReactCommon.MutationResult<DeletePostMutation>;
 export type DeletePostMutationOptions = ApolloReactCommon.BaseMutationOptions<DeletePostMutation, DeletePostMutationVariables>;
 export const LeaveCommentDocument = gql`
-    mutation LeaveComment($postId: Int!, $text: String!) {
-  leaveComment(postId: $postId, text: $text) {
+    mutation LeaveComment($postId: Int!, $text: String!, $replayId: Int) {
+  leaveComment(postId: $postId, text: $text, replayId: $replayId) {
     ...postComment
   }
 }
@@ -683,6 +695,7 @@ export type LeaveCommentMutationFn = ApolloReactCommon.MutationFunction<LeaveCom
  *   variables: {
  *      postId: // value for 'postId'
  *      text: // value for 'text'
+ *      replayId: // value for 'replayId'
  *   },
  * });
  */

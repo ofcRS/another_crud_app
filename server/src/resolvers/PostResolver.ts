@@ -35,7 +35,7 @@ export class PostResolver extends BaseResolver {
                 id,
             },
             {
-                relations: ['comments', 'comments.user'],
+                relations: ['comments', 'comments.user', 'comments.replies'],
             }
         );
     }
@@ -114,12 +114,15 @@ export class PostResolver extends BaseResolver {
     async leaveComment(
         @Ctx() { payload }: Context<true>,
         @Arg('text') text: string,
-        @Arg('postId', () => Int) postId: number
+        @Arg('postId', () => Int) postId: number,
+        @Arg('replayId', () => Int, { nullable: true }) replayId: number
     ) {
         const comment = new Comment();
+
         comment.userId = payload.id;
         comment.text = text;
         comment.postId = postId;
+        comment.replayId = replayId;
 
         const { id } = await comment.save();
 

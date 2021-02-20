@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const NewComment = styled.form`
+const NewComment = styled.div`
     display: flex;
     flex-wrap: wrap;
 
@@ -9,6 +9,10 @@ const NewComment = styled.form`
     border: 1px solid ${({ theme }) => theme.colors.neutral};
 
     margin-bottom: 16px;
+
+    > :first-child {
+        width: 100%;
+    }
 
     textarea {
         width: 100%;
