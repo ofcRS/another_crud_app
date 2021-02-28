@@ -52,15 +52,23 @@ export class Comment extends BaseEntity {
 
     @Field({ nullable: true })
     @Column({ nullable: true })
-    replayId: number;
+    replyId: number;
 
-    @Field(() => [Comment], { nullable: true })
+    @Field(() => [Comment], { defaultValue: [] })
+    @OneToMany(
+        () => Comment,
+        comment => comment.reply
+    )
+    replies: Comment[];
+
     @ManyToOne(
         () => Comment,
-        comment => comment.id
+        comment => comment.replies,
+        {
+            nullable: true,
+        }
     )
-    @JoinColumn({ name: 'replayId' })
-    replies: Comment[];
+    reply: Comment;
 
     @Field()
     @CreateDateColumn()

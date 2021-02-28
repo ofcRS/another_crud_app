@@ -14,9 +14,8 @@ type Comment {
     createdAt: DateTime!
     id: Int!
     post: Post!
-    replay: Comment!
-    replayId: Float
     replies: [Comment!]!
+    replyId: Float
     text: String!
     updatedAt: DateTime!
     user: User!
@@ -30,7 +29,7 @@ type LoginResponse {
 type Mutation {
     addPost(body: postBodyInput!, title: String!): Post!
     deletePost(id: Float!): ApiResponse!
-    leaveComment(postId: Int!, replayId: Int, text: String!): Comment!
+    leaveComment(postId: Int!, replyId: Int, text: String!): Comment!
     login(email: String!, password: String!): LoginResponse!
     register(email: String!, password: String!): LoginResponse!
     revokeRefreshTokens(id: Float!): Boolean!

@@ -29,8 +29,8 @@ export class PostResolver extends BaseResolver {
     @Query(() => Post, {
         nullable: true,
     })
-    getPost(@Arg('id', () => Int) id: number) {
-        return Post.findOne(
+    async getPost(@Arg('id', () => Int) id: number) {
+        const res = await Post.findOne(
             {
                 id,
             },
@@ -38,6 +38,8 @@ export class PostResolver extends BaseResolver {
                 relations: ['comments', 'comments.user', 'comments.replies'],
             }
         );
+        console.log(JSON.stringify(res, null, '\t'));
+        return res;
     }
 
     @Mutation(() => Post)
@@ -67,7 +69,7 @@ export class PostResolver extends BaseResolver {
         };
     }
 
-    getPostPreview({ body, title, id }: Post): PostPreview {
+    static getPostPreview({ body, title, id }: Post): PostPreview {
         const atomicType = body.blocks.find(
             ({ type, entityRanges }) =>
                 type === 'atomic' && entityRanges.length === 1
@@ -99,7 +101,7 @@ export class PostResolver extends BaseResolver {
             take,
         });
 
-        return posts.map(this.getPostPreview);
+        return posts.map(PostResolver.getPostPreview);
     }
 
     @Query(() => Int)
@@ -115,14 +117,14 @@ export class PostResolver extends BaseResolver {
         @Ctx() { payload }: Context<true>,
         @Arg('text') text: string,
         @Arg('postId', () => Int) postId: number,
-        @Arg('replayId', () => Int, { nullable: true }) replayId: number
+        @Arg('replyId', () => Int, { nullable: true }) replyId: number
     ) {
         const comment = new Comment();
 
         comment.userId = payload.id;
         comment.text = text;
         comment.postId = postId;
-        comment.replayId = replayId;
+        comment.replyId = replyId;
 
         const { id } = await comment.save();
 

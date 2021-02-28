@@ -1,11 +1,11 @@
-import { PostCommentFragment } from 'graphql/generated';
+import { CommentTreeElement } from '../ViewPost.types';
 
 export type Props = {
-    list: PostCommentFragment[];
+    commentsTree: CommentTreeElement[];
 };
 
 export type CommentProps = {
-    comment: PostCommentFragment;
+    comment: CommentTreeElement;
     showReplay: boolean;
     onReplay: () => void;
 };

@@ -16,6 +16,7 @@ export const ViewPost: React.FC<Props> = () => {
         editorState,
         setEditorState,
         onLeaveComment,
+        commentsTree,
     } = useContext(viewPostContext);
 
     return (
@@ -30,8 +31,10 @@ export const ViewPost: React.FC<Props> = () => {
                     />
                 </Styled.EditorWrapper>
                 <h2>Comments - {post?.comments.length}</h2>
-                <NewComment onLeaveComment={onLeaveComment} />
-                <PostComments list={post?.comments || []} />
+                <NewComment
+                    onLeaveComment={text => onLeaveComment(text, null)}
+                />
+                <PostComments commentsTree={commentsTree} />
             </Styled.ViewPost>
         </Styled.ViewPostWrapper>
     );

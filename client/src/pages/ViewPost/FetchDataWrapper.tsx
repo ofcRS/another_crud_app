@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Redirect, useRouteMatch } from 'react-router';
 import { convertFromRaw, EditorState, RawDraftContentState } from 'draft-js';
+import { cloneDeep } from 'lodash';
 
 import { viewPostContext } from './context';
 import { ViewPost } from './ViewPost';
@@ -28,7 +29,7 @@ export const FetchDataWrapper = () => {
     const [getPostInfo, { data }] = usePostLazyQuery({
         onCompleted: data => {
             if (data.getPost) {
-                const { body, comments } = data.getPost;
+                const { body } = data.getPost;
                 const contentState = convertFromRaw({
                     ...body,
                     entityMap: body.entityMap.reduce(
@@ -45,21 +46,56 @@ export const FetchDataWrapper = () => {
                         {}
                     )
                 );
-
-                // Строим дерево комментов
-                const rootTags = comments.filter(
-                    ({ replayId }) => replayId === null
-                );
-                const mapChildren = (parentId: number) => {
-                    const replies = comments.filter(
-                        ({ replayId }) => replayId === parentId
-                    );
-
-                };
-                // setCommentTree();
             }
         },
     });
+
+    useEffect(() => {
+        console.log(data?.getPost);
+        if (data?.getPost) {
+            const { comments } = data.getPost;
+
+            /*
+             * Создаем копию объекта,
+             * для работы с рид-онли данными
+             * */
+            const clonedComments = cloneDeep(comments) as CommentTreeElement[];
+
+            /*
+             * Ищем комментарии, которые являются ответами
+             * непосредственно на пост
+             */
+            const rootComments = clonedComments.filter(
+                ({ replyId }) => replyId === null
+            );
+
+            /*
+             * Для каждого реплая типа { id: number },
+             * заменяем на { id: number, data: Comment }.
+             * Не могу сделать это на сервере,
+             * потому что графкуэль не дает передать рекурсию произвольной глубины
+             * */
+            const fillReplies = (comment: CommentTreeElement) => {
+                comment.data = { ...comment };
+                comment.replies.forEach(reply => {
+                    const relativeRecord = clonedComments.find(
+                        ({ id }) => reply.id === id
+                    );
+                    if (relativeRecord) {
+                        reply.replies = relativeRecord.replies;
+                        reply.data = relativeRecord;
+                        fillReplies(relativeRecord);
+                    }
+                });
+            };
+
+            rootComments.forEach(fillReplies);
+
+            console.log(rootComments);
+
+            setCommentTree(rootComments);
+        }
+    }, [data]);
 
     useEffect(() => {
         getPostInfo({
@@ -74,12 +110,12 @@ export const FetchDataWrapper = () => {
         }
     }, [data]);
 
-    const onLeaveComment: OnLeaveComment = async (text, replayId) => {
+    const onLeaveComment: OnLeaveComment = async (text, replyId) => {
         const { data: commentData } = await leaveComment({
             variables: {
                 postId,
                 text,
-                replayId,
+                replyId,
             },
         });
         const variables: PostQueryVariables = {
@@ -91,17 +127,35 @@ export const FetchDataWrapper = () => {
             variables,
         });
         if (commentData?.leaveComment && current?.getPost) {
+            const data = {
+                getPost: {
+                    ...current.getPost,
+                    comments: [
+                        ...current.getPost.comments.map(comment => {
+                            if (
+                                comment.id === commentData.leaveComment.replyId
+                            ) {
+                                return {
+                                    ...comment,
+                                    replies: [
+                                        ...comment.replies,
+                                        { id: commentData.leaveComment.id },
+                                    ],
+                                };
+                            }
+                            return comment;
+                        }),
+                        {
+                            ...commentData.leaveComment,
+                            replies: commentData.leaveComment.replies || [],
+                        },
+                    ],
+                },
+            };
+
             client?.writeQuery<PostQuery, PostQueryVariables>({
                 query: PostDocument,
-                data: {
-                    getPost: {
-                        ...current.getPost,
-                        comments: [
-                            ...current.getPost.comments,
-                            commentData.leaveComment,
-                        ],
-                    },
-                },
+                data,
                 variables,
             });
         }
@@ -119,8 +173,8 @@ export const FetchDataWrapper = () => {
                 post: data?.getPost || null,
                 setEditorState,
                 editorState,
-                setCommentTree,
-                commentTree,
+                setCommentsTree: setCommentTree,
+                commentsTree: commentTree,
             }}
         >
             <ViewPost />

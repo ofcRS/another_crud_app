@@ -9,6 +9,6 @@ export const viewPostContext = createContext<ViewPostContext>({
     post: null,
     setEditorState: () => null,
     editorState: EditorState.createEmpty(),
-    commentTree: [],
-    setCommentTree: () => null,
+    commentsTree: [],
+    setCommentsTree: () => null,
 });

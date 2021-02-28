@@ -34,7 +34,7 @@ fragment postComment on Comment {
     replies {
         id
     },
-    replayId
+    replyId
 }
 
 query Post($id: Int!) {
@@ -86,8 +86,8 @@ mutation DeletePost($id: Float!) {
     }
 }
 
-mutation LeaveComment($postId: Int!, $text: String!, $replayId: Int) {
-    leaveComment(postId: $postId, text: $text, replayId: $replayId) {
+mutation LeaveComment($postId: Int!, $text: String!, $replyId: Int) {
+    leaveComment(postId: $postId, text: $text, replyId: $replyId) {
         ...postComment
     }
 }

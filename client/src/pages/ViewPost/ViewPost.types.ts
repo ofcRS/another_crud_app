@@ -5,7 +5,7 @@ import { PostCommentFragment, PostQuery } from 'graphql/generated';
 
 export type Props = {};
 
-export type OnLeaveComment = (text: string, replayId: number) => void;
+export type OnLeaveComment = (text: string, replyId: number | null) => void;
 
 export type ViewPostContext = {
     postId: number;
@@ -13,14 +13,15 @@ export type ViewPostContext = {
     post: PostQuery['getPost'] | null;
     editorState: EditorState;
     setEditorState: Dispatch<SetStateAction<EditorState>>;
-    commentTree: CommentTreeElement[];
-    setCommentTree: Dispatch<SetStateAction<CommentTreeElement[]>>;
+    commentsTree: CommentTreeElement[];
+    setCommentsTree: Dispatch<SetStateAction<CommentTreeElement[]>>;
 };
 
 /* Паршу комменты на клиенте,
  * потому что graphQL не поддерживает
  * рекурсию неизвестной глубины
- * */
-export type CommentTreeElement = PostCommentFragment & {
-    comments: PostCommentFragment[];
+ */
+export type CommentTreeElement = Omit<PostCommentFragment, 'replies'> & {
+    replies: CommentTreeElement[];
+    data: PostCommentFragment;
 };
