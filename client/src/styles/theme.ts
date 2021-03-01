@@ -17,3 +17,5 @@ export const theme = {
         pastel: ['#f25f5c', '#ffe066', '#247ba0', '#289d93'],
     },
 } as const;
+
+export type Theme = typeof theme;

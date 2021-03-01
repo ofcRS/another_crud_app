@@ -12,13 +12,20 @@ import {
     PostDocument,
     PostQueryVariables,
 } from 'graphql/generated';
-import { CommentTreeElement, OnLeaveComment } from './ViewPost.types';
+import {
+    CommentTreeElement,
+    OnLeaveComment,
+    LastAddedCommentId,
+} from './ViewPost.types';
 
 export const FetchDataWrapper = () => {
     const [commentTree, setCommentTree] = useState<CommentTreeElement[]>([]);
     const [editorState, setEditorState] = useState<EditorState>(
         EditorState.createEmpty()
     );
+    const [lastAddedCommentId, setLastAddedCommentId] = useState<
+        LastAddedCommentId
+    >(null);
 
     const { params } = useRouteMatch<{ id: string }>();
 
@@ -51,7 +58,6 @@ export const FetchDataWrapper = () => {
     });
 
     useEffect(() => {
-        console.log(data?.getPost);
         if (data?.getPost) {
             const { comments } = data.getPost;
 
@@ -90,8 +96,6 @@ export const FetchDataWrapper = () => {
             };
 
             rootComments.forEach(fillReplies);
-
-            console.log(rootComments);
 
             setCommentTree(rootComments);
         }
@@ -158,6 +162,7 @@ export const FetchDataWrapper = () => {
                 data,
                 variables,
             });
+            setLastAddedCommentId(commentData.leaveComment.id);
         }
     };
 
@@ -169,6 +174,7 @@ export const FetchDataWrapper = () => {
         <viewPostContext.Provider
             value={{
                 onLeaveComment,
+                lastAddedCommentId,
                 postId,
                 post: data?.getPost || null,
                 setEditorState,

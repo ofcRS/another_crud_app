@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { format, parseISO } from 'date-fns';
 
 import { Button, ButtonVariant } from 'components/Button';
@@ -8,8 +8,6 @@ import { CommentProps } from './PostComments.types';
 import { NewComment } from '../NewComment';
 import { PostComments } from './PostComments';
 
-import { viewPostContext } from '../context';
-
 export const Comment: React.FC<CommentProps> = ({
     comment: {
         data: { text, user, createdAt, id },
@@ -17,11 +15,22 @@ export const Comment: React.FC<CommentProps> = ({
     },
     showReplay,
     onReplay,
+    onLeaveComment,
+    highlighted,
 }) => {
-    const { onLeaveComment } = useContext(viewPostContext);
+    const commentRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (highlighted) {
+            commentRef.current?.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center',
+            });
+        }
+    }, [highlighted]);
 
     return (
-        <Styled.Comment>
+        <Styled.Comment ref={commentRef} highlighted={highlighted}>
             <div>
                 <b>{user.email} - </b>
 
