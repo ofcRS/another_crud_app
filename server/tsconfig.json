@@ -1,16 +1,21 @@
 {
-    "compilerOptions": {
-        "baseUrl": "./src",
-        "target": "es6",
-        "module": "commonjs",
-        "noImplicitAny": true,
-        "sourceMap": true,
-        "esModuleInterop": true,
-        "noEmit": true,
-        "moduleResolution": "node",
-        "strict": true,
-        "strictPropertyInitialization": false,
-        "emitDecoratorMetadata": true,
-        "experimentalDecorators": true
-    }
+  "compilerOptions": {
+    "baseUrl": "./src",
+    "target": "ES6",
+    "module": "commonjs",
+    "noImplicitAny": true,
+    "sourceMap": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "strict": true,
+    "strictPropertyInitialization": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "outDir": "dist",
+    "skipLibCheck": true,
+    "allowJs": true,
+  },
+  "exclude": [
+    "./node_modules/**/*.*"
+  ]
 }

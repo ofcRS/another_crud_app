@@ -2,12 +2,12 @@ import React from 'react';
 import { Field, Form, Formik } from 'formik';
 import { observer } from 'mobx-react';
 import { Styled } from './AuthModal.styles';
-import { Styled as StyledButton } from 'components/Button/Button.styles';
 import { LoginFormProps } from './AuthModal.types';
-import { useLoginMutation, MeDocument, MeQuery } from '../../graphql/generated';
+import { MeDocument, MeQuery, useLoginMutation } from '../../graphql/generated';
 import { useStore } from 'store';
 import { parseGraphQLError } from 'utils/validators';
 import { ErrorMessage } from 'components/FormError';
+import { Button, ButtonVariant } from 'components/Button';
 
 export const LoginForm = observer<React.FC<LoginFormProps>>(({ onSignIn }) => {
     const { app } = useStore();
@@ -52,12 +52,19 @@ export const LoginForm = observer<React.FC<LoginFormProps>>(({ onSignIn }) => {
                         <Field id="password" type="password" name="password" />
                     </Styled.InputWrapper>
                     <Styled.ButtonsWrapper>
-                        <button type="submit" disabled={isSubmitting}>
+                        <Button
+                            variant={ButtonVariant.submit}
+                            type="submit"
+                            disabled={isSubmitting}
+                        >
                             Submit
-                        </button>
-                        <StyledButton.LinkButton onClick={() => onSignIn()}>
+                        </Button>
+                        <Button
+                            variant={ButtonVariant.text}
+                            onClick={() => onSignIn()}
+                        >
                             Sign In
-                        </StyledButton.LinkButton>
+                        </Button>
                     </Styled.ButtonsWrapper>
                 </Form>
             )}

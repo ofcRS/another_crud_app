@@ -9,17 +9,6 @@ const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 module.exports = ({ production }) => {
     const { env } = process;
 
-    console.log('IMPORTANT!!!');
-    console.log({
-        env: {
-            production,
-            API_PORT: env.API_PORT,
-            API_HOST: env.API_HOST,
-            test: 123,
-        },
-    });
-    console.log('IMPORTANT!!!');
-
     const mode = production ? 'production' : 'development';
     const isProd = mode === 'production';
 

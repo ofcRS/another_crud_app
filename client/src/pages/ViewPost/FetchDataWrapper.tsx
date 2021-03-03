@@ -26,6 +26,7 @@ export const FetchDataWrapper = () => {
     const [lastAddedCommentId, setLastAddedCommentId] = useState<
         LastAddedCommentId
     >(null);
+    const [replyingCommentId, setReplyingCommentId] = useState<null | number>(null);
 
     const { params } = useRouteMatch<{ id: string }>();
 
@@ -181,6 +182,8 @@ export const FetchDataWrapper = () => {
                 editorState,
                 setCommentsTree: setCommentTree,
                 commentsTree: commentTree,
+                setReplyingCommentId,
+                replyingCommentId,
             }}
         >
             <ViewPost />

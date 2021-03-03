@@ -1,29 +1,50 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 
 import { Comment } from './Comment';
+
+import { Styled } from './PostComments.styles';
 import { Props } from './PostComments.types';
+
 import { viewPostContext } from '../context';
 
-export const PostComments: React.FC<Props> = ({ commentsTree }) => {
-    const [replayingPostId, setReplayingPostId] = useState<null | number>(null);
-
-    const { onLeaveComment, lastAddedCommentId } = useContext(viewPostContext);
+export const PostComments: React.FC<Props> = ({
+    commentsTree,
+    showBranchIndicator,
+    onClickBranchIndicator,
+}) => {
+    const {
+        onLeaveComment,
+        lastAddedCommentId,
+        replyingCommentId,
+        setReplyingCommentId,
+    } = useContext(viewPostContext);
 
     return (
-        <div>
+        <Styled.PostComments>
             {commentsTree.map(comment => (
                 <Comment
                     highlighted={lastAddedCommentId === comment.id}
                     onLeaveComment={(...data) => {
                         onLeaveComment(...data);
-                        setReplayingPostId(null);
+                        setReplyingCommentId(null);
                     }}
                     key={comment.id}
                     comment={comment}
-                    showReplay={replayingPostId === comment.id}
-                    onReplay={() => setReplayingPostId(comment.id)}
+                    showReplay={replyingCommentId === comment.id}
+                    onReplay={() => setReplyingCommentId(comment.id)}
                 />
             ))}
-        </div>
+            {showBranchIndicator && (
+                <CommentsBranchIndicator
+                    onClick={() => onClickBranchIndicator?.()}
+                />
+            )}
+        </Styled.PostComments>
     );
 };
+
+const CommentsBranchIndicator = ({ onClick }: { onClick: () => void }) => (
+    <Styled.CommentsBranchIndicatorWrapper onClick={onClick}>
+        <Styled.CommentsBranchIndicator />
+    </Styled.CommentsBranchIndicatorWrapper>
+);

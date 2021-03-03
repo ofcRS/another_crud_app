@@ -2,6 +2,8 @@ import { CommentTreeElement, OnLeaveComment } from '../ViewPost.types';
 
 export type Props = {
     commentsTree: CommentTreeElement[];
+    showBranchIndicator?: boolean;
+    onClickBranchIndicator?: () => void;
 };
 
 export type CommentProps = {

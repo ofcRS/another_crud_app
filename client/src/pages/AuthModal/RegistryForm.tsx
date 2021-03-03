@@ -3,13 +3,14 @@ import { observer } from 'mobx-react';
 import { Field, Form, Formik } from 'formik';
 
 import { Styled } from './AuthModal.styles';
-import { Styled as StyledButton } from 'components/Button/Button.styles';
+
 import { parseGraphQLError } from 'utils/validators';
 
 import { ErrorMessage } from 'components/FormError';
 import { MeDocument, MeQuery, useRegisterMutation } from 'graphql/generated';
 import { RegistryFormProps } from './AuthModal.types';
 import { useStore } from 'store';
+import { Button, ButtonVariant } from '../../components/Button';
 
 export const RegistryForm = observer<React.FC<RegistryFormProps>>(
     ({ onBackToLogin }) => {
@@ -65,14 +66,19 @@ export const RegistryForm = observer<React.FC<RegistryFormProps>>(
                             />
                         </Styled.InputWrapper>
                         <Styled.ButtonsWrapper>
-                            <button type="submit" disabled={isSubmitting}>
+                            <Button
+                                variant={ButtonVariant.submit}
+                                type="submit"
+                                disabled={isSubmitting}
+                            >
                                 Submit
-                            </button>
-                            <StyledButton.LinkButton
+                            </Button>
+                            <Button
+                                variant={ButtonVariant.text}
                                 onClick={() => onBackToLogin()}
                             >
                                 Log in
-                            </StyledButton.LinkButton>
+                            </Button>
                         </Styled.ButtonsWrapper>
                     </Form>
                 )}

@@ -16,6 +16,8 @@ export type ViewPostContext = {
     commentsTree: CommentTreeElement[];
     setCommentsTree: Dispatch<SetStateAction<CommentTreeElement[]>>;
     lastAddedCommentId: LastAddedCommentId;
+    replyingCommentId: ReplyingCommentId;
+    setReplyingCommentId: Dispatch<SetStateAction<ReplyingCommentId>>;
 };
 
 /* Паршу комменты на клиенте,
@@ -27,4 +29,5 @@ export type CommentTreeElement = Omit<PostCommentFragment, 'replies'> & {
     data: PostCommentFragment;
 };
 
-export type LastAddedCommentId = number | null;
+export type LastAddedCommentId = number | null
+export type ReplyingCommentId = number | null

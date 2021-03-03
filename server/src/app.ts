@@ -40,7 +40,11 @@ export class App {
     }
 
     private static getClientUrl = () =>
-        `http://${process.env.HOST}:${process.env.CLIENT_PORT}`;
+        `http://${process.env.HOST}${
+            process.env.CLIENT_PORT !== undefined
+                ? ':' + process.env.CLIENT_PORT
+                : ''
+        }`;
 
     private initializeMiddlewares() {
         this.app.use(bodyParser.json());
@@ -70,7 +74,7 @@ export class App {
             console.log('was succesfully connected to "' + name + '"');
         } catch (error) {
             console.log(
-                'error occured while trying to connect db: ' + error?.message
+                'error occured while trying to connect db: ' + error.message
             );
         }
     }

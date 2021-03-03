@@ -6,6 +6,8 @@ const config = {
     prettyPrint: {
         colorize: true,
     },
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+    // @ts-ignore
     customLogLevel(res, err) {
         if (res.statusCode >= 400 && res.statusCode < 500) {
             return 'warn';
@@ -15,7 +17,7 @@ const config = {
         return 'info';
     },
     serializers: {
-        req: req => {
+        req: (req: any) => {
             const result: Record<string, unknown> = {
                 method: req.method,
             };

@@ -1,7 +1,3 @@
 {
-    "watch": [
-        "src"
-    ],
-    "ext": "ts",
-    "exec": "ts-node-dev -r tsconfig-paths/register --files ./src/index.ts"
+    "exec": "ts-node-dev -r tsconfig-paths/register --files ./src/index.ts ./node_modules/.bin/typeorm"
 }

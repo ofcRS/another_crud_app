@@ -36,7 +36,7 @@ const Button = styled(BaseButton)<Props>`
                 return `
                     background: none;
                     border: none;
-                    text-decoration: underline;
+                    border-bottom: 1px dashed ${theme.colors.neutral};
                 `;
         }
         return '';

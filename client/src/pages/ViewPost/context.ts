@@ -12,4 +12,6 @@ export const viewPostContext = createContext<ViewPostContext>({
     editorState: EditorState.createEmpty(),
     commentsTree: [],
     setCommentsTree: () => null,
+    replyingCommentId: null,
+    setReplyingCommentId: () => null,
 });

@@ -3,6 +3,7 @@ import styled from 'styled-components';
 const ViewPostWrapper = styled.div`
     background: ${({ theme }) => theme.colors.dark};
     height: 100%;
+    overflow: hidden;
 `;
 
 const ViewPost = styled.div`

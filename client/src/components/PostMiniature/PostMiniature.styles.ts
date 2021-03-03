@@ -11,6 +11,7 @@ const Post = styled.section`
     width: 100%;
     min-width: 250px;
     min-height: 80px;
+    margin-bottom: 32px;
     border: 1px solid #f4f4f4;
 
     cursor: pointer;
@@ -19,9 +20,6 @@ const Post = styled.section`
         white-space: pre-line;
     }
 
-    :not(:last-child) {
-        margin-bottom: 32px;
-    }
 
     a {
         text-decoration: none;

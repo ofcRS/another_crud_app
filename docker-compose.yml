@@ -4,8 +4,8 @@ services:
   server:
     depends_on:
       - pg
-    image: node:12-alpine
-    command: sh -c "yarn && yarn dev"
+    image: node:14-alpine
+    command: sh -c "yarn && yarn build && yarn start"
     ports:
       - 3001:3001
     working_dir: /server
@@ -13,7 +13,8 @@ services:
       - ./server/:/server
     environment:
       HOST: localhost
-      CLIENT_PORT: 3000
+      # host:80 !== просто host, что странно
+      CLIENT_PORT:
       PORT: 3001
       JWT_SECRET: 4jdfjwidsiojdfsjoaisfjfj934fi
       REFRESH_JWT_SECRET: ewkifpodfjer34ui89krfe
@@ -21,6 +22,7 @@ services:
       PG_USERNAME: postgres
       PG_PASSWORD: secret
       PG_DATABASE: postgres
+      PRODUCTION: production
 
   client:
     build:
@@ -33,7 +35,7 @@ services:
     depends_on:
       - server
     ports:
-      - 3000:3000
+      - 80:8000
 #    volumes:
 #      - ./client/:/client
 #    environment:

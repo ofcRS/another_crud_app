@@ -8,7 +8,7 @@ module.exports = env => {
 
     return ({
         mode,
-        entry: './src/server.ts',
+        entry: './src/index.ts',
         target: 'node',
         optimization: {
             minimize: false,
@@ -24,7 +24,7 @@ module.exports = env => {
         },
         externals: [nodeExternals()],
         resolve: {
-            extensions: ['.ts'],
+            extensions: ['.ts', '.js', '.json'],
             plugins: [new TsconfigPathsPlugin({})]
         },
         output: {

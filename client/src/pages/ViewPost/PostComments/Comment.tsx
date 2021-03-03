@@ -7,6 +7,7 @@ import { Styled } from './PostComments.styles';
 import { CommentProps } from './PostComments.types';
 import { NewComment } from '../NewComment';
 import { PostComments } from './PostComments';
+import { useBoolean } from '../../../hooks/useBoolean';
 
 export const Comment: React.FC<CommentProps> = ({
     comment: {
@@ -19,6 +20,7 @@ export const Comment: React.FC<CommentProps> = ({
     highlighted,
 }) => {
     const commentRef = useRef<HTMLDivElement>(null);
+    const [hideCommentsBranch, toggleHideCommentsBranch] = useBoolean();
 
     useEffect(() => {
         if (highlighted) {
@@ -41,10 +43,23 @@ export const Comment: React.FC<CommentProps> = ({
                 <NewComment onLeaveComment={text => onLeaveComment(text, id)} />
             ) : (
                 <Button onClick={onReplay} variant={ButtonVariant.text}>
-                    replay
+                    Replay
                 </Button>
             )}
-            <PostComments commentsTree={replies} />
+            {!hideCommentsBranch ? (
+                <PostComments
+                    showBranchIndicator={true}
+                    commentsTree={replies}
+                    onClickBranchIndicator={toggleHideCommentsBranch}
+                />
+            ) : (
+                <Button
+                    onClick={toggleHideCommentsBranch}
+                    variant={ButtonVariant.text}
+                >
+                    show comments
+                </Button>
+            )}
         </Styled.Comment>
     );
 };

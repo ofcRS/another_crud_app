@@ -21,6 +21,7 @@ const Title = styled.h2`
 `;
 
 const ButtonsWrapper = styled.div`
+    display: flex;
     > :first-child {
         margin-right: 8px;
     }
